@@ -1188,49 +1188,30 @@ button:active {
   position: relative; /* ← MUY IMPORTANTE para contener el ::before */
   overflow: hidden;   /* ← Esto evita que el rayo se “escape” */
 }
-/* Style for the new Help Button */
+/* Splash buttons */
+#initial-start-button,
 #help-button {
   font-family: var(--font-pixel);
-  font-size: 1.1em;
-  background-color: #ffc107; /* Distinct yellow */
-  color: #333;
-  border: none;
+  font-size: 1.5em;
+  background-color: transparent !important;
+  color: #335533 !important;
+  border: none !important;
+  box-shadow: none !important;
   padding: 10px 18px;
-  padding: 10px 18px;
-  /*margin: 10px 5px 5px 0;*/
-  cursor: help;
-  border-radius: 8px;      
-  box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
-  transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
-  display: inline-block; /
-  vertical-align: align-self; /
-  width: auto; /* Let width be determined by content */
-  line-height: normal; /* Reset line height if needed */
-  height: auto; /* Adjust height to fit content */
-  min-height: 45px; /* Approximate height of other buttons */
-  position: static;
-  top: auto;
-  left: auto;
-  /*position: relative; /* Needed for potential pseudo-elements if added later */
-  /*top: 70px;             /* baja el botón 15px */
-  /*left: 30px;            /* muévelo 20px hacia la derecha */
-  margin-left: auto; /* Pushes the button to the right within the .mode-selector flex container */
-  align-self: center; /* Optional: to vertically align with other buttons in .mode-selector */
-  margin-top: 10px; /* Match original top margin */
-  margin-bottom: 5px; /* Match original bottom margin */
-  margin-right: 0; /* No right margin if pushed by auto left margin */
-  }
-
-#help-button:hover {
-  background-color: #e0a800; /* Darker yellow on hover */
-  box-shadow: 1px 1px 0px rgba(0,0,0,0.4);
-  transform: translate(1px, 1px);
+  margin: 10px 5px;
+  cursor: pointer;
 }
 
-#help-button:active {
-    box-shadow: none;
-    transform: translate(2px, 2px);
-	
+#initial-start-button:hover,
+#help-button:hover,
+#initial-start-button.selected,
+#help-button.selected {
+  animation: splash-blink 1s infinite;
+}
+
+@keyframes splash-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
 
@@ -2704,13 +2685,11 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     color: var(--accent-color-blue);
     margin-bottom: 20px;
 }
-#press-key-text, #initial-start-button {
+#press-key-text {
     font-size: 1.5em;
     color: var(--text-color);
     margin-top: 30px;
-}
-#press-key-text {
-     animation: blink-text 1.5s infinite;
+    animation: blink-text 1.5s infinite;
 }
 @keyframes blink-text {
     0%, 100% { opacity: 1; }
