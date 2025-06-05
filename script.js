@@ -505,8 +505,11 @@ function navigateToStep(stepName) {
     }
 }
 function updateInfoPanelContent(title, htmlContent) {
+    if (!infoPanelTitle || !infoPanelContent) return;
+
     infoPanelTitle.textContent = title;
     infoPanelContent.innerHTML = htmlContent;
+
     // Activar animaciones de typewriter si es necesario para el nuevo contenido
     const recallAnim = infoPanelContent.querySelector('#recall-example-anim');
     const conjugateAnim = infoPanelContent.querySelector('#conjugate-example-anim');
