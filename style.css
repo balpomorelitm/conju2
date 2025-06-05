@@ -1207,6 +1207,11 @@ button:active {
 #initial-start-button.selected,
 #help-button.selected {
   animation: splash-blink 1s infinite;
+  color: #ffffff !important;
+}
+
+#initial-start-button.electric-effect {
+  animation: electric-spark 0.5s infinite alternate;
 }
 
 @keyframes splash-blink {
@@ -2684,16 +2689,6 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     font-size: 2.5em; /* Más grande */
     color: var(--accent-color-blue);
     margin-bottom: 20px;
-}
-#press-key-text {
-    font-size: 1.5em;
-    color: var(--text-color);
-    margin-top: 30px;
-    animation: blink-text 1.5s infinite;
-}
-@keyframes blink-text {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
 }
 @keyframes pulse-border {
     0% { box-shadow: 0 0 5px rgba(255, 255, 100, 0.5); }
