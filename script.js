@@ -3037,14 +3037,23 @@ if (window.innerWidth > 1200) startBubbles();
 
   if (specificModal) specificModal.style.display = 'none';
   if (specificModalBackdrop) specificModalBackdrop.style.display = 'none';
-  
+
   const generalTooltipForHiding = document.getElementById('tooltip');
   const generalBackdropForHiding = document.querySelector('.modal-backdrop:not(.specific-modal-backdrop)');
 
   if (generalTooltipForHiding) generalTooltipForHiding.style.display = 'none';
   if (generalBackdropForHiding) generalBackdropForHiding.style.display = 'none';
 
-});                     
+  const coffeeLink = document.getElementById('coffee-link');
+  if (coffeeLink) {
+    coffeeLink.addEventListener('click', () => {
+      const original = coffeeLink.textContent;
+      coffeeLink.textContent = 'THANKS!';
+      setTimeout(() => { coffeeLink.textContent = original; }, 1500);
+    });
+  }
+
+});
 
 // © 2025 Pablo Torrado, University of Hong Kong.
 // Licensed under CC BY-NC-ND 4.0: https://creativecommons.org/licenses/by-nc-nd/4.0/
