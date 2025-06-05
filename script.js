@@ -167,7 +167,9 @@ const configButtonsData = {}; // Se llenará al inicializar
 
 confirmModeButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
-        if (soundClick) soundClick.play();
+        if (soundElectricShock) soundElectricShock.play();
+        confirmModeButton.classList.add('electric-effect');
+        setTimeout(() => confirmModeButton.classList.remove('electric-effect'), 1000);
         selectedMode = provisionallySelectedOption.dataset.mode;
         window.selectedGameMode = selectedMode; 
 
