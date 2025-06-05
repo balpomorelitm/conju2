@@ -252,7 +252,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-check-compat.js"></script> 
   <script>
-    //self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
   </script>
   <script>
     const firebaseConfig = {
@@ -269,7 +268,7 @@
     const appCheck = firebase.appCheck();
     appCheck.activate(
         new firebase.appCheck.ReCaptchaEnterpriseProvider(
-          '6LfwDVErAAAAAJSaqfJCAJXQBO9Ivm7zH6NC8bJZ' // Clave ReCaptcha
+          '6LfwDVErAAAAAJSaqfJCAJXQBO9Ivm7zH6NC8bJZ'
         ),
         true  
       );

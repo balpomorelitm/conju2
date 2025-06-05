@@ -402,12 +402,12 @@ button:active {
 
 
 #hku-logo {
-  width: 50px; // Ajusta tamaño
+  width: 50px; 
   height: auto;
-  image-rendering: pixelated; // Intenta forzar estilo pixelado
+  image-rendering: pixelated; 
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
-  vertical-align: middle; // Alinear con el título
+  vertical-align: middle; 
 }
 
 .logo-wrapper {
@@ -2721,7 +2721,6 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     color: #ccc !important;
     border: 2px solid lightgreen !important; /* Borde para destacar */
     opacity: 1 !important;
-    /* pointer-events: none;  // Considera quitar esto si quieres que sea clickeable para volver */
     display: block !important; /* Asegurar que sea visible */
 }
 .config-step.step-section-completed .config-flow-button:not(.confirmed-selection) {
