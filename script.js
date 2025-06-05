@@ -1455,10 +1455,14 @@ let usedVerbs = [];
 	configFlowScreen.style.display = 'flex'; // Mostrar la nueva pantalla
 
 
-	function handleInitialStart() {
-		if (soundClick) soundClick.play(); // Añadir sonido de clic si se desea
-		navigateToStep('mode');
-	}
+        function handleInitialStart() {
+                if (soundClick) soundClick.play(); // Añadir sonido de clic si se desea
+                if (initialStartButton) {
+                        initialStartButton.classList.add('selected');
+                        setTimeout(() => initialStartButton.classList.remove('selected'), 1000);
+                }
+                navigateToStep('mode');
+        }
 	function handleInitialKeyPress(event) {
 		if (event.key) { // Cualquier tecla
 			 handleInitialStart();
@@ -2647,13 +2651,14 @@ function typewriterEffect(textElement, text, interval) {
 		helpButton.addEventListener('click', function(event) { // Cambiado a 'click' para móviles
 			event.stopPropagation(); // Evita que el clic se propague al listener del documento
 
-			if (tooltip.style.display === 'block') {
-				tooltip.style.display = 'none';
-				document.body.classList.remove('tooltip-open-no-scroll');
-				if (typeInterval) clearInterval(typeInterval); // Limpiar intervalo si se cierra
-			} else {
-				const tooltipContentHTML = `
-					<div class="tooltip-content-wrapper"> 
+                        if (tooltip.style.display === 'block') {
+                                tooltip.style.display = 'none';
+                                document.body.classList.remove('tooltip-open-no-scroll');
+                                if (typeInterval) clearInterval(typeInterval); // Limpiar intervalo si se cierra
+                                helpButton.classList.remove('selected');
+                        } else {
+                                const tooltipContentHTML = `
+                                        <div class="tooltip-content-wrapper">
 						<div class="tooltip-row">
 							<div class="tooltip-box">
 								<h5>♾️ Infinite </h5>
@@ -2691,9 +2696,10 @@ function typewriterEffect(textElement, text, interval) {
 					</div>
 					<button id="close-tooltip-btn" style="margin-top: 15px; background-color: var(--accent-color-blue); color: #333;">Close Help</button>
 				`;
-				tooltip.innerHTML = tooltipContentHTML;
-				tooltip.style.display = 'block';
-				document.body.classList.add('tooltip-open-no-scroll'); // Prevenir scroll del body
+                                tooltip.innerHTML = tooltipContentHTML;
+                                tooltip.style.display = 'block';
+                                document.body.classList.add('tooltip-open-no-scroll'); // Prevenir scroll del body
+                                helpButton.classList.add('selected');
 
 				// Iniciar animaciones de typewriter
 				const produceAnimElement = document.getElementById('produce-anim');
