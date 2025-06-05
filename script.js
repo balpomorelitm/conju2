@@ -113,7 +113,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const soundClick = new Audio('sounds/click.mp3');
   const soundStart = new Audio('sounds/start-verb.mp3');
   const soundSkip = new Audio('sounds/skip.mp3');
-  const music = new Audio('sounds/music.mp3');
+  const menuMusic = new Audio('sounds/musicmenu.mp3');
+  const gameMusic = new Audio('sounds/musicgame.mp3');
+  let currentMusic = menuMusic;
   const soundGameOver = new Audio('sounds/gameover.mp3');
   const soundbubblepop = new Audio('sounds/soundbubblepop.mp3');
   const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
@@ -255,7 +257,11 @@ backButton.addEventListener('click', () => {
         navigateToStep(targetStepToGoBackTo); 
     }
 });
-  music.loop = true;
+  menuMusic.loop = true;
+  gameMusic.loop = true;
+  menuMusic.volume = targetVolume;
+  menuMusic.play();
+  currentMusic = menuMusic;
   setInterval(() => {
     titleElement.classList.add('glitch-active');
     setTimeout(() => {
@@ -740,19 +746,19 @@ const volumeSlider = document.getElementById('volume-slider');
 volumeSlider.value = targetVolume;  
 volumeSlider.addEventListener('input', () => {
   targetVolume = parseFloat(volumeSlider.value);
-  music.volume = targetVolume;
+  currentMusic.volume = targetVolume;
 });
 
 let musicPlaying = true;
 
 musicToggle.addEventListener('click', () => {
-  if (music.paused) {
-    music.volume = targetVolume;  // inicia directamente al 20%
-    music.play();
+  if (currentMusic.paused) {
+    currentMusic.volume = targetVolume;  // inicia directamente al 20%
+    currentMusic.play();
     musicToggle.textContent = '🔊';
     volumeSlider.disabled = false;
   } else {
-    music.pause();
+    currentMusic.pause();
     musicToggle.textContent = '🔇';
     volumeSlider.disabled = true;
   }
@@ -2019,8 +2025,11 @@ function startTimerMode() {
   soundStart.play();
 
   setTimeout(() => {
-    music.volume = 0;                // reinicia a 0
-    music.play();
+    menuMusic.pause();
+    menuMusic.currentTime = 0;
+    currentMusic = gameMusic;
+    gameMusic.volume = 0;                // reinicia a 0
+    gameMusic.play();
 
     musicToggle.style.display = 'block';
     volumeSlider.style.display = 'block';
@@ -2211,12 +2220,16 @@ function updateStreakForLifeDisplay() {
  function quitToSettings() {
   document.getElementById('timer-container').style.display = 'none';
   clearInterval(countdownTimer);
-  music.pause();
-  music.currentTime = 0;
-  musicToggle.textContent = '🔇';
+  gameMusic.pause();
+  gameMusic.currentTime = 0;
+  currentMusic = menuMusic;
+  if (musicPlaying) {
+    menuMusic.volume = targetVolume;
+    menuMusic.play();
+  }
+  musicToggle.textContent = musicPlaying ? '🔊' : '🔇';
   musicToggle.style.display = 'none';
-  volumeSlider.disabled = true;
-  musicPlaying = false;
+  volumeSlider.disabled = false;
   
     gameScreen.style.display = 'none';
     configFlowScreen.style.display = 'flex'; // Mostrar la nueva pantalla de flujo
@@ -2329,14 +2342,19 @@ finalStartGameButton.addEventListener('click', async () => {
     } else {
         soundStart.play();
         setTimeout(() => {
-            if (music.paused && musicPlaying) { // musicPlaying es una variable que deberías tener para controlar si el usuario quiere música
-                music.volume = targetVolume;
-                music.play();
+            if (currentMusic !== gameMusic) {
+                menuMusic.pause();
+                menuMusic.currentTime = 0;
+                currentMusic = gameMusic;
+            }
+            if (gameMusic.paused && musicPlaying) {
+                gameMusic.volume = targetVolume;
+                gameMusic.play();
             }
             musicToggle.style.display = 'block';
             volumeSlider.style.display = 'block';
             volumeSlider.value = targetVolume; // targetVolume es tu variable de volumen
-            volumeSlider.disabled = music.paused;
+            volumeSlider.disabled = gameMusic.paused;
         }, 1000); // Retraso menor si no hay countdown
         prepareNextQuestion();
     }
