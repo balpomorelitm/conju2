@@ -405,7 +405,12 @@ function navigateToStep(stepName) {
     const targetIndex = stepsOrder.indexOf(stepName);
     const configFlowScreenDiv = document.getElementById('config-flow-screen'); // Necesaria para .splash-active
     const infoPanel = document.querySelector('.config-info-panel'); // Referencia al panel derecho
-	
+    const recordsSection = document.getElementById('setup-records');
+
+    if (recordsSection) {
+        recordsSection.style.display = stepName === 'splash' ? 'flex' : 'none';
+        if (stepName === 'splash') renderSetupRecords();
+    }
 
     allSteps.forEach(stepDiv => {
         const stepIdWithoutSuffix = stepDiv.id.replace('-step', '');
