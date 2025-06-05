@@ -1227,6 +1227,10 @@ button:active {
   animation: electric-spark 0.5s infinite alternate;
 }
 
+#confirm-mode-button.electric-effect {
+  animation: electric-spark 0.5s infinite alternate;
+}
+
 @keyframes splash-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
