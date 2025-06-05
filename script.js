@@ -166,7 +166,11 @@ confirmModeButton.addEventListener('click', () => {
         });
 
         // modeSelectionStep es la constante para document.getElementById('mode-step')
-        if (modeSelectionStep) modeSelectionStep.classList.add('step-section-completed'); //
+        if (modeSelectionStep) {
+            modeSelectionStep.classList.add('step-section-completed');
+            const modeHeading = modeSelectionStep.querySelector('h3');
+            if (modeHeading) modeHeading.style.display = 'none';
+        }
 
         confirmModeButton.style.display = 'none';
         navigateToStep('difficulty');
@@ -190,7 +194,11 @@ confirmDifficultyButton.addEventListener('click', () => {
         });
 
         // difficultySelectionStep es la constante para document.getElementById('difficulty-step')
-        if (difficultySelectionStep) difficultySelectionStep.classList.add('step-section-completed'); //
+        if (difficultySelectionStep) {
+            difficultySelectionStep.classList.add('step-section-completed');
+            const diffHeading = difficultySelectionStep.querySelector('h3');
+            if (diffHeading) diffHeading.style.display = 'none';
+        }
 
         confirmDifficultyButton.style.display = 'none';
         navigateToStep('details');
@@ -207,6 +215,8 @@ backButton.addEventListener('click', () => {
         const difficultyStepDiv = document.getElementById('difficulty-step');
         if (difficultyStepDiv) { // Comprobar si existe
             difficultyStepDiv.classList.remove('step-section-completed');
+            const diffHeading = difficultyStepDiv.querySelector('h3');
+            if (diffHeading) diffHeading.style.display = '';
             difficultyButtonsContainer.querySelectorAll('.config-flow-button').forEach(btn => {
                 btn.style.display = ''; 
                 btn.disabled = false;
@@ -229,6 +239,8 @@ backButton.addEventListener('click', () => {
         const modeStepDiv = document.getElementById('mode-step');
         if (modeStepDiv) {
             modeStepDiv.classList.remove('step-section-completed');
+            const modeHeading = modeStepDiv.querySelector('h3');
+            if (modeHeading) modeHeading.style.display = '';
             gameModesContainer.querySelectorAll('.config-flow-button').forEach(btn => {
                 btn.style.display = ''; 
                 btn.disabled = false;
@@ -247,6 +259,8 @@ backButton.addEventListener('click', () => {
         if (modeStepDiv) {
              modeStepDiv.classList.remove('active-step', 'step-section-completed');
              modeStepDiv.style.display = 'none';
+             const modeHeading = modeStepDiv.querySelector('h3');
+             if (modeHeading) modeHeading.style.display = '';
         }
         targetStepToGoBackTo = 'splash';
     }
