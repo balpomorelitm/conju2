@@ -2785,10 +2785,10 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     margin-bottom: 15px;     /* Espacio debajo del contenedor */
 }
 #difficulty-buttons-container .config-flow-button {
-    width: auto; /* Ancho basado en el contenido y padding */
-    flex-basis: calc(33.333% - 20px); /* Intenta que quepan 3 en una línea, ajusta el "20px" según tu 'gap' */
-    min-width: 150px; /* Un ancho mínimo para que no se vean muy pequeños */
-    flex-grow: 0;     /* No crecen para llenar el espacio */
+    width: 100%;           /* Igual que los botones de modo */
+    flex-basis: 100%;      /* Se apilan verticalmente manteniendo el mismo ancho */
+    min-width: unset;      /* Sin ancho mínimo adicional */
+    flex-grow: 0;
 }
 
 /* Para pantallas más pequeñas, podrías querer que vuelvan a ser de ancho completo */
