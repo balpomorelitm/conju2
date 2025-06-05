@@ -1091,13 +1091,26 @@ button:active {
   text-transform: uppercase;
 }
 .game-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
   text-align: center;
   font-size: 0.8em;
   color: #888;            /* un gris discreto */
   margin: 30px auto 10px;
 }
-.game-footer p {
-  margin: 0;
+.game-footer .feedback-link {
+  color: var(--accent-color-blue);
+  text-decoration: none;
+  padding: 4px 8px;
+  border: 1px solid var(--accent-color-blue);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+.game-footer .feedback-link:hover {
+  background-color: rgba(255,255,255,0.1);
 }
 #left-bubbles, #right-bubbles {
   position: fixed;
