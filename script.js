@@ -1213,6 +1213,33 @@ function focusOption(buttonElement, container) {
     container.querySelectorAll('.config-flow-button').forEach(btn => btn.classList.remove('provisional-selection')); // Quitar otros parpadeos
     buttonElement.focus(); // Esto debería activar el listener de focus en initStepButtons
 }
+
+// Permite navegar con las flechas incluso cuando el botón de confirmar está enfocado
+function initConfirmButtonNavigation(confirmBtn, container) {
+    if (!confirmBtn || !container) return;
+
+    confirmBtn.addEventListener('keydown', (e) => {
+        const buttons = Array.from(container.querySelectorAll('.config-flow-button'));
+        if (!buttons.length) return;
+
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            const currentIndex = buttons.indexOf(provisionallySelectedOption) >= 0 ?
+                                   buttons.indexOf(provisionallySelectedOption) : 0;
+            const nextButton = buttons[(currentIndex + 1) % buttons.length];
+            focusOption(nextButton, container);
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const currentIndex = buttons.indexOf(provisionallySelectedOption) >= 0 ?
+                                   buttons.indexOf(provisionallySelectedOption) : 0;
+            const prevButton = buttons[(currentIndex - 1 + buttons.length) % buttons.length];
+            focusOption(prevButton, container);
+        } else if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+            e.preventDefault();
+            confirmBtn.click();
+        }
+    });
+}
 function renderSetupRecords() {
   const container = document.getElementById('setup-records');
   if (!container) return;
@@ -1527,9 +1554,11 @@ let usedVerbs = [];
         initialStartButton.addEventListener('click', handleInitialStart);
 
 
-	// Inicializar botones de modo y dificultad
-	initStepButtons(gameModesContainer, 'mode');
-	initStepButtons(difficultyButtonsContainer, 'difficulty');
+        // Inicializar botones de modo y dificultad
+        initStepButtons(gameModesContainer, 'mode');
+        initStepButtons(difficultyButtonsContainer, 'difficulty');
+        initConfirmButtonNavigation(confirmModeButton, gameModesContainer);
+        initConfirmButtonNavigation(confirmDifficultyButton, difficultyButtonsContainer);
 
 	navigateToStep('splash'); // Empezar en el splash screen  
 function prepareNextQuestion() {
