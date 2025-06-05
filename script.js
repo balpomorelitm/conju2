@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const soundGameOver = new Audio('sounds/gameover.mp3');
   const soundbubblepop = new Audio('sounds/soundbubblepop.mp3');
   const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
+  const soundElectricShock = new Audio('sounds/electricshock.mp3');
   const container = document.getElementById('verb-buttons');
   const allBtns   = () => Array.from(container.querySelectorAll('.verb-button'));
 let currentConfigStep = 'splash'; // 'splash', 'mode', 'difficulty', 'details'
@@ -129,7 +130,6 @@ let provisionallySelectedOption = null; // Para guardar el botón antes de confi
 // Referencias a los nuevos elementos del DOM
 const configFlowScreen = document.getElementById('config-flow-screen');
 const splashStep = document.getElementById('splash-step');
-const pressKeyText = document.getElementById('press-key-text');
 const initialStartButton = document.getElementById('initial-start-button');
 
 const modeSelectionStep = document.getElementById('mode-step');
@@ -459,8 +459,8 @@ function navigateToStep(stepName) {
         if (configFlowScreenDiv) configFlowScreenDiv.classList.add('splash-active'); // Para que CSS pueda ocultar el panel derecho
         if (infoPanel) infoPanel.style.display = 'none'; // Ocultar explícitamente el panel derecho
         if (backButton) backButton.style.display = 'none';
-        document.addEventListener('keydown', handleInitialKeyPress);
-        if (initialStartButton) initialStartButton.disabled = false; 
+        if (initialStartButton) initialStartButton.disabled = false;
+        focusSplashButton(0);
         // No actualizamos el panel de info aquí si va a estar oculto.
         // El contenido por defecto del panel de info en el HTML se mostrará cuando sea visible.
 
@@ -483,8 +483,7 @@ function navigateToStep(stepName) {
         if (configFlowScreenDiv) configFlowScreenDiv.classList.remove('splash-active'); // Para que CSS pueda mostrar el panel derecho
         if (infoPanel) infoPanel.style.display = 'block'; // Mostrar explícitamente el panel derecho
         if (backButton) backButton.style.display = 'block'; 
-        document.removeEventListener('keydown', handleInitialKeyPress);
-        if (initialStartButton) initialStartButton.disabled = true; 
+        if (initialStartButton) initialStartButton.disabled = true;
 
         const modeInfoTitle = selectedMode ? (specificInfoData[configButtonsData[selectedMode]?.infoKey]?.title || selectedMode.replace(/_/g, ' ')) : "Not selected";
         const diffInfoTitle = selectedDifficulty ? (specificInfoData[configButtonsData[selectedDifficulty]?.infoKey]?.title || selectedDifficulty.replace(/_/g, ' ')) : "Not selected";
@@ -1479,20 +1478,38 @@ let usedVerbs = [];
 
 
         function handleInitialStart() {
-                if (soundClick) soundClick.play(); // Añadir sonido de clic si se desea
+                if (soundElectricShock) soundElectricShock.play();
                 if (initialStartButton) {
-                        initialStartButton.classList.add('selected');
-                        setTimeout(() => initialStartButton.classList.remove('selected'), 1000);
+                        initialStartButton.classList.add('electric-effect');
+                        setTimeout(() => initialStartButton.classList.remove('electric-effect'), 1000);
                 }
                 navigateToStep('mode');
         }
-	function handleInitialKeyPress(event) {
-		if (event.key) { // Cualquier tecla
-			 handleInitialStart();
-		}
-	}
-	initialStartButton.addEventListener('click', handleInitialStart);
-	document.addEventListener('keydown', handleInitialKeyPress);
+        const splashButtons = [initialStartButton, helpButton];
+        let currentSplashIndex = 0;
+        function focusSplashButton(i) {
+                if (!splashButtons[i]) return;
+                splashButtons.forEach(btn => btn.classList.remove('selected'));
+                const btn = splashButtons[i];
+                btn.classList.add('selected');
+                btn.focus();
+                currentSplashIndex = i;
+        }
+        function handleSplashNavigation(e) {
+                if (currentConfigStep !== 'splash') return;
+                if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        focusSplashButton((currentSplashIndex + 1) % splashButtons.length);
+                } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        focusSplashButton((currentSplashIndex - 1 + splashButtons.length) % splashButtons.length);
+                } else if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+                        e.preventDefault();
+                        splashButtons[currentSplashIndex].click();
+                }
+        }
+        document.addEventListener('keydown', handleSplashNavigation);
+        initialStartButton.addEventListener('click', handleInitialStart);
 
 
 	// Inicializar botones de modo y dificultad
