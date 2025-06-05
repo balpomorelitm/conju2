@@ -2504,46 +2504,9 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
 }
 
 .config-main-panel {
-    width: 60%;
+    width: 100%;
     padding: 20px;
     box-sizing: border-box;
-    /* Podrías añadir un borde derecho si quieres separación visual */
-     border-right: 1px solid var(--border-color); */
-}
-
-.config-info-panel {
-    width: 40%;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: rgba(0,0,0,0.1); /* Un fondo ligeramente diferente */
-    /*height: calc(100vh - 40px); /* Ajusta según tu padding/margin de body */
-	max-height: 50vh;
-    overflow-y: auto;
-}
-.config-info-panel #info-panel-content p { /* Selector más específico */
-    line-height: 1.5; /* Un interlineado ligeramente menor si lo deseas */
-    font-size: 0.9em; /* Texto un poco más pequeño (ajusta a tu gusto) */
-    text-align: left; /* Alineación a la izquierda */
-    margin-bottom: 8px; /* Espacio entre párrafos */
-}
-
-#info-panel-title {
-    margin-top: 0;
-    color: var(--title-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-}
-.config-info-panel #info-panel-content h2,
-.config-info-panel #info-panel-content h3,
-.config-info-panel #info-panel-content .modal-subtitle { /* Si usas modal-subtitle aquí */
-    text-align: left; /* Alinear también los títulos si es necesario */
-	font-size: 0.9em;
-}
-.config-info-panel #info-panel-content li {
-    font-size: 1em; /* Relativo al 0.85em */
-    text-align: left;
-    margin-bottom: 4px;
 }
 .config-step {
     display: none; /* Ocultos por defecto */
@@ -2705,15 +2668,10 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     #config-flow-screen {
         flex-direction: column;
     }
-    .config-main-panel, .config-info-panel {
+    .config-main-panel {
         width: 100%;
-        height: auto; /* El panel de info ya no necesita altura fija */
+        height: auto;
         border-right: none;
-    }
-    .config-info-panel {
-        max-height: 300px; /* O una altura que te parezca adecuada para móvil */
-        overflow-y: auto;
-        margin-top: 15px;
     }
 }
 .config-flow-button.confirmed-selection {
@@ -2746,9 +2704,6 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     /* O podrías hacer que el splash-step tenga un padding específico */
 }
 
-#config-flow-screen.splash-active .config-info-panel {
-    display: none;
-}
 #splash-step.active-step { /* Cuando el splash es el paso activo */
     padding-top: 20px; /* Reduce el padding superior si antes era mucho */
     padding-bottom: 20px; /* Reduce el padding inferior */
