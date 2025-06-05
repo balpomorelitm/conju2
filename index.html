@@ -143,7 +143,6 @@
                   </button>
                 </div>
                 <div id="verb-groups-panel" class="groups-panel hidden">
-                  <button type="button" data-group="reflexive" class="group-button">Reflexive v.</button>
                   <button type="button" data-group="ar" class="group-button">-ar</button>
                   <button type="button" data-group="er" class="group-button">-er</button>
                   <button type="button" data-group="ir" class="group-button">-ir</button>
@@ -171,14 +170,16 @@
               </div>
             </div>
           </div>
+          <button type="button" id="toggle-reflexive" class="toggle-button">Reflexive Verbs</button>
+          <button type="button" id="toggle-ignore-accents" class="toggle-button selected" data-infokey="accentHelp">
+            Ignore Accents
+            <span class="context-info-icon" data-info-key="accentHelp"></span>
+          </button>
         </div>
         <div id="verb-irregularities-container">
           <p><strong>☠️Verb Irregularities☠️</strong></p>
           <div id="verb-type-buttons" class="verb-type-selector"></div>
         </div>
-        <label id="ignore-accents-label-container">
-          <input type="checkbox" id="ignore-accents" checked> Ignore accents (remember that accents give extra points)
-        </label>
       </div>
 
       <button id="back-button" style="display: none;">Back</button>
