@@ -1,6 +1,5 @@
 const CACHE_NAME = 'conjugator-cache-v1';
 const URLS_TO_CACHE = [
-  '/',
   'index.html',
   'style.css',
   'script.js',
@@ -17,12 +16,20 @@ const URLS_TO_CACHE = [
   'sounds/wrong.mp3',
   'sounds/gameover.mp3',
   'sounds/musicmenu.mp3',
-  'sounds/musicgame.mp3'
+  'sounds/musicgame.mp3',
+  'sounds/start-verb.mp3',
+  'sounds/skip.mp3',
+  'sounds/soundbubblepop.mp3',
+  'sounds/soundLifeGained.mp3',
+  'sounds/electricshock.mp3',
+  'sounds/ticking.mp3'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE))
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(URLS_TO_CACHE))
+      .catch(err => console.error('Service worker cache failed:', err))
   );
   self.skipWaiting();
 });
