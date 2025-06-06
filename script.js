@@ -882,6 +882,7 @@ function filterVerbTypes() {
 
 
 const musicToggle = document.getElementById('music-toggle');
+const musicIcon = document.getElementById('music-icon');
 const volumeSlider = document.getElementById('volume-slider');
 volumeSlider.value = targetVolume;  
 volumeSlider.addEventListener('input', () => {
@@ -895,13 +896,14 @@ musicToggle.addEventListener('click', () => {
   if (currentMusic.paused) {
     currentMusic.volume = targetVolume;  // inicia directamente al 20%
     currentMusic.play();
-    musicToggle.textContent = '🔊';
+    if (musicIcon) musicIcon.src = 'images/musicon.webp';
     volumeSlider.disabled = false;
   } else {
     currentMusic.pause();
-    musicToggle.textContent = '🔇';
+    if (musicIcon) musicIcon.src = 'images/musicoff.webp';
     volumeSlider.disabled = true;
   }
+  musicPlaying = !currentMusic.paused;
 });
 
 function renderVerbButtons() {
@@ -2424,7 +2426,9 @@ function quitToSettings() {
     menuMusic.volume = targetVolume;
     menuMusic.play();
   }
-  musicToggle.textContent = musicPlaying ? '🔊' : '🔇';
+  if (musicIcon) {
+    musicIcon.src = musicPlaying ? 'images/musicon.webp' : 'images/musicoff.webp';
+  }
   musicToggle.style.display = 'none';
   volumeSlider.disabled = false;
   
@@ -2950,7 +2954,7 @@ function updateGameTitle() {
 
   // 5) Si es modo vidas, añade otra línea con el contador
   if (selectedGameMode === 'lives') {
-    html += `<br><span id="lives-count" style="font-size: 1.5em; vertical-align: middle;">${remainingLives}</span><img src="images/heart.png" alt="life" style="width:40px; height:40px; vertical-align: middle; margin-left: 6px;">`;
+    html += `<br><span id="lives-count" style="font-size: 1.5em; vertical-align: middle;">${remainingLives}</span><img src="images/heart.webp" alt="life" style="width:40px; height:40px; vertical-align: middle; margin-left: 6px;">`;
   }
 
   // 6) Renderiza como HTML en lugar de textContent
