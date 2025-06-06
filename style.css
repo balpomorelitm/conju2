@@ -159,7 +159,8 @@ body::after {
 }
 
 #toggle-ignore-accents.toggle-button.selected {
-  background-color: var(--accent-color-red);
+  /* Keep the same appearance when selected */
+  background: var(--accent-color-red);
   color: var(--title-color);
   border: 1px solid var(--border-color);
   animation: none;
