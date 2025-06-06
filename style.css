@@ -180,9 +180,19 @@ body::after {
   animation: none;
 }
 
+
 #toggle-reflexive {
   position: relative;
   padding-right: 28px;
+
+#toggle-ignore-accents {
+  position: relative;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding-left: 4px;
+  padding-right: 28px; /* space for the info icon */
+
 }
 
 #toggle-ignore-accents .tick {
@@ -194,7 +204,7 @@ body::after {
   border: 1px solid var(--title-color);
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
-  margin-right: 0.5em;
+  margin-right: 0.3em;
   color: transparent;
   flex-shrink: 0;
 }
@@ -1065,6 +1075,10 @@ button:active {
     border-radius: 4px;
     z-index: 1000;
   }
+  #music-icon {
+    width: 100%;
+    height: 100%;
+  }
   .music-button {
     bottom: 10px;
     right: 10px;
@@ -1217,7 +1231,7 @@ button:active {
   bottom: -50px;
   width: 100px; /* Ajusta al tamaño deseado/de la imagen */
   height: 70px; /* Ajusta al tamaño deseado/de la imagen */
-  background-image: url('images/pixel_bubble.png'); 
+  background-image: url('images/pixel_bubble.webp');
   background-size: contain; /* O 'cover', según prefieras */
   background-repeat: no-repeat;
   background-position: center;
@@ -1952,7 +1966,7 @@ body.game-active, html.game-active {
   width: 32px;
   height: 32px;
   display: inline-block;
-  background-image: url('images/heart.png');
+  background-image: url('images/heart.webp');
   background-size: cover;
   margin: 0 2px;
 }
@@ -2659,7 +2673,7 @@ body,
   right: 5px;
   width: 20px;
   height: 20px;
-  background-image: url('images/iconquestion.png');
+  background-image: url('images/iconquestion.webp');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
