@@ -180,6 +180,11 @@ body::after {
   animation: none;
 }
 
+#toggle-reflexive {
+  position: relative;
+  padding-right: 28px;
+}
+
 #toggle-ignore-accents .tick {
   display: inline-flex;
   align-items: center;
@@ -548,21 +553,23 @@ button:active {
 
 .verb-type-button {
   font-family: var(--font-pixel);
-  font-size: 0.8em; 
-  background-color: #444; 
+  font-size: 0.8em;
+  background-color: #444;
   color: var(--text-color);
   border: 1px solid var(--border-color);
   padding: 6px;
-  text-align: left; 
+  text-align: left;
   cursor: pointer;
   border-radius: 0;
   box-shadow: 1px 1px 0px rgba(0,0,0,0.2);
   transition: background-color 0.2s, border-color 0.2s, opacity 0.3s;
-  line-height: 1.2; 
-  min-height: 40px; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
+  line-height: 1.2;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding-right: 28px;
   }
 
 .verb-type-button:hover {
@@ -1447,6 +1454,47 @@ button:active {
 .tense-tooltip-table td {
   background-color: var(--bg-color);
   color: var(--text-color);
+}
+
+.irregular-tooltip-table th:nth-child(1) {
+  background-color: var(--feedback-correct);
+  color: #000;
+}
+.irregular-tooltip-table th:nth-child(2) {
+  background-color: var(--accent-color-red);
+  color: #000;
+}
+.irregular-tooltip-table th:nth-child(3) {
+  background-color: var(--accent-color-blue);
+  color: #000;
+}
+
+/* Conjugation boxes used in irregularity tooltips */
+.conjugation-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.conjugation-box {
+  border: 1px solid var(--border-color);
+  background-color: var(--container-bg);
+  padding: 4px;
+  font-size: 0.9em;
+}
+.conjugation-box caption {
+  font-weight: bold;
+  color: var(--title-color);
+  margin-bottom: 2px;
+  text-align: left;
+}
+.conjugation-box td {
+  padding: 2px 4px;
+}
+.irregular-highlight {
+  font-weight: bold;
+  text-decoration: underline;
+  color: var(--accent-color-red);
 }
 
 
