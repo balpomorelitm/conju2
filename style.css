@@ -2042,7 +2042,8 @@ body.dropdown-open .dropdown-menu {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
   margin-bottom: 16px;
 }
 
@@ -3010,4 +3011,14 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
 @keyframes fadeInScreen {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .filter-bar {
+    gap: 6px;
+  }
+  #toggle-ignore-accents {
+    white-space: normal;
+    text-align: center;
+  }
 }
