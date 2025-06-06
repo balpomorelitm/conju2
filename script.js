@@ -2332,7 +2332,7 @@ function updateStreakForLifeDisplay() {
 
 
 finalStartGameButton.addEventListener('click', async () => {
-    configFlowScreen.style.display = 'none'; // Esto ocultará todo dentro, incluyendo #setup-records
+    configFlowScreen.style.display = 'none'; // Oculta la pantalla de configuración
     gameScreen.style.display = 'block'; // O 'flex' si es el caso
     const selTenses = Array.from(
         document.querySelectorAll('#tense-buttons .tense-button.selected')
