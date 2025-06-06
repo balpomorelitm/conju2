@@ -198,7 +198,7 @@ confirmModeButton.addEventListener('click', () => {
 
 confirmDifficultyButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
-        if (soundClick) soundClick.play();
+        if (soundElectricShock) soundElectricShock.play();
         selectedDifficulty = provisionallySelectedOption.dataset.mode;
 
         difficultyButtonsContainer.querySelectorAll('.config-flow-button').forEach(btn => {
