@@ -2742,6 +2742,7 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     width: 100%;
     border-right: none;
 
+
     max-height: 800px;  /* Más alto para mostrar los récords completos */
 
     /* O podrías hacer que el splash-step tenga un padding específico */
