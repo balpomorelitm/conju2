@@ -184,6 +184,7 @@ body::after {
 #toggle-reflexive {
   position: relative;
   padding-right: 28px;
+}
 
 #toggle-ignore-accents {
   position: relative;
@@ -1510,14 +1511,6 @@ button:active {
 
 
 
-    /*#help-button {
-       position: static;
-       transform: none;
-       margin: 8px 0 16px 0; /* Remove margin-left: auto if it's in a column */
-       /*width: 8%; /* To match other buttons that become full-width */
-       /* align-self: initial; /* Or stretch, depending on how you want it in column */
-    }
- }
 
 
  body.tooltip-open-no-scroll {
@@ -1719,7 +1712,6 @@ button:active {
 	box-sizing: border-box !important;
 	margin-bottom: 0 !important;
   }
-}
   #tooltip .tooltip-box h5 {
     font-size: 1.1em !important; /* Ajustar tamaño del título */
     margin-bottom: 8px !important;
@@ -1760,7 +1752,6 @@ button:active {
     padding: 8px 12px !important;
     margin-top: 10px !important;
  }
-}
 
  @keyframes electric-spark {
   0%   { box-shadow: 0 0 2px #ffea00, 0 0 5px #ffea00; }
