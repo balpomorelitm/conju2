@@ -46,24 +46,6 @@ function typeWriter(element, text, speed = 120) {
   }, speed);
 }
 
-function handleReflexiveToggle() {
-    const btn = document.getElementById('toggle-reflexive');
-    if (!btn) return;
-
-    btn.classList.toggle('selected');
-    const shouldSelect = btn.classList.contains('selected');
-
-    const reflexiveButtons = Array.from(document.querySelectorAll('#verb-buttons .verb-button'))
-        .filter(b => b.dataset.value.endsWith('se'));
-    reflexiveButtons.forEach(b => b.classList.toggle('selected', shouldSelect));
-
-    updateVerbDropdownCount();
-    updateDeselectAllButton();
-    updateGroupButtons();
-    updateVerbTypeButtonsVisualState();
-
-    if (typeof soundClick !== 'undefined') soundClick.play();
-}
 
 function handleIgnoreAccentsToggle() {
     const btn = document.getElementById('toggle-ignore-accents');
@@ -74,6 +56,7 @@ function handleIgnoreAccentsToggle() {
 
 
 
+let openFilterDropdownMenu = null;
 let tenseDropdownInitialized = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -159,6 +142,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (callback) callback();
       }
     }, stepTime);
+  }
+
+  function handleReflexiveToggle() {
+    const btn = document.getElementById('toggle-reflexive');
+    if (!btn) return;
+
+    btn.classList.toggle('selected');
+    const shouldSelect = btn.classList.contains('selected');
+
+    const reflexiveButtons = Array.from(document.querySelectorAll('#verb-buttons .verb-button'))
+      .filter(b => b.dataset.value.endsWith('se'));
+    reflexiveButtons.forEach(b => b.classList.toggle('selected', shouldSelect));
+
+    updateVerbDropdownCount();
+    updateDeselectAllButton();
+    updateGroupButtons();
+    updateVerbTypeButtonsVisualState();
+
+    if (typeof soundClick !== 'undefined') soundClick.play();
   }
 
   if (toggleReflexiveBtn) {
