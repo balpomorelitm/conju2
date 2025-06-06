@@ -496,44 +496,55 @@ function navigateToStep(stepName) {
     if (confirmModeButton) confirmModeButton.style.display = 'none';
     if (confirmDifficultyButton) confirmDifficultyButton.style.display = 'none';
 
-    if (stepName === 'splash') {
-        if (configFlowScreenDiv) configFlowScreenDiv.classList.add('splash-active'); // Para que CSS pueda ocultar el panel derecho
-        if (infoPanel) infoPanel.style.display = 'none'; // Ocultar explícitamente el panel derecho
+    if (stepName === 'splash' || stepName === 'mode') {
+        if (configFlowScreenDiv) {
+            if (stepName === 'splash') configFlowScreenDiv.classList.add('splash-active');
+            else configFlowScreenDiv.classList.remove('splash-active');
+        }
+        if (infoPanel) infoPanel.style.display = stepName === 'splash' ? 'none' : 'block';
         if (backButton) backButton.style.display = 'none';
-        if (initialStartButton) initialStartButton.disabled = false;
-        focusSplashButton(0);
-        // No actualizamos el panel de info aquí si va a estar oculto.
-        // El contenido por defecto del panel de info en el HTML se mostrará cuando sea visible.
 
-        // Limpiar todas las selecciones y estados de completado al volver al splash
-        allSteps.forEach(s => {
-            if (s.id !== 'splash-step') {
-                s.classList.remove('active-step', 'step-section-completed');
-                s.style.display = 'none'; 
-                s.querySelectorAll('.config-flow-button').forEach(btn => {
-                    btn.classList.remove('confirmed-selection', 'provisional-selection');
-                    btn.style.display = ''; 
-                    btn.disabled = false;
-                });
-            }
-        });
-        selectedMode = null; window.selectedGameMode = null; selectedGameMode = null;
-        selectedDifficulty = null;
+        if (stepName === 'splash') {
+            if (initialStartButton) initialStartButton.disabled = false;
+            focusSplashButton(0);
+            // Limpiar todas las selecciones y estados de completado al volver al splash
+            allSteps.forEach(s => {
+                if (s.id !== 'splash-step') {
+                    s.classList.remove('active-step', 'step-section-completed');
+                    s.style.display = 'none';
+                    s.querySelectorAll('.config-flow-button').forEach(btn => {
+                        btn.classList.remove('confirmed-selection', 'provisional-selection');
+                        btn.style.display = '';
+                        btn.disabled = false;
+                    });
+                }
+            });
+            selectedMode = null; window.selectedGameMode = null; selectedGameMode = null;
+            selectedDifficulty = null;
+        } else { // stepName === 'mode'
+            if (initialStartButton) initialStartButton.disabled = true;
+            updateInfoPanelContent('Select Game Mode', '<p>Choose how you want to play. Details will appear here when you select a mode.</p>');
+            const firstModeButton = gameModesContainer.querySelector('.config-flow-button:not([style*="display: none"])');
+            if (firstModeButton) focusOption(firstModeButton, gameModesContainer);
+        }
 
-    } else { // Para 'mode', 'difficulty', 'details'
+    } else { // Para 'difficulty' y 'details'
         if (configFlowScreenDiv) configFlowScreenDiv.classList.remove('splash-active'); // Para que CSS pueda mostrar el panel derecho
         if (infoPanel) infoPanel.style.display = 'block'; // Mostrar explícitamente el panel derecho
-        if (backButton) backButton.style.display = 'block'; 
+        if (backButton) {
+            backButton.style.display = 'block';
+            if (stepName === 'difficulty' && difficultySelectionStep) {
+                difficultySelectionStep.appendChild(backButton);
+            } else if (stepName === 'details' && finalStartGameButton) {
+                finalStartGameButton.insertAdjacentElement('afterend', backButton);
+            }
+        }
         if (initialStartButton) initialStartButton.disabled = true;
 
         const modeInfoTitle = selectedMode ? (specificInfoData[configButtonsData[selectedMode]?.infoKey]?.title || selectedMode.replace(/_/g, ' ')) : "Not selected";
         const diffInfoTitle = selectedDifficulty ? (specificInfoData[configButtonsData[selectedDifficulty]?.infoKey]?.title || selectedDifficulty.replace(/_/g, ' ')) : "Not selected";
 
-        if (stepName === 'mode') {
-            updateInfoPanelContent('Select Game Mode', '<p>Choose how you want to play. Details will appear here when you select a mode.</p>');
-            const firstModeButton = gameModesContainer.querySelector('.config-flow-button:not([style*="display: none"])');
-            if (firstModeButton) focusOption(firstModeButton, gameModesContainer);
-        } else if (stepName === 'difficulty') {
+        if (stepName === 'difficulty') {
             updateInfoPanelContent('Select Difficulty', `<p>Mode: <strong>${modeInfoTitle}</strong>.<br>Choose the game's challenge level. Details for the selected difficulty will appear here.</p>`);
             const firstDiffButton = difficultyButtonsContainer.querySelector('.config-flow-button:not([style*="display: none"])');
             if (firstDiffButton) focusOption(firstDiffButton, difficultyButtonsContainer);
