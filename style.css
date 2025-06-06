@@ -585,7 +585,7 @@ button:active {
   animation: vibrate 0.3s infinite;
 }
 
- volume-slider{
+#volume-slider{
   appearance:none;
   height:4px;
   background:#666;
@@ -2760,6 +2760,11 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     #difficulty-buttons-container .config-flow-button {
         flex-basis: 100%;
         width: 100%;
+    }
+
+    /* Ocultar la barra de volumen en pantallas pequeñas */
+    #volume-slider {
+        display: none !important;
     }
 
 }
