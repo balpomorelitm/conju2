@@ -2123,10 +2123,10 @@ function startTimerMode() {
   soundStart.play();
   fadeOutAudio(menuMusic, 3000);
 
-  setTimeout(() => {
-    currentMusic = gameMusic;
-    gameMusic.volume = 0;                // reinicia a 0
-    gameMusic.play();
+    setTimeout(() => {
+      currentMusic = gameMusic;
+      gameMusic.volume = targetVolume;    // reinicia con el volumen definido
+      gameMusic.play();
 
     musicToggle.style.display = 'block';
     volumeSlider.style.display = 'block';
