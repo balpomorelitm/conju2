@@ -32,11 +32,28 @@ function typeWriter(element, text, speed = 120) {
 }
 
 function handleReflexiveToggle() {
-    const toggleReflexiveBtn = document.getElementById('toggle-reflexive');
-	
-    if (!toggleReflexiveBtn) return;
+    const btn = document.getElementById('toggle-reflexive');
+    if (!btn) return;
 
-    toggleReflexiveBtn.classList.toggle('selected');
+    btn.classList.toggle('selected');
+    const shouldSelect = btn.classList.contains('selected');
+
+    const reflexiveButtons = Array.from(document.querySelectorAll('#verb-buttons .verb-button'))
+        .filter(b => b.dataset.value.endsWith('se'));
+    reflexiveButtons.forEach(b => b.classList.toggle('selected', shouldSelect));
+
+    updateVerbDropdownCount();
+    updateDeselectAllButton();
+    updateGroupButtons();
+    updateVerbTypeButtonsVisualState();
+
+    if (typeof soundClick !== 'undefined') soundClick.play();
+}
+
+function handleIgnoreAccentsToggle() {
+    const btn = document.getElementById('toggle-ignore-accents');
+    if (!btn) return;
+    btn.classList.toggle('selected');
     if (typeof soundClick !== 'undefined') soundClick.play();
 }
 
@@ -104,8 +121,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const enContainer  = document.getElementById('input-en-container');
   const feedback     = document.getElementById('feedback-area');
   const helpButton = document.getElementById('help-button'); 
-  const tooltip = document.getElementById('tooltip');   
+  const tooltip = document.getElementById('tooltip');
   const toggleReflexiveBtn = document.getElementById('toggle-reflexive');
+  const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
   const titleElement = document.querySelector('.glitch-title');
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
   const soundCorrect = new Audio('sounds/correct.mp3');
@@ -122,6 +140,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const soundElectricShock = new Audio('sounds/electricshock.mp3');
   const container = document.getElementById('verb-buttons');
   const allBtns   = () => Array.from(container.querySelectorAll('.verb-button'));
+
+  if (toggleReflexiveBtn) {
+    toggleReflexiveBtn.addEventListener('click', handleReflexiveToggle);
+  }
+  if (toggleIgnoreAccentsBtn) {
+    toggleIgnoreAccentsBtn.addEventListener('click', handleIgnoreAccentsToggle);
+  }
 let currentConfigStep = 'splash'; // 'splash', 'mode', 'difficulty', 'details'
 let selectedMode = null;
 let selectedDifficulty = null;
@@ -1118,12 +1143,7 @@ document.addEventListener('click', e => {
             openFilterDropdownMenu = null; // Ya no hay ninguno "oficialmente" abierto
         }
     }
-});  
-function handleReflexiveToggle() {
-    if (!toggleReflexiveBtn) return; 
-    toggleReflexiveBtn.classList.toggle('selected');
-    if (typeof soundClick !== 'undefined') soundClick.play();
-}
+});
 function initStepButtons(container, stepType) {
     const buttons = container.querySelectorAll('.config-flow-button');
     buttons.forEach((button, index) => {
@@ -2304,6 +2324,9 @@ function updateStreakForLifeDisplay() {
     if (reflexBtn) {
         reflexBtn.classList.remove('selected');
     }
+    if (toggleIgnoreAccentsBtn) {
+        toggleIgnoreAccentsBtn.classList.add('selected');
+    }
 
     navigateToStep('splash'); // Volver al inicio del flujo
     playHeaderIntro();
@@ -2342,7 +2365,7 @@ finalStartGameButton.addEventListener('click', async () => {
     currentOptions = {
         mode: selectedDifficulty, // Este es el modo de juego (receptive, productive_easy, productive)
         tenses: selTenses,
-        ignoreAccents: document.getElementById('ignore-accents').checked
+        ignoreAccents: toggleIgnoreAccentsBtn && toggleIgnoreAccentsBtn.classList.contains('selected')
     };
     // selectedGameMode ya debería estar seteado por el `selectedMode` de este nuevo flujo
     // Asegúrate de que `selectedGameMode` (variable global) se actualice con `selectedMode`
@@ -2603,7 +2626,12 @@ const specificInfoData = {
            <em>Example:</em> <span class="example-prompt-text">Present: to love – yo</span> You type:
            <div class="typing-animation-container"><div class="typing-animation" id="produce-example-anim"></div></div>
            <strong>Base Points:</strong> <span class="points-value">+15</span> per correct answer.<br>
-           <strong class="emphasis-mechanic">💖 Lives Mode Bonus:</strong> When playing in "Lives Mode", irregular or reflexive verbs in "Produce" have a <span class="emphasis-mechanic">~1 in 20</span> chance of being a 🎁 Prize Verb for an extra life!`
+          <strong class="emphasis-mechanic">💖 Lives Mode Bonus:</strong> When playing in "Lives Mode", irregular or reflexive verbs in "Produce" have a <span class="emphasis-mechanic">~1 in 20</span> chance of being a 🎁 Prize Verb for an extra life!`
+  },
+  accentHelp: {
+    title: "Ignore Accents",
+    html: `When this option is <strong>ON</strong>, you don't need to type accent marks to be correct.<br>
+           Leaving it <strong>OFF</strong> grants a <span class="points-value">+8</span> bonus each time you include the correct accents.`
   },
 };
 
