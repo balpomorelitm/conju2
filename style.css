@@ -1514,14 +1514,15 @@ button:active {
 
 
 
-    /*#help-button {
-       position: static;
-       transform: none;
-       margin: 8px 0 16px 0; /* Remove margin-left: auto if it's in a column */
-       /*width: 8%; /* To match other buttons that become full-width */
-       /* align-self: initial; /* Or stretch, depending on how you want it in column */
-    }
- }
+/*
+#help-button {
+  position: static;
+  transform: none;
+  margin: 8px 0 16px 0;
+  width: 8%;
+  align-self: initial;
+}
+*/
 
 
  body.tooltip-open-no-scroll {
@@ -1721,9 +1722,8 @@ button:active {
     margin: 0 0 12px 0 !important;
     padding: 2px !important;
 	box-sizing: border-box !important;
-	margin-bottom: 0 !important;
+        margin-bottom: 0 !important;
   }
-}
   #tooltip .tooltip-box h5 {
     font-size: 1.1em !important; /* Ajustar tamaño del título */
     margin-bottom: 8px !important;
@@ -2693,7 +2693,7 @@ body,
 .context-info-icon:hover {
   animation: spinAndFloat 1.2s ease-in-out infinite;
 
-   filter: brightness(1.5) drop-shadow(1px 1px 1px rgba(0,0,0,0.4)); */
+  /* filter: brightness(1.5) drop-shadow(1px 1px 1px rgba(0,0,0,0.4)); */
 }
 
 /* La animación @keyframes spinAndFloat se mantiene igual */
@@ -2746,9 +2746,9 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
 /* --- Nueva Pantalla de Configuración --- */
 #config-flow-screen {
     display: flex; /* Para el layout 60/40 */
-    /* display: none; /* Asegúrate que esté oculto si se muestra el splash primero */
+    /* display: none; */ /* Asegúrate que esté oculto si se muestra el splash primero */
     /* width: 100%; Ya lo gestiona .screen */
-    /* max-width: 1000px; /* O el ancho que prefieras */
+    /* max-width: 1000px; */ /* O el ancho que prefieras */
     /* margin: 20px auto; */
 }
 
@@ -2797,7 +2797,7 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
 }
 .config-flow-button.provisional-selection {
     animation: pulse-border 1s infinite;
-    /* background-color: #555; /* Color de preselección */
+    /* background-color: #555; */ /* Color de preselección */
 }
 .config-flow-button.confirmed-selection {
     background-color: #2a5a2a !important; 
@@ -2974,7 +2974,7 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     padding-bottom: 20px; /* Reduce el padding inferior */
     /* Puedes intentar darle una altura fija o máxima al splash-step directamente */
     /* max-height: 300px; */
-    /* overflow-y: auto; /* Si el contenido interno es más grande que la altura */
+    /* overflow-y: auto; */ /* Si el contenido interno es más grande que la altura */
 }
 #difficulty-buttons-container {
     display: flex;
