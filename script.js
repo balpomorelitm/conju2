@@ -144,6 +144,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, stepTime);
   }
 
+  /**
+   * Gradually increases the volume of an audio element up to a target value.
+   * @param {HTMLAudioElement} audio - The audio element to fade in.
+   * @param {number} target - The desired volume level (0-1).
+   * @param {number} duration - Duration of the fade in milliseconds.
+   */
+  function fadeInAudio(audio, target = 1, duration = 5000) {
+    if (!audio) return;
+    if (audio._fadeInterval) clearInterval(audio._fadeInterval);
+    const steps = 10;
+    const stepTime = duration / steps;
+    const volumeStep = target / steps;
+    audio.volume = 0;
+    audio.play();
+    audio._fadeInterval = setInterval(() => {
+      const newVol = Math.min(target, audio.volume + volumeStep);
+      audio.volume = newVol;
+      if (newVol >= target) {
+        clearInterval(audio._fadeInterval);
+      }
+    }, stepTime);
+  }
+
   function handleReflexiveToggle() {
     const btn = document.getElementById('toggle-reflexive');
     if (!btn) return;
@@ -319,8 +342,13 @@ backButton.addEventListener('click', () => {
         navigateToStep(targetStepToGoBackTo); 
     }
 });
-  menuMusic.volume = targetVolume;
-  menuMusic.play();
+  if (!sessionStorage.getItem('musicStarted')) {
+    fadeInAudio(menuMusic, targetVolume, 5000);
+    sessionStorage.setItem('musicStarted', 'true');
+  } else {
+    menuMusic.volume = targetVolume;
+    menuMusic.play();
+  }
   currentMusic = menuMusic;
   setInterval(() => {
     titleElement.classList.add('glitch-active');
