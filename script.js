@@ -198,8 +198,8 @@ const configButtonsData = {}; // Se llenará al inicializar
 confirmModeButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
         if (soundElectricShock) soundElectricShock.play();
-        confirmModeButton.classList.add('electric-effect');
-        setTimeout(() => confirmModeButton.classList.remove('electric-effect'), 1000);
+        confirmModeButton.classList.add('glitch-effect');
+        setTimeout(() => confirmModeButton.classList.remove('glitch-effect'), 1500);
         selectedMode = provisionallySelectedOption.dataset.mode;
         window.selectedGameMode = selectedMode;
         selectedGameMode = selectedMode; // Mantener sincronizado el modo seleccionado
@@ -230,6 +230,8 @@ confirmModeButton.addEventListener('click', () => {
 confirmDifficultyButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
         if (soundElectricShock) soundElectricShock.play();
+        confirmDifficultyButton.classList.add('glitch-effect');
+        setTimeout(() => confirmDifficultyButton.classList.remove('glitch-effect'), 1500);
         selectedDifficulty = provisionallySelectedOption.dataset.mode;
 
         difficultyButtonsContainer.querySelectorAll('.config-flow-button').forEach(btn => {
@@ -2368,10 +2370,19 @@ function updateStreakForLifeDisplay() {
     updateRanking();
     remainingLives = 5;
 
+function quitToSettingsWithFade() {
+    gameScreen.classList.add('fade-out');
+    configFlowScreen.style.display = 'flex';
+    configFlowScreen.classList.add('fade-in');
+    setTimeout(() => {
+        gameScreen.classList.remove('fade-out');
+        configFlowScreen.classList.remove('fade-in');
+        quitToSettings();
+    }, 1000);
+}
+
 
 finalStartGameButton.addEventListener('click', async () => {
-    configFlowScreen.style.display = 'none'; // Oculta la pantalla de configuración
-    gameScreen.style.display = 'block'; // O 'flex' si es el caso
     const selTenses = Array.from(
         document.querySelectorAll('#tense-buttons .tense-button.selected')
     ).map(btn => btn.dataset.value);
@@ -2397,6 +2408,9 @@ finalStartGameButton.addEventListener('click', async () => {
     // Sincronizar el modo global por si acaso
     selectedGameMode = window.selectedGameMode || selectedMode;
 
+    if (soundElectricShock) soundElectricShock.play();
+    finalStartGameButton.classList.add('glitch-effect');
+    setTimeout(() => finalStartGameButton.classList.remove('glitch-effect'), 1500);
 
     currentOptions = {
         mode: selectedDifficulty, // Este es el modo de juego (receptive, productive_easy, productive)
@@ -2409,9 +2423,15 @@ finalStartGameButton.addEventListener('click', async () => {
 
     if (!await loadVerbs()) return; // loadVerbs necesita usar los filtros correctos
 
-    // Ocultar pantalla de configuración de flujo y mostrar pantalla de juego
-    configFlowScreen.style.display = 'none';
+    // Ocultar pantalla de configuración de flujo con fundido y mostrar juego
+    configFlowScreen.classList.add('fade-out');
     gameScreen.style.display = 'block';
+    gameScreen.classList.add('fade-in');
+    setTimeout(() => {
+        configFlowScreen.style.display = 'none';
+        configFlowScreen.classList.remove('fade-out');
+        gameScreen.classList.remove('fade-in');
+    }, 1000);
     // El resto de tu lógica de inicio de juego (setupScreen.style.display = 'none'; gameScreen.style.display = 'block'; etc.)
     // ...
     feedback.innerHTML = '';
@@ -2497,6 +2517,10 @@ function checkFinalStartButtonState() {
     if (skipButton) skipButton.addEventListener('click', skipQuestion);
     if (endButton) {
         endButton.addEventListener('click', () => {
+            if (soundElectricShock) soundElectricShock.play();
+            endButton.classList.add('glitch-effect');
+            setTimeout(() => endButton.classList.remove('glitch-effect'), 1500);
+
             const name = prompt('¿Cómo te llamas?'); // La variable name debe ser local a este scope
             if (name) {
                 const recordData = {
@@ -2519,7 +2543,7 @@ function checkFinalStartButtonState() {
                     console.error("Error saving record (endButton):", error);
                   });
             }
-            quitToSettings(); // quitToSettings debe estar definida
+            quitToSettingsWithFade();
         });
     }
 
