@@ -1,5 +1,20 @@
 let typeInterval; // Variable global para controlar el intervalo de la animación
 
+const soundCorrect = new Audio('sounds/correct.mp3');
+const soundWrong = new Audio('sounds/wrong.mp3');
+const soundClick = new Audio('sounds/click.mp3');
+const soundStart = new Audio('sounds/start-verb.mp3');
+const soundSkip = new Audio('sounds/skip.mp3');
+const menuMusic = new Audio('sounds/musicmenu.mp3');
+const gameMusic = new Audio('sounds/musicgame.mp3');
+let currentMusic = menuMusic;
+const soundGameOver = new Audio('sounds/gameover.mp3');
+const soundbubblepop = new Audio('sounds/soundbubblepop.mp3');
+const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
+const soundElectricShock = new Audio('sounds/electricshock.mp3');
+menuMusic.loop = true;
+gameMusic.loop = true;
+
 /**
  * Simulates a typewriter effect on an HTML element.
  * @param {HTMLElement} element - The target element to display the typing.
@@ -57,8 +72,9 @@ function handleIgnoreAccentsToggle() {
     if (typeof soundClick !== 'undefined') soundClick.play();
 }
 
+
 const soundClick = document.getElementById('sound-click');
-let openFilterDropdownMenu = null;
+
 let tenseDropdownInitialized = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -117,18 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
   const titleElement = document.querySelector('.glitch-title');
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
-  const soundCorrect = new Audio('sounds/correct.mp3');
-  const soundWrong = new Audio('sounds/wrong.mp3');
-  const soundClick = new Audio('sounds/click.mp3');
-  const soundStart = new Audio('sounds/start-verb.mp3');
-  const soundSkip = new Audio('sounds/skip.mp3');
-  const menuMusic = new Audio('sounds/musicmenu.mp3');
-  const gameMusic = new Audio('sounds/musicgame.mp3');
-  let currentMusic = menuMusic;
-  const soundGameOver = new Audio('sounds/gameover.mp3');
-  const soundbubblepop = new Audio('sounds/soundbubblepop.mp3');
-  const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
-  const soundElectricShock = new Audio('sounds/electricshock.mp3');
+  
   const container = document.getElementById('verb-buttons');
   const allBtns   = () => Array.from(container.querySelectorAll('.verb-button'));
 
@@ -197,6 +202,7 @@ confirmModeButton.addEventListener('click', () => {
         selectedMode = provisionallySelectedOption.dataset.mode;
         window.selectedGameMode = selectedMode;
         selectedGameMode = selectedMode; // Mantener sincronizado el modo seleccionado
+        updateRanking();
 
         gameModesContainer.querySelectorAll('.config-flow-button').forEach(btn => {
             btn.classList.remove('provisional-selection');
@@ -312,8 +318,6 @@ backButton.addEventListener('click', () => {
         navigateToStep(targetStepToGoBackTo); 
     }
 });
-  menuMusic.loop = true;
-  gameMusic.loop = true;
   menuMusic.volume = targetVolume;
   menuMusic.play();
   currentMusic = menuMusic;
@@ -1473,11 +1477,13 @@ function applyIrregularityAndTenseFiltersToVerbList() {
 }
   function updateRanking() {
     rankingBox.innerHTML = '<h3>🏆 Top 5</h3>';
-  
+    const mode = selectedGameMode || window.selectedGameMode;
+    if (!mode) return;
+
     db.collection("records")
-      .where("mode", "==", selectedGameMode)
+      .where("mode", "==", mode)
       .orderBy("score", "desc")
-      .limit(10)
+      .limit(5)
       .get()
       .then(snapshot => {
         snapshot.forEach(doc => {
@@ -1488,7 +1494,7 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     .catch((error) => {
       console.error("Error loading rankings:", error);
     });
-  } 
+  }
 
   function updateScore() {
     scoreDisplay.innerHTML =
@@ -2412,7 +2418,7 @@ finalStartGameButton.addEventListener('click', async () => {
     score = 0; streak = 0; multiplier = 1.0; bestStreak = 0; // Resetear bestStreak también
     updateScore();
     // updateGameTitle(); // Ya debería tener selectedDifficulty y selTenses
-    // updateRanking(); // Si aplica
+    updateRanking();
 
     const livesMechanicsDisplay = document.getElementById('lives-mechanics-display');
     if (window.selectedGameMode === 'lives') { // Usar window.selectedGameMode que se actualizó
@@ -2505,7 +2511,8 @@ function checkFinalStartButtonState() {
                 db.collection("records").add(recordData)
                   .then(() => {
                     console.log("Record saved online!");
-                    renderSetupRecords(); 
+                    renderSetupRecords();
+                    updateRanking();
                   })
                   .catch(error => {
                     console.error("Error saving record (endButton):", error);

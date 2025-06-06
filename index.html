@@ -4,6 +4,9 @@
   <meta charset="UTF-8"/>
   <link rel="icon" href="favicon.png" type="image/png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preload" href="fonts/Schwarzenegger.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/PixelSerif_16px_v02.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="verbos.json" as="fetch" crossorigin>
    <style>
     body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
     .screen { border: 1px solid #ccc; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
@@ -16,11 +19,6 @@
   </style>
 
 <link  rel="stylesheet" href="style.css">
-<audio id="sound-correct" src="sounds/correct.mp3"></audio>
-<audio id="sound-wrong" src="sounds/wrong.mp3"></audio>
-<audio id="sound-click" preload="auto" src="sounds/click.mp3"></audio>
-<audio id="sound-start" src="sounds/start-verb.mp3"></audio>
-<audio id="sound-bubble-pop" src="sounds/soundbubblepop.mp3"></audio>
 <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfwDVErAAAAAJSaqfJCAJXQBO9Ivm7zH6NC8bJZ"></script>
 </head>
 <body class="is-loading">
@@ -233,6 +231,7 @@
 	  
       <button id="check-button">Get Clue / Check Answer</button>
       <button id="skip-button">Skip</button>
+      <button id="end-button">Finish</button>
       <div id="feedback-area"></div>
 
       <div id="score-container">
@@ -242,7 +241,6 @@
       </div>
 
       <div id="ranking-box"></div>
-      <button id="end-button">Finish</button>
     </div>
   </div> <div id="left-bubbles"></div>
   <div id="right-bubbles"></div>
@@ -281,7 +279,7 @@
 
     const db = firebase.firestore();
   </script>
-  <script src="script.js"></script> 
+  <script src="script.js" defer></script>
 </body>
 </html>
 
