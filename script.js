@@ -131,6 +131,31 @@ document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('verb-buttons');
   const allBtns   = () => Array.from(container.querySelectorAll('.verb-button'));
 
+  /**
+   * Gradually reduces the volume of an audio element and pauses it.
+   * @param {HTMLAudioElement} audio - The audio element to fade out.
+   * @param {number} duration - Duration of the fade in milliseconds.
+   * @param {Function} [callback] - Optional callback after fade completes.
+   */
+  function fadeOutAudio(audio, duration = 1000, callback) {
+    if (!audio) return;
+    if (audio._fadeInterval) clearInterval(audio._fadeInterval);
+    const steps = 10;
+    const stepTime = duration / steps;
+    const startVolume = audio.volume;
+    const volumeStep = startVolume / steps;
+    audio._fadeInterval = setInterval(() => {
+      const newVol = Math.max(0, audio.volume - volumeStep);
+      audio.volume = newVol;
+      if (newVol <= 0) {
+        clearInterval(audio._fadeInterval);
+        audio.pause();
+        audio.currentTime = 0;
+        if (callback) callback();
+      }
+    }, stepTime);
+  }
+
   if (toggleReflexiveBtn) {
     toggleReflexiveBtn.addEventListener('click', handleReflexiveToggle);
   }
@@ -2112,10 +2137,9 @@ function startTimerMode() {
   gameScreen.style.display = 'block';
   updateGameTitle();
   soundStart.play();
+  fadeOutAudio(menuMusic, 3000);
 
   setTimeout(() => {
-    menuMusic.pause();
-    menuMusic.currentTime = 0;
     currentMusic = gameMusic;
     gameMusic.volume = 0;                // reinicia a 0
     gameMusic.play();
@@ -2433,10 +2457,9 @@ finalStartGameButton.addEventListener('click', async () => {
         startTimerMode(); // O como se llame tu función
     } else {
         soundStart.play();
+        fadeOutAudio(menuMusic, 1000);
         setTimeout(() => {
             if (currentMusic !== gameMusic) {
-                menuMusic.pause();
-                menuMusic.currentTime = 0;
                 currentMusic = gameMusic;
             }
             if (gameMusic.paused && musicPlaying) {
