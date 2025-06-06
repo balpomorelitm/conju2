@@ -2833,6 +2833,20 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     overflow: hidden;
     /* ... otros estilos de tus botones principales ... */
 }
+#back-button {
+    color: #00ff00; /* verde neón */
+    background: transparent;
+    border: 3px solid #00ff00;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    box-shadow: none;
+    outline: none;
+    image-rendering: pixelated;
+    letter-spacing: 2px;
+}
+#back-button:hover {
+    background-color: rgba(0, 255, 0, 0.1); /* leve resplandor */
+}
 #end-button {
     background-color: #902020;
 }
