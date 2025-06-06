@@ -69,7 +69,7 @@ let openFilterDropdownMenu = null; // Para rastrear el menú de filtro abierto
 let tenseDropdownInitialized = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let selectedGameMode = 'infinite'; 
+  let selectedGameMode = null;
   let allVerbData = [];
   let currentQuestion = {};
   let currentOptions = {};
@@ -213,7 +213,8 @@ confirmModeButton.addEventListener('click', () => {
         confirmModeButton.classList.add('electric-effect');
         setTimeout(() => confirmModeButton.classList.remove('electric-effect'), 1000);
         selectedMode = provisionallySelectedOption.dataset.mode;
-        window.selectedGameMode = selectedMode; 
+        window.selectedGameMode = selectedMode;
+        selectedGameMode = selectedMode; // Mantener sincronizado el modo seleccionado
 
         gameModesContainer.querySelectorAll('.config-flow-button').forEach(btn => {
             btn.classList.remove('provisional-selection');
@@ -311,8 +312,9 @@ backButton.addEventListener('click', () => {
                configButtonsData[selectedMode].buttonElement.classList.remove('confirmed-selection');
             }
         }
-        selectedMode = null; 
+        selectedMode = null;
         window.selectedGameMode = null;
+        selectedGameMode = null;
         targetStepToGoBackTo = 'mode';
 
     } else if (currentConfigStep === 'mode') {
@@ -535,7 +537,7 @@ function navigateToStep(stepName) {
                 });
             }
         });
-        selectedMode = null; window.selectedGameMode = null;
+        selectedMode = null; window.selectedGameMode = null; selectedGameMode = null;
         selectedDifficulty = null;
 
     } else { // Para 'mode', 'difficulty', 'details'
@@ -2422,6 +2424,9 @@ finalStartGameButton.addEventListener('click', async () => {
         alert('Please select at least one verb type if no specific verbs are chosen.');
         return;
     }
+
+    // Sincronizar el modo global por si acaso
+    selectedGameMode = window.selectedGameMode || selectedMode;
 
 
     currentOptions = {
