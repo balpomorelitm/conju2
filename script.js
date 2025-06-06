@@ -72,7 +72,9 @@ function handleIgnoreAccentsToggle() {
     if (typeof soundClick !== 'undefined') soundClick.play();
 }
 
-let openFilterDropdownMenu = null; // Para rastrear el menú de filtro abierto
+
+const soundClick = document.getElementById('sound-click');
+
 let tenseDropdownInitialized = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let score = 0, streak = 0, multiplier = 1.0, startTime = 0;
   let bestStreak = 0;
   let countdownTimer;
-  let countdownTime = 240; // 4 minutes = 240 seconds
+  let countdownTime = 240;
   let remainingLives = 5;
   let targetVolume=0.2;
   let timerTimeLeft = 0;            
@@ -99,21 +101,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 	  const el      = document.getElementById('time-change');
 	  if (!clockEl || !el) return;
 
-	  // Texto y color
-	  el.textContent = `${amount > 0 ? '+' : ''}${amount}s`;
-	  el.style.color = amount < 0 ? 'red' : 'lightgreen';
+        el.textContent = `${amount > 0 ? '+' : ''}${amount}s`;
+        el.style.color = amount < 0 ? 'red' : 'lightgreen';
 
-	  // Mostrar con clase y ocultar tras 2s
-	  clockEl.classList.add('show-time-change');
-	  clearTimeout(clockEl._timeChangeTimeout);
-	  clockEl._timeChangeTimeout = setTimeout(() => {
-		clockEl.classList.remove('show-time-change');
-	  }, 2000);
-
-	  // Vibración
-	  el.classList.remove('vibrate');
-	  void el.offsetWidth;         
-	  el.classList.add('vibrate');
+        clockEl.classList.add('show-time-change');
+        clearTimeout(clockEl._timeChangeTimeout);
+        clockEl._timeChangeTimeout = setTimeout(() => {
+              clockEl.classList.remove('show-time-change');
+        }, 2000);
+        el.classList.remove('vibrate');
+        void el.offsetWidth;
+        el.classList.add('vibrate');
 	}
   let totalPlayedSeconds = 0;       
   let totalQuestions = 0;           
@@ -121,16 +119,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   let initialRawVerbData = [];  
   const gameScreen   = document.getElementById('game-screen');
   const quitButton   = document.getElementById('quit-button');
-  //const checkButton  = document.getElementById('check-button');
-  //const skipButton   = document.getElementById('skip-button');
-  //const endButton    = document.getElementById('end-button');
   const scoreDisplay = document.getElementById('score-display');
   const rankingBox   = document.getElementById('ranking-box');
   const flameEl      = document.getElementById('flames');
   const gameTitle    = document.getElementById('game-title');
   const qPrompt      = document.getElementById('question-prompt');
-  //const ansES        = document.getElementById('answer-input-es');
-  //const ansEN        = document.getElementById('answer-input-en');*/
   const esContainer  = document.getElementById('input-es-container');
   const enContainer  = document.getElementById('input-en-container');
   const feedback     = document.getElementById('feedback-area');
@@ -178,9 +171,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 let currentConfigStep = 'splash'; // 'splash', 'mode', 'difficulty', 'details'
 let selectedMode = null;
 let selectedDifficulty = null;
-let provisionallySelectedOption = null; // Para guardar el botón antes de confirmar
+let provisionallySelectedOption = null;
 
-// Referencias a los nuevos elementos del DOM
 const configFlowScreen = document.getElementById('config-flow-screen');
 const splashStep = document.getElementById('splash-step');
 const initialStartButton = document.getElementById('initial-start-button');
@@ -200,8 +192,7 @@ const backButton = document.getElementById('back-button');
 const infoPanelTitle = document.getElementById('info-panel-title');
 const infoPanelContent = document.getElementById('info-panel-content');
 
-// Mapeo de botones de modo/dificultad a sus datos
-const configButtonsData = {}; // Se llenará al inicializar	
+const configButtonsData = {}; // Se llenará al inicializar
 
 confirmModeButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
@@ -224,7 +215,6 @@ confirmModeButton.addEventListener('click', () => {
             }
         });
 
-        // modeSelectionStep es la constante para document.getElementById('mode-step')
         if (modeSelectionStep) {
             modeSelectionStep.classList.add('step-section-completed');
             const modeHeading = modeSelectionStep.querySelector('h3');
@@ -252,7 +242,6 @@ confirmDifficultyButton.addEventListener('click', () => {
             }
         });
 
-        // difficultySelectionStep es la constante para document.getElementById('difficulty-step')
         if (difficultySelectionStep) {
             difficultySelectionStep.classList.add('step-section-completed');
             const diffHeading = difficultySelectionStep.querySelector('h3');
@@ -336,24 +325,22 @@ backButton.addEventListener('click', () => {
     titleElement.classList.add('glitch-active');
     setTimeout(() => {
       titleElement.classList.remove('glitch-active');
-    }, 600); // Glitch dura 0.5s
-  }, 3000); // Cada 4s se activa el glitch
+    }, 600);
+  }, 3000);
 
 	const titleEl = document.querySelector('.glitch-title, #main-title');
 	if (titleEl) {
 	  const letters = Array.from(titleEl.textContent);
 
-	  // Variables para “consumir” sólo la primera T y la primera C
-	  let seenT = false;
-	  let seenC = false;
+          let seenT = false;
+          let seenC = false;
 
 	  titleEl.innerHTML = letters
 		.map(ch => {
 		  if (ch === ' ') {
 			return '<span class="letter space">&nbsp;</span>';
 		  }
-		  // Creamos dinamicamente la clase extra si corresponde
-		  let extraClass = '';
+                  let extraClass = '';
 		  if (ch === 'T' && !seenT) {
 			extraClass = ' big-letter';
 			seenT = true;
@@ -442,8 +429,7 @@ function updatePronounDropdownCount() {
   let isPrizeVerbActive = false;      
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape') {
-			// Primero, cerrar modales/tooltips si están abiertos
-			if (specificModal && (specificModal.style.display === 'flex' || specificModal.style.display === 'block') ) {
+                        if (specificModal && (specificModal.style.display === 'flex' || specificModal.style.display === 'block') ) {
 				closeSpecificModal();
 				return; // Importante: no procesar más el Escape si se cerró un modal
 			}
@@ -454,17 +440,15 @@ function updatePronounDropdownCount() {
 				return; // Importante: no procesar más el Escape si se cerró un tooltip
 			}
 
-			// Lógica de navegación para la configuración
-			if (configFlowScreen.style.display === 'flex') { // Asegurarse que la pantalla de config esté activa
+                        if (configFlowScreen.style.display === 'flex') { // Asegurarse que la pantalla de config esté activa
 				if (currentConfigStep === 'details' || currentConfigStep === 'difficulty') {
 					if (backButton.style.display !== 'none') { // Si el botón back está visible (debería estarlo)
 						backButton.click(); // Simula el clic en el botón "Back"
 					}
-				} else if (currentConfigStep === 'mode') {
-					// Desde 'mode', Escape va directamente a 'splash'
-					navigateToStep('splash');
-				}
-				// No hacemos nada con Escape si estamos en 'splash' o si la pantalla de config no está visible
+                                } else if (currentConfigStep === 'mode') {
+                                        navigateToStep('splash');
+                                }
+                                // No hacemos nada con Escape si estamos en 'splash' o si la pantalla de config no está visible
 			}
 		}
 	});
@@ -553,7 +537,6 @@ function navigateToStep(stepName) {
             const firstDiffButton = difficultyButtonsContainer.querySelector('.config-flow-button:not([style*="display: none"])');
             if (firstDiffButton) focusOption(firstDiffButton, difficultyButtonsContainer);
         } else if (stepName === 'details') {
-            // Corrección de los backticks:
             updateInfoPanelContent('Customize Your Game', `<p> <strong><span class="math-inline">\</strong\> </strong>.<br>Adjust tenses, verbs, pronouns, and other options.</p>`);
             checkFinalStartButtonState();
         }
@@ -565,7 +548,6 @@ function updateInfoPanelContent(title, htmlContent) {
     infoPanelTitle.textContent = title;
     infoPanelContent.innerHTML = htmlContent;
 
-    // Activar animaciones de typewriter si es necesario para el nuevo contenido
     const recallAnim = infoPanelContent.querySelector('#recall-example-anim');
     const conjugateAnim = infoPanelContent.querySelector('#conjugate-example-anim');
     const produceAnim = infoPanelContent.querySelector('#produce-example-anim');
@@ -596,9 +578,6 @@ function closeOtherFilterDropdowns(currentMenuToIgnore) {
             menu.classList.add('hidden');
         }
     });
-    // Si el menú que no se debe ignorar está de hecho abierto (visible),
-    // entonces ese es el nuevo openFilterDropdownMenu.
-    // Si no, o si currentMenuToIgnore es null, ningún menú de filtro está "oficialmente" abierto.
     if (currentMenuToIgnore && !currentMenuToIgnore.classList.contains('hidden')) {
         openFilterDropdownMenu = currentMenuToIgnore;
     } else {
@@ -660,7 +639,6 @@ if (loaded) {
       btn.classList.add('tense-button');
       btn.dataset.value = t.value;
       btn.textContent = t.name;
-      // por defecto solo el present está seleccionado
       if (t.value === 'present') btn.classList.add('selected');
       btn.addEventListener('click', () => {
         soundClick.play();
@@ -688,7 +666,6 @@ function initTenseDropdown() {
   let dropdownMenuEl = document.getElementById('tense-dropdown-menu');
   let selectAllTensesEl = document.getElementById('select-all-tenses');
 
-  // --- INICIO DE CAMBIOS: Clonar y reemplazar para limpiar listeners ---
   if (dropdownBtnEl) {
     let newDropdownBtn = dropdownBtnEl.cloneNode(true); // true para clonar hijos (texto, spans)
     dropdownBtnEl.parentNode.replaceChild(newDropdownBtn, dropdownBtnEl);
@@ -700,8 +677,6 @@ function initTenseDropdown() {
     selectAllTensesEl.parentNode.replaceChild(newSelectAllTenses, selectAllTensesEl);
     selectAllTensesEl = newSelectAllTenses; // Actualizamos la referencia
   }
-  // --- FIN DE CAMBIOS ---
-
   // Ahora, los listeners se añaden a los botones "limpios"
   if (dropdownBtnEl && dropdownMenuEl) {
     dropdownBtnEl.addEventListener('click', e => {
@@ -1898,7 +1873,7 @@ function checkAnswer() {
 	correct = possibleCorrectAnswers.includes(ans);
 }
 
-  if (correct) { // INICIO DEL BLOQUE if (correct)
+  if (correct) {
     // Manejo del sonido
     if (soundCorrect) {
       soundCorrect.pause();
@@ -1972,7 +1947,6 @@ function checkAnswer() {
      .join('<br>');
    
    if (selectedGameMode === 'lives') {
-    // ---> INICIO MECÁNICA 1 <---
     totalCorrectAnswersForLife++; // Este es el que acumula para esta mecánica específica
 
     if (totalCorrectAnswersForLife >= correctAnswersToNextLife) {
@@ -1988,8 +1962,7 @@ function checkAnswer() {
       correctAnswersToNextLife += nextLifeIncrement; // Nuevo objetivo
     }
     updateTotalCorrectForLifeDisplay(); // Actualizar visualización
-    // ---> FIN MECÁNICA 1 <---
-	    // ---> INICIO MECÁNICA 2 <---
+
     currentStreakForLife++;
     if (currentStreakForLife >= streakGoalForLife) {
       remainingLives++;
@@ -2006,7 +1979,7 @@ function checkAnswer() {
       updateStreakForLifeDisplay();
     }
     updateStreakForLifeDisplay();
-	// ---> INICIO MECÁNICA 3 <---
+        
     if (isPrizeVerbActive) {
       remainingLives++;
       // TODO: Llamar a función para animación/sonido de ganar vida (SONIDO ESPECIAL)
@@ -2016,7 +1989,6 @@ function checkAnswer() {
       isPrizeVerbActive = false; // Se consume el premio
       qPrompt.classList.remove('prize-verb-active'); // Quitar estilo
     }
-    // ---> FIN MECÁNICA 3 <---
     }
 
 	if (irregularBonus > 0) {
@@ -2336,7 +2308,6 @@ function updateStreakForLifeDisplay() {
     return;
   }
 
-  // Cuenta atrás: faltan “remaining” aciertos para la próxima vida
   const remaining = Math.max(streakGoalForLife - currentStreakForLife, 0);
   el.innerHTML = `🔥 <span class="math-inline">${remaining}</span> to get 1❤️`;
 }

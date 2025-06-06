@@ -13,22 +13,20 @@
   font-style: normal;
 }
 
-/* Variables de color inspiradas en Balatro (ajusta a tu gusto) */
 :root {
-  --bg-color: #1a2a1a; /* Fondo principal oscuro (verde muy oscuro) */
-  --container-bg: #2a3a2a; /* Fondo de las cajas/secciones */
-  --text-color: #f0f0f0; /* Texto principal (blanco roto) */
-  --title-color: #ffffff; /* Texto del título principal (blanco puro) */
-  --accent-color-red: #c04040; /* Rojo apagado para botones/énfasis */
-  --accent-color-blue: #f0f0f0; /* blanco balatro/énfasis */
-  --input-bg: #111111; /* Fondo de campos de texto */
-  --border-color: #4a5a4a; /* Color de borde sutil */
-  --feedback-correct: #40c040; /* Verde para feedback correcto */
-  --feedback-incorrect: var(--accent-color-red); /* Rojo para feedback incorrecto */
-  --font-pixel: 'PixelSerif', sans-serif; /* Fuente principal */
+  --bg-color: #1a2a1a;
+  --container-bg: #2a3a2a;
+  --text-color: #f0f0f0;
+  --title-color: #ffffff;
+  --accent-color-red: #c04040;
+  --accent-color-blue: #f0f0f0;
+  --input-bg: #111111;
+  --border-color: #4a5a4a;
+  --feedback-correct: #40c040;
+  --feedback-incorrect: var(--accent-color-red);
+  --font-pixel: 'PixelSerif', sans-serif;
 }
 
-/* Estilos generales del cuerpo */
 body {
   font-family: var(--font-pixel);
   background-color: var(--bg-color);
@@ -64,7 +62,7 @@ body {
 
 body::after {
   content: "";
-  position: absolute; /* Cambiado de fixed */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -80,7 +78,6 @@ body::after {
   z-index: 2;
 }
 
-/* Animación del escaneo */
 @keyframes scan {
   0% {
     top: -100%;
@@ -92,11 +89,11 @@ body::after {
 
 .main-header .glitch-title {
   font-size: clamp(1em, 8vw, 2.2em);
-  letter-spacing: 0.1em;  /* Incrementa el espacio entre letras */
-  white-space: nowrap;     /* Evita que se rompa en varias líneas */
-  max-width: 100%;         /* Que no sobrepase el contenedor */
-  overflow: visible;       /* Asegura que no se recorte */
-  text-shadow: 2px 2px #111; /* Sombra sutil para darle profundidad */
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: visible;
+  text-shadow: 2px 2px #111;
   font-family: 'Schwarzenegger', var(--font-pixel);
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
@@ -133,7 +130,6 @@ body::after {
 }
 
 
-/* Botón de reflexivos */
 .toggle-button {
   background-color: #f0ad4e;
   border: 1px solid #eea236;
@@ -143,16 +139,12 @@ body::after {
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
 }
-
-/* Estado NO seleccionado: gris oscuro igual que .verb-type-button */
 .toggle-button:not(.selected) {
-  background-color: #444;               /* mismo gris que tus verb-type */
-  color: var(--text-color);             /* texto claro */
-  border: 1px solid var(--border-color);/* mismo borde */
-  opacity: 1;                           /* opacidad completa */
+  background-color: #444;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  opacity: 1;
 }
-
-/* Estado seleccionado: tu degradado y animación */
 .toggle-button.selected {
   background: linear-gradient(45deg, #ff6ec4, #7873f5);
   color: #fff;
@@ -160,7 +152,6 @@ body::after {
   border-color: transparent;
 }
 
-/* Accent toggle uses the regular red button look when not selected */
 #toggle-ignore-accents.toggle-button:not(.selected) {
   background-color: var(--accent-color-red);
   color: var(--title-color);
@@ -1819,13 +1810,11 @@ body.game-active, html.game-active {
 /* Helpers */
 .hidden { display: none !important; }
 
-/* Contenedor del dropdown */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* Botón que abre el dropdown */
 .dropdown-toggle {
   background-color: var(--accent-color-red);
   color: var(--title-color);
