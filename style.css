@@ -1305,6 +1305,14 @@ button:active {
   animation: electric-spark 0.5s infinite alternate;
 }
 
+#confirm-difficulty-button.electric-effect {
+  animation: electric-spark 0.5s infinite alternate;
+}
+
+#end-button.electric-effect {
+  animation: electric-spark 0.5s infinite alternate;
+}
+
 @keyframes splash-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
@@ -1681,7 +1689,10 @@ button:active {
 }
 
 #final-start-game-button:hover,
-.start-button:hover {
+.start-button:hover,
+#confirm-mode-button:hover,
+#confirm-difficulty-button:hover,
+#end-button:hover {
   animation: electric-spark 0.5s infinite alternate;
 }
 
@@ -2787,6 +2798,13 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     overflow: hidden;
     /* ... otros estilos de tus botones principales ... */
 }
+#end-button {
+    background-color: #902020;
+}
+
+#end-button:hover {
+    background-color: #a03030;
+}
 #final-start-game-button:disabled {
     background-color: #555;
     cursor: not-allowed;
@@ -2886,4 +2904,13 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
         display: none !important;
     }
 
+}
+
+.fade-out {
+    animation: fadeOutScreen 1s forwards;
+}
+
+@keyframes fadeOutScreen {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
