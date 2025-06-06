@@ -2397,7 +2397,7 @@ finalStartGameButton.addEventListener('click', async () => {
 
     if (soundElectricShock) soundElectricShock.play();
     finalStartGameButton.classList.add('glitch-effect');
-    setTimeout(() => finalStartGameButton.classList.remove('glitch-effect'), 1000);
+    setTimeout(() => finalStartGameButton.classList.remove('glitch-effect'), 1500);
 
     currentOptions = {
         mode: selectedDifficulty, // Este es el modo de juego (receptive, productive_easy, productive)
@@ -2410,9 +2410,15 @@ finalStartGameButton.addEventListener('click', async () => {
 
     if (!await loadVerbs()) return; // loadVerbs necesita usar los filtros correctos
 
-    // Ocultar pantalla de configuración de flujo y mostrar pantalla de juego
-    configFlowScreen.style.display = 'none';
+    // Ocultar pantalla de configuración de flujo con fundido y mostrar juego
+    configFlowScreen.classList.add('fade-out');
     gameScreen.style.display = 'block';
+    gameScreen.classList.add('fade-in');
+    setTimeout(() => {
+        configFlowScreen.style.display = 'none';
+        configFlowScreen.classList.remove('fade-out');
+        gameScreen.classList.remove('fade-in');
+    }, 1000);
     // El resto de tu lógica de inicio de juego (setupScreen.style.display = 'none'; gameScreen.style.display = 'block'; etc.)
     // ...
     feedback.innerHTML = '';

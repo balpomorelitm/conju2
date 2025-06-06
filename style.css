@@ -1710,7 +1710,7 @@ button:active {
   background: linear-gradient(45deg, transparent 3%, #00E6F6 3%, #00E6F6 5%, #FF013C 5%);
   text-shadow: -3px -3px 0px #F8F005, 3px 3px 0px #00E6F6;
   clip-path: var(--slice-0);
-  animation: glitch 0.7s steps(2, end);
+  animation: glitch 1.2s steps(2, end);
   pointer-events: none;
 }
 
@@ -2858,8 +2858,27 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     }
 
     /* Ocultar la barra de volumen en pantallas pequeñas */
-    #volume-slider {
-        display: none !important;
-    }
+  #volume-slider {
+      display: none !important;
+  }
 
+}
+
+/* Fade transitions for screen changes */
+.fade-out {
+  animation: fadeOutScreen 1s forwards;
+}
+
+.fade-in {
+  animation: fadeInScreen 1s forwards;
+}
+
+@keyframes fadeOutScreen {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fadeInScreen {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
