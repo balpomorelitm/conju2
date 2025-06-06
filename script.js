@@ -425,6 +425,9 @@ backButton.addEventListener('click', () => {
     ellas: ['they'], 
     ustedes: ['you'] 
 };
+window.addEventListener("load", () => {
+  document.body.classList.remove("is-loading");
+});
 
 const pronounGroups = [
   { label: 'yo',                   values: ['yo'] },
@@ -3112,8 +3115,7 @@ window.addEventListener('resize', () => {
     startBubbles();
   }
 });
-if (window.innerWidth > 1200) startBubbles();
-  document.body.classList.remove('is-loading'); 
+if (window.innerWidth > 1200) startBubbles(); 
 
   if (specificModal) specificModal.style.display = 'none';
   if (specificModalBackdrop) specificModalBackdrop.style.display = 'none';
