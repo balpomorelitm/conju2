@@ -2370,8 +2370,6 @@ function updateStreakForLifeDisplay() {
 
 
 finalStartGameButton.addEventListener('click', async () => {
-    configFlowScreen.style.display = 'none'; // Oculta la pantalla de configuración
-    gameScreen.style.display = 'block'; // O 'flex' si es el caso
     const selTenses = Array.from(
         document.querySelectorAll('#tense-buttons .tense-button.selected')
     ).map(btn => btn.dataset.value);
@@ -2397,6 +2395,9 @@ finalStartGameButton.addEventListener('click', async () => {
     // Sincronizar el modo global por si acaso
     selectedGameMode = window.selectedGameMode || selectedMode;
 
+    if (soundElectricShock) soundElectricShock.play();
+    finalStartGameButton.classList.add('glitch-effect');
+    setTimeout(() => finalStartGameButton.classList.remove('glitch-effect'), 1000);
 
     currentOptions = {
         mode: selectedDifficulty, // Este es el modo de juego (receptive, productive_easy, productive)
