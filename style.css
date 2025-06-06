@@ -46,7 +46,8 @@ body {
     0 0 60px rgba(0, 255, 128, 0.2);
   /* Preparar contenedor para efectos tipo CRT */
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   
 }
 
