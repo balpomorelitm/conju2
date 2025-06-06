@@ -16,6 +16,15 @@ const soundTicking = new Audio('sounds/ticking.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+// Ensure a Firestore instance is available when this script runs
+if (typeof window !== 'undefined') {
+  if (typeof window.db === 'undefined' &&
+      typeof firebase !== 'undefined' &&
+      typeof firebase.firestore === 'function') {
+    window.db = firebase.firestore();
+  }
+}
+
 /**
  * Simulates a typewriter effect on an HTML element.
  * @param {HTMLElement} element - The target element to display the typing.
