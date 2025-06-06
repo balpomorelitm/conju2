@@ -167,7 +167,9 @@ const configButtonsData = {}; // Se llenará al inicializar
 
 confirmModeButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
-        if (soundClick) soundClick.play();
+        if (soundElectricShock) soundElectricShock.play();
+        confirmModeButton.classList.add('electric-effect');
+        setTimeout(() => confirmModeButton.classList.remove('electric-effect'), 1000);
         selectedMode = provisionallySelectedOption.dataset.mode;
         window.selectedGameMode = selectedMode; 
 
@@ -1213,6 +1215,33 @@ function focusOption(buttonElement, container) {
     container.querySelectorAll('.config-flow-button').forEach(btn => btn.classList.remove('provisional-selection')); // Quitar otros parpadeos
     buttonElement.focus(); // Esto debería activar el listener de focus en initStepButtons
 }
+
+// Permite navegar con las flechas incluso cuando el botón de confirmar está enfocado
+function initConfirmButtonNavigation(confirmBtn, container) {
+    if (!confirmBtn || !container) return;
+
+    confirmBtn.addEventListener('keydown', (e) => {
+        const buttons = Array.from(container.querySelectorAll('.config-flow-button'));
+        if (!buttons.length) return;
+
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            const currentIndex = buttons.indexOf(provisionallySelectedOption) >= 0 ?
+                                   buttons.indexOf(provisionallySelectedOption) : 0;
+            const nextButton = buttons[(currentIndex + 1) % buttons.length];
+            focusOption(nextButton, container);
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const currentIndex = buttons.indexOf(provisionallySelectedOption) >= 0 ?
+                                   buttons.indexOf(provisionallySelectedOption) : 0;
+            const prevButton = buttons[(currentIndex - 1 + buttons.length) % buttons.length];
+            focusOption(prevButton, container);
+        } else if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+            e.preventDefault();
+            confirmBtn.click();
+        }
+    });
+}
 function renderSetupRecords() {
   const container = document.getElementById('setup-records');
   if (!container) return;
@@ -1527,9 +1556,11 @@ let usedVerbs = [];
         initialStartButton.addEventListener('click', handleInitialStart);
 
 
-	// Inicializar botones de modo y dificultad
-	initStepButtons(gameModesContainer, 'mode');
-	initStepButtons(difficultyButtonsContainer, 'difficulty');
+        // Inicializar botones de modo y dificultad
+        initStepButtons(gameModesContainer, 'mode');
+        initStepButtons(difficultyButtonsContainer, 'difficulty');
+        initConfirmButtonNavigation(confirmModeButton, gameModesContainer);
+        initConfirmButtonNavigation(confirmDifficultyButton, difficultyButtonsContainer);
 
 	navigateToStep('splash'); // Empezar en el splash screen  
 function prepareNextQuestion() {
@@ -3006,14 +3037,23 @@ if (window.innerWidth > 1200) startBubbles();
 
   if (specificModal) specificModal.style.display = 'none';
   if (specificModalBackdrop) specificModalBackdrop.style.display = 'none';
-  
+
   const generalTooltipForHiding = document.getElementById('tooltip');
   const generalBackdropForHiding = document.querySelector('.modal-backdrop:not(.specific-modal-backdrop)');
 
   if (generalTooltipForHiding) generalTooltipForHiding.style.display = 'none';
   if (generalBackdropForHiding) generalBackdropForHiding.style.display = 'none';
 
-});                     
+  const coffeeLink = document.getElementById('coffee-link');
+  if (coffeeLink) {
+    coffeeLink.addEventListener('click', () => {
+      const original = coffeeLink.textContent;
+      coffeeLink.textContent = 'THANKS!';
+      setTimeout(() => { coffeeLink.textContent = original; }, 1500);
+    });
+  }
+
+});
 
 // © 2025 Pablo Torrado, University of Hong Kong.
 // Licensed under CC BY-NC-ND 4.0: https://creativecommons.org/licenses/by-nc-nd/4.0/

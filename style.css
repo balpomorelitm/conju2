@@ -1112,6 +1112,22 @@ button:active {
 .game-footer .feedback-link:hover {
   background-color: rgba(255,255,255,0.1);
 }
+
+/* Buy Me a Coffee button */
+.game-footer .coffee-link {
+  color: #fffbcc; /* light gold */
+  text-decoration: none;
+  padding: 4px 8px;
+  border: 1px solid #d4af37; /* golden border */
+  border-radius: 4px;
+  background: linear-gradient(45deg, #d4af37, #fffbcc);
+  box-shadow: 0 0 5px rgba(212, 175, 55, 0.7);
+  transition: box-shadow 0.2s, filter 0.2s;
+}
+.game-footer .coffee-link:hover {
+  box-shadow: 0 0 8px rgba(255, 215, 0, 1);
+  filter: brightness(1.1);
+}
 #left-bubbles, #right-bubbles {
   position: fixed;
   top: 0;
@@ -1224,6 +1240,10 @@ button:active {
 }
 
 #initial-start-button.electric-effect {
+  animation: electric-spark 0.5s infinite alternate;
+}
+
+#confirm-mode-button.electric-effect {
   animation: electric-spark 0.5s infinite alternate;
 }
 
@@ -2708,7 +2728,9 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
 #config-flow-screen.splash-active .config-main-panel {
     width: 100%;
     border-right: none;
-    max-height: 400px;  /* Altura moderada para el panel principal */
+
+    max-height: 800px;  /* Más alto para mostrar los récords completos */
+
     /* O podrías hacer que el splash-step tenga un padding específico */
 }
 
