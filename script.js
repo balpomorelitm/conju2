@@ -57,13 +57,6 @@ function handleIgnoreAccentsToggle() {
     if (typeof soundClick !== 'undefined') soundClick.play();
 }
 
-function handleIgnoreAccentsToggle() {
-    const btn = document.getElementById('toggle-ignore-accents');
-    if (!btn) return;
-    btn.classList.toggle('selected');
-    if (typeof soundClick !== 'undefined') soundClick.play();
-}
-
 const soundClick = document.getElementById('sound-click');
 let openFilterDropdownMenu = null; // Para rastrear el menú de filtro abierto
 let tenseDropdownInitialized = false;
