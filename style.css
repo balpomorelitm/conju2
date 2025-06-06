@@ -190,6 +190,8 @@ body::after {
   display: flex;
   align-items: center;
   white-space: nowrap;
+  padding-top: 12px;
+  padding-bottom: 12px;
   padding-left: 4px;
   padding-right: 28px; /* space for the info icon */
 
