@@ -12,6 +12,7 @@ const soundGameOver = new Audio('sounds/gameover.mp3');
 const soundbubblepop = new Audio('sounds/soundbubblepop.mp3');
 const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
 const soundElectricShock = new Audio('sounds/electricshock.mp3');
+const soundTicking = new Audio('sounds/ticking.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
@@ -70,12 +71,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   let countdownTime = 240;
   let remainingLives = 5;
   let targetVolume=0.2;
-  let timerTimeLeft = 0;            
-	function formatTime(sec) {
-	  const m = Math.floor(sec / 60);
-	  const s = sec % 60;
-	  return `${m}:${s.toString().padStart(2,'0')}`;
-	}
+  let timerTimeLeft = 0;
+  let tickingSoundPlaying = false;
+
+  function checkTickingSound() {
+    if (timerTimeLeft <= 10) {
+      if (!tickingSoundPlaying) {
+        soundTicking.currentTime = 0;
+        soundTicking.play();
+        tickingSoundPlaying = true;
+      }
+    } else if (tickingSoundPlaying) {
+      soundTicking.pause();
+      soundTicking.currentTime = 0;
+      tickingSoundPlaying = false;
+    }
+  }
+  soundTicking.addEventListener('ended', () => { tickingSoundPlaying = false; });
+        function formatTime(sec) {
+          const m = Math.floor(sec / 60);
+          const s = sec % 60;
+          return `${m}:${s.toString().padStart(2,'0')}`;
+        }
 
 
 	function showTimeChange(amount) {
@@ -1770,7 +1787,8 @@ function checkAnswer() {
 	
     if (ans === '' && currentQuestion.hintLevel === 0) {
         feedback.innerHTML = `💡 The English infinitive is <strong>${verbData.infinitive_en}</strong>.`;
-		timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+        timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+        checkTickingSound();
         currentQuestion.hintLevel = 1; // Marcar que la pista ha sido solicitada/dada
         ansEN.focus();
         return; 
@@ -1779,7 +1797,8 @@ function checkAnswer() {
     const allForms = verbData.conjugations[tense];
     if (!allForms) {
         console.error(`Modo Receptivo: Faltan conjugaciones para ${verbData.infinitive_es} en ${tense}`);
-		timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+        timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+        checkTickingSound();
         feedback.innerHTML = "Error: Datos del verbo incompletos para esta pregunta.";
         return;
     }
@@ -1814,7 +1833,8 @@ function checkAnswer() {
         console.warn(`Modo Receptivo: No se mapearon pronombres ingleses para la forma '${spanishForm}' (pronombres ES: ${spPronouns.join(', ')}). Usando infinitivo como pista.`);
         if (ans !== '') { 
             timerTimeLeft = Math.max(0, timerTimeLeft - 3);
-			feedback.innerHTML = `❌ Incorrecto. La pista es el infinitivo: <strong>${verbData.infinitive_en}</strong>.`;
+            checkTickingSound();
+                        feedback.innerHTML = `❌ Incorrecto. La pista es el infinitivo: <strong>${verbData.infinitive_en}</strong>.`;
             currentQuestion.hintLevel = 1;
             ansEN.value = '';
             ansEN.focus();
@@ -1925,8 +1945,9 @@ function checkAnswer() {
 	else if (streak <= 10) timeBonus = 9;
 	else                   timeBonus = 10;
 	// opcional: máximo 240 s
-	timerTimeLeft = Math.min(240, timerTimeLeft + timeBonus);
-	showTimeChange(timeBonus);
+        timerTimeLeft = Math.min(240, timerTimeLeft + timeBonus);
+        checkTickingSound();
+        showTimeChange(timeBonus);
 
     updateScore();
     setTimeout(prepareNextQuestion, 200);
@@ -2027,8 +2048,9 @@ function checkAnswer() {
       qPrompt.classList.remove('prize-verb-active'); // Quitar estilo
     }
 	// ⌛ Penalización por error
-	timerTimeLeft = Math.max(0, timerTimeLeft - 3);
-	showTimeChange(-3);
+        timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+        checkTickingSound();
+        showTimeChange(-3);
 	
     if (selectedGameMode === 'lives') {
       remainingLives--;
@@ -2118,7 +2140,10 @@ function checkAnswer() {
 }
 function startTimerMode() {
   document.getElementById('timer-container').style.display = 'flex';
-  timerTimeLeft      = countdownTime;     
+  timerTimeLeft      = countdownTime;
+  soundTicking.pause();
+  soundTicking.currentTime = 0;
+  tickingSoundPlaying = false;
   totalPlayedSeconds = 0;
   document.getElementById('timer-clock').textContent   = `⏳ ${formatTime(timerTimeLeft)}`;
   document.getElementById('total-time').textContent    = `🏁 ${formatTime(totalPlayedSeconds)}`;
@@ -2147,9 +2172,10 @@ function startTimerMode() {
 
   prepareNextQuestion();
 
-	countdownTimer = setInterval(() => {
-	  timerTimeLeft--;
-	  totalPlayedSeconds++;
+        countdownTimer = setInterval(() => {
+          timerTimeLeft--;
+          checkTickingSound();
+          totalPlayedSeconds++;
 	document.getElementById('timer-clock').textContent  = `⏳ ${formatTime(timerTimeLeft)}`;
 	document.getElementById('total-time').textContent   = `🏁 ${formatTime(totalPlayedSeconds)}`;
 
@@ -2163,8 +2189,11 @@ function startTimerMode() {
 		clk.style.transform = 'scale(1)';
 	  }
 
-   if (timerTimeLeft <= 0) {
-	  soundGameOver.play();
+  if (timerTimeLeft <= 0) {
+          soundTicking.pause();
+          soundTicking.currentTime = 0;
+          tickingSoundPlaying = false;
+          soundGameOver.play();
       clearInterval(countdownTimer);
   
       const name = prompt('⏱️ Time is up! Your name?');
@@ -2213,8 +2242,9 @@ function skipQuestion() {
     streak = 0;
     multiplier = 1.0;
     updateScore();
-	timerTimeLeft = Math.max(0, timerTimeLeft - 3);
-	showTimeChange(-3);
+        timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+        checkTickingSound();
+        showTimeChange(-3);
 	
     let feedbackMessage;
 
