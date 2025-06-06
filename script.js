@@ -32,11 +32,28 @@ function typeWriter(element, text, speed = 120) {
 }
 
 function handleReflexiveToggle() {
-    const toggleReflexiveBtn = document.getElementById('toggle-reflexive');
-	
-    if (!toggleReflexiveBtn) return;
+    const btn = document.getElementById('toggle-reflexive');
+    if (!btn) return;
 
-    toggleReflexiveBtn.classList.toggle('selected');
+    btn.classList.toggle('selected');
+    const shouldSelect = btn.classList.contains('selected');
+
+    const reflexiveButtons = Array.from(document.querySelectorAll('#verb-buttons .verb-button'))
+        .filter(b => b.dataset.value.endsWith('se'));
+    reflexiveButtons.forEach(b => b.classList.toggle('selected', shouldSelect));
+
+    updateVerbDropdownCount();
+    updateDeselectAllButton();
+    updateGroupButtons();
+    updateVerbTypeButtonsVisualState();
+
+    if (typeof soundClick !== 'undefined') soundClick.play();
+}
+
+function handleIgnoreAccentsToggle() {
+    const btn = document.getElementById('toggle-ignore-accents');
+    if (!btn) return;
+    btn.classList.toggle('selected');
     if (typeof soundClick !== 'undefined') soundClick.play();
 }
 
@@ -1135,12 +1152,7 @@ document.addEventListener('click', e => {
             openFilterDropdownMenu = null; // Ya no hay ninguno "oficialmente" abierto
         }
     }
-});  
-function handleReflexiveToggle() {
-    if (!toggleReflexiveBtn) return; 
-    toggleReflexiveBtn.classList.toggle('selected');
-    if (typeof soundClick !== 'undefined') soundClick.play();
-}
+});
 function initStepButtons(container, stepType) {
     const buttons = container.querySelectorAll('.config-flow-button');
     buttons.forEach((button, index) => {

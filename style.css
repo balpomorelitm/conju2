@@ -160,6 +160,13 @@ body::after {
   border-color: transparent;
 }
 
+/* Accent toggle uses the regular red button look when not selected */
+#toggle-ignore-accents.toggle-button:not(.selected) {
+  background-color: var(--accent-color-red);
+  color: var(--title-color);
+  border: 1px solid var(--border-color);
+}
+
 @keyframes pulse-colors {
   0%   { box-shadow: 0 0 8px rgba(255,  0,   0, 0.8); }
   25%  { box-shadow: 0 0 8px rgba(255,165,   0, 0.8); }
@@ -1833,9 +1840,15 @@ body.dropdown-open .dropdown-menu {
 .filter-bar {
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   gap: 12px;
   margin-bottom: 16px;
+}
+
+.dropdown-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .pronoun-group-button {

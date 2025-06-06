@@ -115,10 +115,11 @@
                 <div id="tense-buttons" class="verb-type-selector"></div>
               </div>
             </div>
-            <div id="verb-dropdown" class="dropdown">
-              <button type="button" id="verb-dropdown-button" class="dropdown-toggle">
-                Verbs <span id="verb-dropdown-count"></span> ▾
-              </button>
+            <div id="verb-dropdown-container" class="dropdown-stack">
+              <div id="verb-dropdown" class="dropdown">
+                <button type="button" id="verb-dropdown-button" class="dropdown-toggle">
+                  Verbs <span id="verb-dropdown-count"></span> ▾
+                </button>
               <div id="verb-dropdown-menu" class="dropdown-menu hidden">
                 <div class="dropdown-header">
                   <button type="button" id="deselect-all-verbs" class="select-all-button"> 
@@ -141,6 +142,8 @@
                 </div>
                 <div id="verb-buttons" class="verb-buttons-list"></div>
               </div>
+              </div>
+              <button type="button" id="toggle-reflexive" class="toggle-button">Reflexive Verbs</button>
             </div>
             <div id="pronoun-dropdown" class="dropdown">
               <button type="button" id="pronoun-dropdown-button" class="dropdown-toggle">
@@ -155,6 +158,10 @@
                 <div id="pronoun-buttons" class="verb-type-selector"></div>
               </div>
             </div>
+            <button type="button" id="toggle-ignore-accents" class="toggle-button selected" data-infokey="accentHelp">
+              Ignore Accents
+              <span class="context-info-icon" data-info-key="accentHelp"></span>
+            </button>
           </div>
           <button type="button" id="toggle-reflexive" class="toggle-button">Reflexive Verbs</button>
           <button type="button" id="toggle-ignore-accents" class="toggle-button selected" data-infokey="accentHelp">
