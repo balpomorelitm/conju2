@@ -270,6 +270,8 @@ confirmModeButton.addEventListener('click', () => {
 confirmDifficultyButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
         if (soundElectricShock) soundElectricShock.play();
+        confirmDifficultyButton.classList.add('electric-effect');
+        setTimeout(() => confirmDifficultyButton.classList.remove('electric-effect'), 1000);
         selectedDifficulty = provisionallySelectedOption.dataset.mode;
 
         difficultyButtonsContainer.querySelectorAll('.config-flow-button').forEach(btn => {
@@ -2118,10 +2120,10 @@ function checkAnswer() {
       })
       .then(() => {
         console.log("Record saved online!");
-		renderSetupRecords(); 
-		quitToSettings();
+                renderSetupRecords();
       })
-      .catch(error => console.error("Error saving record:", error));
+      .catch(error => console.error("Error saving record:", error))
+      .then(() => fadeOutToMenu(quitToSettings));
 	}
 	   return; 
 
@@ -2239,10 +2241,11 @@ function startTimerMode() {
           console.log("Record saved online!");
           renderSetupRecords();
         })
-        .catch(error => console.error("Error saving record:", error));
+        .catch(error => console.error("Error saving record:", error))
+        .then(() => fadeOutToMenu(quitToSettings));
+      } else {
+        fadeOutToMenu(quitToSettings);
       }
-
-      quitToSettings();
     }
   }, 1000);
 }
@@ -2382,7 +2385,7 @@ function updateStreakForLifeDisplay() {
   el.innerHTML = `🔥 <span class="math-inline">${remaining}</span> to get 1❤️`;
 }
 
- function quitToSettings() {
+function quitToSettings() {
   document.getElementById('timer-container').style.display = 'none';
   clearInterval(countdownTimer);
   gameMusic.pause();
@@ -2433,6 +2436,18 @@ function updateStreakForLifeDisplay() {
     navigateToStep('splash'); // Volver al inicio del flujo
     playHeaderIntro();
     checkFinalStartButtonState(); // Para el estado inicial del botón
+}
+
+function fadeOutToMenu(callback) {
+  const screen = document.getElementById('game-screen');
+  if (!screen) { callback(); return; }
+  screen.classList.add('fade-out');
+  const handler = () => {
+    screen.classList.remove('fade-out');
+    screen.removeEventListener('animationend', handler);
+    callback();
+  };
+  screen.addEventListener('animationend', handler);
 }
     updateRanking();
     remainingLives = 5;
@@ -2567,6 +2582,9 @@ function checkFinalStartButtonState() {
     if (skipButton) skipButton.addEventListener('click', skipQuestion);
     if (endButton) {
         endButton.addEventListener('click', () => {
+            if (soundElectricShock) soundElectricShock.play();
+            endButton.classList.add('electric-effect');
+            setTimeout(() => endButton.classList.remove('electric-effect'), 1000);
             const name = prompt('¿Cómo te llamas?'); // La variable name debe ser local a este scope
             if (name) {
                 const recordData = {
@@ -2587,9 +2605,11 @@ function checkFinalStartButtonState() {
                   })
                   .catch(error => {
                     console.error("Error saving record (endButton):", error);
-                  });
+                  })
+                  .then(() => fadeOutToMenu(quitToSettings));
+            } else {
+                fadeOutToMenu(quitToSettings);
             }
-            quitToSettings(); // quitToSettings debe estar definida
         });
     }
 
