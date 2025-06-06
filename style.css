@@ -2914,3 +2914,13 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     from { opacity: 1; }
     to { opacity: 0; }
 }
+
+/* Fade in effect for first-time splash */
+.fade-in {
+    animation: fadeInScreen 1s forwards;
+}
+
+@keyframes fadeInScreen {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

@@ -438,6 +438,13 @@ backButton.addEventListener('click', () => {
 };
 window.addEventListener("load", () => {
   document.body.classList.remove("is-loading");
+  if (!localStorage.getItem('introPlayed')) {
+    document.body.classList.add('fade-in');
+    document.body.addEventListener('animationend', () => {
+      document.body.classList.remove('fade-in');
+    }, { once: true });
+    localStorage.setItem('introPlayed', 'true');
+  }
 });
 
 const pronounGroups = [
