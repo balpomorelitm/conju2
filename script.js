@@ -73,7 +73,6 @@ function handleIgnoreAccentsToggle() {
 }
 
 
-const soundClick = document.getElementById('sound-click');
 
 let tenseDropdownInitialized = false;
 
