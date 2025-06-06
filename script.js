@@ -1,5 +1,20 @@
 let typeInterval; // Variable global para controlar el intervalo de la animación
 
+const soundCorrect = new Audio('sounds/correct.mp3');
+const soundWrong = new Audio('sounds/wrong.mp3');
+const soundClick = new Audio('sounds/click.mp3');
+const soundStart = new Audio('sounds/start-verb.mp3');
+const soundSkip = new Audio('sounds/skip.mp3');
+const menuMusic = new Audio('sounds/musicmenu.mp3');
+const gameMusic = new Audio('sounds/musicgame.mp3');
+let currentMusic = menuMusic;
+const soundGameOver = new Audio('sounds/gameover.mp3');
+const soundbubblepop = new Audio('sounds/soundbubblepop.mp3');
+const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
+const soundElectricShock = new Audio('sounds/electricshock.mp3');
+menuMusic.loop = true;
+gameMusic.loop = true;
+
 /**
  * Simulates a typewriter effect on an HTML element.
  * @param {HTMLElement} element - The target element to display the typing.
@@ -57,7 +72,6 @@ function handleIgnoreAccentsToggle() {
     if (typeof soundClick !== 'undefined') soundClick.play();
 }
 
-const soundClick = document.getElementById('sound-click');
 let openFilterDropdownMenu = null; // Para rastrear el menú de filtro abierto
 let tenseDropdownInitialized = false;
 
@@ -126,18 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
   const titleElement = document.querySelector('.glitch-title');
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
-  const soundCorrect = new Audio('sounds/correct.mp3');
-  const soundWrong = new Audio('sounds/wrong.mp3');
-  const soundClick = new Audio('sounds/click.mp3');
-  const soundStart = new Audio('sounds/start-verb.mp3');
-  const soundSkip = new Audio('sounds/skip.mp3');
-  const menuMusic = new Audio('sounds/musicmenu.mp3');
-  const gameMusic = new Audio('sounds/musicgame.mp3');
-  let currentMusic = menuMusic;
-  const soundGameOver = new Audio('sounds/gameover.mp3');
-  const soundbubblepop = new Audio('sounds/soundbubblepop.mp3');
-  const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
-  const soundElectricShock = new Audio('sounds/electricshock.mp3');
+  
   const container = document.getElementById('verb-buttons');
   const allBtns   = () => Array.from(container.querySelectorAll('.verb-button'));
 
@@ -325,8 +328,6 @@ backButton.addEventListener('click', () => {
         navigateToStep(targetStepToGoBackTo); 
     }
 });
-  menuMusic.loop = true;
-  gameMusic.loop = true;
   menuMusic.volume = targetVolume;
   menuMusic.play();
   currentMusic = menuMusic;
