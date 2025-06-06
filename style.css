@@ -1114,9 +1114,11 @@ button:active {
   border-radius: 4px;
   padding: 6px 12px;
   margin: 0 4px;
-  opacity: 0.5;                 /* aspecto “desactivado” */
+  opacity: 0.5;                 /* aspecto "desactivado" */
   cursor: pointer;
   transition: opacity 0.2s;
+  position: relative;           /* para posicionar el icono dentro */
+  padding-right: 28px;          /* espacio para el icono */
 }
 
 /* Cuando está seleccionado, rojo y opacidad completa */
@@ -1425,6 +1427,26 @@ button:active {
 @keyframes blink {
     from, to { background-color: transparent } /* Invisible state */
     50% { background-color: var(--feedback-correct); } /* Visible state */
+}
+
+/* Table style for tense tooltips */
+.tense-tooltip-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.tense-tooltip-table th,
+.tense-tooltip-table td {
+  border: 1px solid var(--border-color);
+  padding: 4px 6px;
+}
+.tense-tooltip-table th {
+  background-color: var(--container-bg);
+  color: var(--title-color);
+}
+.tense-tooltip-table td {
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 
