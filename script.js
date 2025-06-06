@@ -477,13 +477,13 @@ function updatePronounDropdownCount() {
 	{ value: 'irregular_imperfect', name: 'Irregular imperfect', times: ['imperfect_indicative'], hint: '⚙️ ir -> iba'}
 ];
   const tenses = [
-    { value: 'present',        name: 'Present'       },
-    { value: 'past_simple',    name: 'Simple Past'   },
-    { value: 'present_perfect',name: 'Present Perfect'},
-	{ value: 'imperfect_indicative', name: 'Imperfect' },
-	{ value: 'future_simple',        name: 'Future' },
-	{ value: 'condicional_simple',   name: 'Condicional' }
-];
+    { value: 'present',        name: 'Present',         infoKey: 'presentInfo' },
+    { value: 'past_simple',    name: 'Simple Past',     infoKey: 'pastSimpleInfo' },
+    { value: 'present_perfect',name: 'Present Perfect', infoKey: 'presentPerfectInfo' },
+    { value: 'imperfect_indicative', name: 'Imperfect', infoKey: 'imperfectInfo' },
+    { value: 'future_simple',        name: 'Future',    infoKey: 'futureInfo' },
+    { value: 'condicional_simple',   name: 'Condicional', infoKey: 'conditionalInfo' }
+  ];
 
   let totalCorrectAnswersForLife = 0; 
   let correctAnswersToNextLife = 10;  // Objetivo inicial para Mecánica 1
@@ -716,23 +716,33 @@ if (loaded) {
       btn.type = 'button';
       btn.classList.add('tense-button');
       btn.dataset.value = t.value;
-      btn.textContent = t.name;
+      btn.dataset.infokey = t.infoKey;
+      btn.innerHTML = `${t.name} <span class="context-info-icon" data-info-key="${t.infoKey}"></span>`;
       if (t.value === 'present') btn.classList.add('selected');
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        if (e.target.closest('.context-info-icon')) return;
         soundClick.play();
         btn.classList.toggle('selected');
         document.querySelectorAll('.verb-type-button.selected').forEach(typeBtn => {
             typeBtn.classList.remove('selected'); // Desmarcar todos primero
         });
-        
+
         const regularTypeBtn = document.querySelector('.verb-type-button[data-value="regular"]');
         if (regularTypeBtn && !regularTypeBtn.disabled) { // Si 'regular' existe y no está deshabilitado por el tiempo actual
             regularTypeBtn.classList.add('selected');
         }
-        filterVerbTypes();  
-		updateTenseDropdownCount(); // Ya la tienes
+        filterVerbTypes();
+                updateTenseDropdownCount(); // Ya la tienes
         updateSelectAllTensesButtonText(); // << --- AÑADIR ESTA LLAMADA
       });
+      const icon = btn.querySelector('.context-info-icon');
+      if (icon) {
+        icon.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (typeof soundClick !== 'undefined') soundClick.play();
+          openSpecificModal(icon.dataset.infoKey);
+        });
+      }
       container.appendChild(btn);
     });
     updateTenseDropdownCount(); // Llamada existente
@@ -2777,6 +2787,93 @@ const specificInfoData = {
     title: "Ignore Accents",
     html: `When this option is <strong>ON</strong>, you don't need to type accent marks to be correct.<br>
            Leaving it <strong>OFF</strong> grants a <span class="points-value">+8</span> bonus each time you include the correct accents.`
+  },
+  presentInfo: {
+    title: "Present Tense (Presente de Indicativo)",
+    html: `<p>Use the present tense for habitual actions, universal truths, current events and the near future.</p>
+           <table class="tense-tooltip-table">
+             <tr><th>Pronoun</th><th>-ar</th><th>-er</th><th>-ir</th></tr>
+             <tr><td>yo</td><td>-o</td><td>-o</td><td>-o</td></tr>
+             <tr><td>tú</td><td>-as</td><td>-es</td><td>-es</td></tr>
+             <tr><td>él/ella/ud.</td><td>-a</td><td>-e</td><td>-e</td></tr>
+             <tr><td>nosotros</td><td>-amos</td><td>-emos</td><td>-imos</td></tr>
+             <tr><td>vosotros</td><td>-áis</td><td>-éis</td><td>-ís</td></tr>
+             <tr><td>ellos/ellas/uds.</td><td>-an</td><td>-en</td><td>-en</td></tr>
+           </table>
+           <p><strong>Common Irregular Verbs:</strong> ser, estar, ir, and "yo-go" verbs like tener (<em>tengo</em>) or hacer (<em>hago</em>).</p>
+           <p><strong>Common Stem Changes:</strong> querer → quiero, poder → puedo, pedir → pido, jugar → juego.</p>`
+  },
+  pastSimpleInfo: {
+    title: "Simple Past / Preterite (Pretérito)",
+    html: `<p>This tense expresses actions completed at a specific point in the past.</p>
+           <table class="tense-tooltip-table">
+             <tr><th>Pronoun</th><th>-ar</th><th>-er/-ir</th></tr>
+             <tr><td>yo</td><td>-é</td><td>-í</td></tr>
+             <tr><td>tú</td><td>-aste</td><td>-iste</td></tr>
+             <tr><td>él/ella/ud.</td><td>-ó</td><td>-ió</td></tr>
+             <tr><td>nosotros</td><td>-amos</td><td>-imos</td></tr>
+             <tr><td>vosotros</td><td>-asteis</td><td>-isteis</td></tr>
+             <tr><td>ellos/ellas/uds.</td><td>-aron</td><td>-ieron</td></tr>
+           </table>
+           <p><strong>Common Irregular Roots:</strong> estar → estuv-, tener → tuv-, poder → pud-, etc.</p>
+           <p><strong>Stem & Spelling Changes:</strong> sentir → sintió, buscar → busqué, leer → leyó.</p>`
+  },
+  presentPerfectInfo: {
+    title: "Present Perfect (Pretérito Perfecto)",
+    html: `<p>This tense links past actions to the present. It uses <em>haber</em> + past participle.</p>
+           <table class="tense-tooltip-table">
+             <tr><th>Pronoun</th><th>Haber</th></tr>
+             <tr><td>yo</td><td>he</td></tr>
+             <tr><td>tú</td><td>has</td></tr>
+             <tr><td>él/ella/ud.</td><td>ha</td></tr>
+             <tr><td>nosotros</td><td>hemos</td></tr>
+             <tr><td>vosotros</td><td>habéis</td></tr>
+             <tr><td>ellos/ellas/uds.</td><td>han</td></tr>
+           </table>
+           <p><strong>Regular Participles:</strong> hablar → hablado, comer → comido.</p>
+           <p><strong>Irregular Participles:</strong> abrir → abierto, decir → dicho, ver → visto, volver → vuelto.</p>`
+  },
+  imperfectInfo: {
+    title: "Imperfect (Pretérito Imperfecto)",
+    html: `<p>Describes ongoing or repeated past actions and sets the scene.</p>
+           <table class="tense-tooltip-table">
+             <tr><th>Pronoun</th><th>-ar</th><th>-er/-ir</th></tr>
+             <tr><td>yo</td><td>-aba</td><td>-ía</td></tr>
+             <tr><td>tú</td><td>-abas</td><td>-ías</td></tr>
+             <tr><td>él/ella/ud.</td><td>-aba</td><td>-ía</td></tr>
+             <tr><td>nosotros</td><td>-ábamos</td><td>-íamos</td></tr>
+             <tr><td>vosotros</td><td>-abais</td><td>-íais</td></tr>
+             <tr><td>ellos/ellas/uds.</td><td>-aban</td><td>-ían</td></tr>
+           </table>
+           <p><strong>Irregular Verbs:</strong> Only ir, ser and ver.</p>`
+  },
+  futureInfo: {
+    title: "Future (Futuro Simple)",
+    html: `<p>Used to talk about what <em>will</em> happen or to express probability.</p>
+           <table class="tense-tooltip-table">
+             <tr><th>Pronoun</th><th>Ending</th></tr>
+             <tr><td>yo</td><td>-é</td></tr>
+             <tr><td>tú</td><td>-ás</td></tr>
+             <tr><td>él/ella/ud.</td><td>-á</td></tr>
+             <tr><td>nosotros</td><td>-emos</td></tr>
+             <tr><td>vosotros</td><td>-éis</td></tr>
+             <tr><td>ellos/ellas/uds.</td><td>-án</td></tr>
+           </table>
+           <p><strong>Irregular Stems:</strong> decir → dir-, hacer → har-, tener → tendr-, venir → vendr-, etc.</p>`
+  },
+  conditionalInfo: {
+    title: "Conditional (Condicional Simple)",
+    html: `<p>Expresses what would happen under certain conditions or in polite requests.</p>
+           <table class="tense-tooltip-table">
+             <tr><th>Pronoun</th><th>Ending</th></tr>
+             <tr><td>yo</td><td>-ía</td></tr>
+             <tr><td>tú</td><td>-ías</td></tr>
+             <tr><td>él/ella/ud.</td><td>-ía</td></tr>
+             <tr><td>nosotros</td><td>-íamos</td></tr>
+             <tr><td>vosotros</td><td>-íais</td></tr>
+             <tr><td>ellos/ellas/uds.</td><td>-ían</td></tr>
+           </table>
+           <p><strong>Irregular Stems:</strong> Same as the future tense: decir → dir-, poner → pondr-, querer → querr-, etc.</p>`
   },
 };
 
