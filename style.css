@@ -1820,9 +1820,15 @@ body.dropdown-open .dropdown-menu {
 .filter-bar {
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   gap: 12px;
   margin-bottom: 16px;
+}
+
+.dropdown-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .pronoun-group-button {
