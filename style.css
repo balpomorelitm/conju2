@@ -821,6 +821,14 @@ button:active {
   text-align: center;      /* centra títulos, botones inline, etc. */
 }
 
+#score-section {
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 #question-prompt,
 #feedback-area,
 #score-container,
@@ -3197,11 +3205,12 @@ td.irregular-highlight {
 }
 
 #game-main {
-  flex: 1;
+  flex: 0 0 70%;
 }
 
 #chuache-box {
-  width: 170px;
+  flex: 0 0 30%;
+  max-width: 170px;
   position: relative;
 }
 
@@ -3221,7 +3230,8 @@ td.irregular-highlight {
 
 @media (max-width: 600px) {
   #chuache-box {
-    width: 120px;
+    flex-basis: 30%;
+    max-width: 120px;
   }
   #chuache-container {
     top: 160px;
