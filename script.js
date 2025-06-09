@@ -2428,25 +2428,26 @@ function startTimerMode() {
           chuacheSpeaks('gameover');
       clearInterval(countdownTimer);
   
-      const name = prompt('⏱️ Time is up! Your name?');
-      if (name) {
-        db.collection("records").add({
-          name: name,
-          score: score,
-          mode: selectedGameMode,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          tense: currentOptions.tenses,
-          verb: currentQuestion.verb.infinitive_es,
-          streak: bestStreak
-        })
-        .then(() => {
-          renderSetupRecords();
-        })
-        .catch(error => console.error("Error saving record:", error))
-        .then(() => fadeOutToMenu(quitToSettings));
-      } else {
-        fadeOutToMenu(quitToSettings);
-      }
+      openNameModal('⏱️ Time is up! Your name?', function(name) {
+        if (name) {
+          db.collection("records").add({
+            name: name,
+            score: score,
+            mode: selectedGameMode,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            tense: currentOptions.tenses,
+            verb: currentQuestion.verb.infinitive_es,
+            streak: bestStreak
+          })
+          .then(() => {
+            renderSetupRecords();
+          })
+          .catch(error => console.error("Error saving record:", error))
+          .then(() => fadeOutToMenu(quitToSettings));
+        } else {
+          fadeOutToMenu(quitToSettings);
+        }
+      });
     }
   }, 1000);
 }
@@ -2792,31 +2793,36 @@ function checkFinalStartButtonState() {
             chuacheSpeaks('gameover');
             endButton.classList.add('electric-effect');
             setTimeout(() => endButton.classList.remove('electric-effect'), 1000);
-            setTimeout(() => {
-                const name = prompt('¿Cómo te llamas?'); // La variable name debe ser local a este scope
+
+            openNameModal('¿Cómo te llamas?', function(name) {
+
+
                 if (name) {
                     const recordData = {
                         name: name,
                         score: score,
-                        mode: selectedGameMode, // Asegúrate que selectedGameMode esté disponible (global o en este ámbito)
+
+                        mode: selectedGameMode,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    tense: currentOptions.tenses, // currentOptions debe estar disponible
-                    verb: currentQuestion.verb.infinitive_es, // currentQuestion debe estar disponible
-                    streak: bestStreak 
-                };
-                db.collection("records").add(recordData)
-                  .then(() => {
-                    renderSetupRecords();
-                    updateRanking();
-                  })
-                  .catch(error => {
-                    console.error("Error saving record (endButton):", error);
-                  })
-                  .then(() => fadeOutToMenu(quitToSettings));
-            } else {
-                fadeOutToMenu(quitToSettings);
-            }
-            }, 100); // Esperar un momento para mostrar el mensaje de Chuache
+                        tense: currentOptions.tenses,
+                        verb: currentQuestion.verb.infinitive_es,
+                        streak: bestStreak
+                    };
+                    db.collection("records").add(recordData)
+                      .then(() => {
+                        renderSetupRecords();
+                        updateRanking();
+                      })
+                      .catch(error => {
+                        console.error("Error saving record (endButton):", error);
+                      })
+                      .then(() => fadeOutToMenu(quitToSettings));
+                } else {
+                    fadeOutToMenu(quitToSettings);
+                }
+            });
+
+
         });
     }
 
@@ -2936,6 +2942,54 @@ if (closeSpecificModalBtn) {
 }
 if (specificModalBackdrop) {
   specificModalBackdrop.addEventListener('click', closeSpecificModal);
+}
+
+// ----- Name Entry Modal -----
+const nameModal = document.getElementById('name-entry-modal');
+const nameModalBackdrop = document.getElementById('name-modal-backdrop');
+const nameModalMessage = document.getElementById('name-entry-message');
+const playerNameInput = document.getElementById('player-name-input');
+const nameSubmitButton = document.getElementById('name-submit-button');
+const closeNameModalBtn = document.getElementById('close-name-modal-btn');
+
+function openNameModal(message, callback) {
+  if (!nameModal || !nameModalBackdrop) return;
+  nameModalMessage.textContent = message;
+  nameModal.style.display = 'flex';
+  nameModalBackdrop.style.display = 'block';
+  document.body.classList.add('tooltip-open-no-scroll');
+  if (playerNameInput) {
+    playerNameInput.value = '';
+    playerNameInput.focus();
+  }
+
+  function cleanup() {
+    nameModal.style.display = 'none';
+    nameModalBackdrop.style.display = 'none';
+    document.body.classList.remove('tooltip-open-no-scroll');
+    nameSubmitButton.removeEventListener('click', submitHandler);
+    playerNameInput.removeEventListener('keydown', keyHandler);
+    if (closeNameModalBtn) closeNameModalBtn.removeEventListener('click', cancelHandler);
+    nameModalBackdrop.removeEventListener('click', cancelHandler);
+  }
+
+  function submitHandler() {
+    const val = playerNameInput ? playerNameInput.value.trim() : '';
+    cleanup();
+    callback(val);
+  }
+
+  function cancelHandler() {
+    cleanup();
+    callback(null);
+  }
+
+  function keyHandler(e) { if (e.key === 'Enter') submitHandler(); }
+
+  nameSubmitButton.addEventListener('click', submitHandler);
+  playerNameInput.addEventListener('keydown', keyHandler);
+  if (closeNameModalBtn) closeNameModalBtn.addEventListener('click', cancelHandler);
+  nameModalBackdrop.addEventListener('click', cancelHandler);
 }
 
 function updateGameTitle() {

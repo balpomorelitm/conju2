@@ -28,7 +28,17 @@
     </div>
     <button id="close-specific-modal-btn" class="specific-modal-close-btn">&times;</button>
   </div>
-  <div class="modal-backdrop"></div> 
+  <div id="name-modal-backdrop" class="specific-modal-backdrop"></div>
+  <div id="name-entry-modal" class="specific-modal">
+    <div class="specific-modal-content">
+      <h2 id="name-modal-title">🏆 New Record! 🏆</h2>
+      <p id="name-entry-message">Enter your name:</p>
+      <input type="text" id="player-name-input" maxlength="20" autocomplete="off" />
+      <button id="name-submit-button" class="start-button name-submit">Submit</button>
+    </div>
+    <button id="close-name-modal-btn" class="specific-modal-close-btn">&times;</button>
+  </div>
+  <div class="modal-backdrop"></div>
   <div id="tooltip" class="tooltip-popup"></div>
 
   <header class="main-header">
