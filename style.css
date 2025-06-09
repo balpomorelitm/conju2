@@ -2766,6 +2766,31 @@ body,
   color: var(--accent-color-red);
 }
 
+/* Modal for entering player's name */
+#name-entry-modal input[type="text"] {
+  font-family: var(--font-pixel);
+  font-size: 1.2em;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 8px 10px;
+  width: calc(100% - 22px);
+  margin-bottom: 15px;
+  border-radius: 0;
+}
+
+#name-entry-modal button.name-submit {
+  font-family: var(--font-pixel);
+  padding: 10px 20px;
+  background-color: var(--accent-color-blue);
+  color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+#name-entry-modal button.name-submit:hover {
+  background-color: var(--accent-color-red);
+}
+
 .context-info-icon {
   position: absolute;
   top: 5px;
