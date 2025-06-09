@@ -86,6 +86,44 @@ function ensureChuachePosition() {
   }
 }
 
+function animateChuacheToGame() {
+  const headerChar = document.querySelector('.header-char');
+  const targetImg = document.getElementById('chuache-image');
+  if (!headerChar || !targetImg) return;
+
+  targetImg.classList.add('invisible');
+  const startRect = headerChar.getBoundingClientRect();
+  const endRect = targetImg.getBoundingClientRect();
+
+  const clone = headerChar.cloneNode(true);
+  clone.style.position = 'fixed';
+  clone.style.left = `${startRect.left}px`;
+  clone.style.top = `${startRect.top}px`;
+  clone.style.width = `${startRect.width}px`;
+  clone.style.height = `${startRect.height}px`;
+  clone.style.transformOrigin = 'bottom right';
+  clone.style.zIndex = '1000';
+  document.body.appendChild(clone);
+
+  headerChar.style.visibility = 'hidden';
+
+  const dx = endRect.left - startRect.left;
+  const dy = endRect.top - startRect.top;
+  const sx = endRect.width / startRect.width;
+  const sy = endRect.height / startRect.height;
+
+  requestAnimationFrame(() => {
+    clone.style.transition = 'transform 0.8s ease-out';
+    clone.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+  });
+
+  clone.addEventListener('transitionend', () => {
+    clone.remove();
+    headerChar.style.display = 'none';
+    targetImg.classList.remove('invisible');
+  }, { once: true });
+}
+
 // Ensure a Firestore instance is available when this script runs
 if (typeof window !== 'undefined') {
   if (typeof window.db === 'undefined' &&
@@ -2660,6 +2698,7 @@ finalStartGameButton.addEventListener('click', async () => {
     configFlowScreen.style.display = 'none';
     gameScreen.style.display = 'block';
     ensureChuachePosition();
+    animateChuacheToGame();
     // El resto de tu lógica de inicio de juego (setupScreen.style.display = 'none'; gameScreen.style.display = 'block'; etc.)
     // ...
     feedback.innerHTML = '';
