@@ -566,7 +566,7 @@ backButton.addEventListener('click', () => {
         }
     let loaded = false;
     try {
-      const resp = await fetch(`verbos.json?cb=${Date.now()}`);
+      const resp = await fetch('verbos.json');
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       initialRawVerbData = await resp.json();
       loaded = true;
@@ -1572,14 +1572,16 @@ function renderSetupRecords() {
 
 
 async function loadVerbs() {
-  try {
-    const resp = await fetch(`verbos.json?cb=${Date.now()}`);
-    if (!resp.ok) throw new Error('Network response was not ok');
-    initialRawVerbData = await resp.json();
-  } catch (error) {
-    console.error("Error fetching raw verb data:", error);
-    alert("Could not load verb data file.");
-    return false;
+  if (!initialRawVerbData || initialRawVerbData.length === 0) {
+    try {
+      const resp = await fetch('verbos.json');
+      if (!resp.ok) throw new Error('Network response was not ok');
+      initialRawVerbData = await resp.json();
+    } catch (error) {
+      console.error("Error fetching raw verb data:", error);
+      alert("Could not load verb data file.");
+      return false;
+    }
   }
 
   // 1) Filtrado por tipos de irregularidad
