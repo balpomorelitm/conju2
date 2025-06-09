@@ -2081,6 +2081,7 @@ body.game-active, html.game-active {
 }
 /* Helpers */
 .hidden { display: none !important; }
+.invisible { visibility: hidden !important; }
 
 .dropdown {
   position: relative;
