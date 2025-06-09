@@ -2434,7 +2434,8 @@ function startTimerMode() {
           chuacheSpeaks('gameover');
       clearInterval(countdownTimer);
   
-      openNameModal('⏱️ Time is up! Your name?', function(name) {
+      setTimeout(() => {
+        openNameModal('⏱️ Time is up! Your name?', function(name) {
         if (name) {
           db.collection("records").add({
             name: name,
@@ -2453,7 +2454,8 @@ function startTimerMode() {
         } else {
           fadeOutToMenu(quitToSettings);
         }
-      });
+        });
+      }, 2000);
     }
   }, 1000);
 }
@@ -2808,7 +2810,8 @@ function checkFinalStartButtonState() {
             endButton.classList.add('electric-effect');
             setTimeout(() => endButton.classList.remove('electric-effect'), 1000);
 
-            openNameModal('¿Cómo te llamas?', function(name) {
+            setTimeout(() => {
+                openNameModal('¿Cómo te llamas?', function(name) {
 
 
                 if (name) {
@@ -2834,7 +2837,8 @@ function checkFinalStartButtonState() {
                 } else {
                     fadeOutToMenu(quitToSettings);
                 }
-            });
+                });
+            }, 2000);
 
 
         });

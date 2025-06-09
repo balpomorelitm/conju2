@@ -1103,6 +1103,7 @@ button:active {
 
   #name-entry-modal {
     max-height: 42.5vh;
+    font-size: 0.6em;
   }
 
   .specific-modal-content {
@@ -2818,6 +2819,7 @@ body,
 #name-entry-modal {
   height: 37.5vh;
   max-height: 300px;
+  font-size: 0.6em;
 }
 
 .specific-modal-close-btn:hover {
