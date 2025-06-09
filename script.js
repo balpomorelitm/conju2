@@ -875,7 +875,6 @@ function filterVerbTypes() {
           
           if (verbTypeValue === 'first_person_irregular' || 
               (verbTypeValue === 'irregular_root' && irregularRootAppliesToPresent)) {
-            console.log(`Dependencia: Deseleccionando 'multiple_irregularities' (en filterVerbTypes) debido a ${verbTypeValue}`);
             multipleIrrBtn.classList.remove('selected');
           }
         }
@@ -896,7 +895,6 @@ function filterVerbTypes() {
       btn.classList.add('selected-mode');
       document.getElementById('setup-screen').style.display = 'block';
       filterVerbTypes();
-      console.log('Selected mode:', selectedGameMode);
     });
   });
 
@@ -907,7 +905,6 @@ function filterVerbTypes() {
       soundClick.play();
       configButtons.forEach(b => b.classList.remove('selected-mode'));
       btn.classList.add('selected-mode');
-      console.log('Selected config mode:', currentOptions.mode);
     });
   });
 
@@ -1436,7 +1433,6 @@ function renderSetupRecords() {
 
 
 async function loadVerbs() {
-  console.log("loadVerbs se está ejecutando."); // Para depuración
   try {
     const resp = await fetch(`verbos.json?cb=${Date.now()}`);
     if (!resp.ok) throw new Error('Network response was not ok');
@@ -1467,7 +1463,6 @@ async function loadVerbs() {
 
   if (manuallySelectedVerbInfinitives.length > 0) {
     // **CASO 1: El usuario ha seleccionado verbos específicos manualmente.**
-    console.log("Manual verb selection active:", manuallySelectedVerbInfinitives);
 
     // Empezamos con los verbos crudos que coinciden con la selección manual
     verbsToConsiderForGame = initialRawVerbData.filter(v => 
@@ -1483,10 +1478,8 @@ async function loadVerbs() {
       allVerbData = [];
       return false;
     }
-    console.log("Verbos después de filtro manual y de tiempo:", verbsToConsiderForGame.map(v=>v.infinitive_es));
 
   } else {
-    console.log("Sin selección manual de verbos. Filtrando por tipo de irregularidad y tiempo.");
 
     if (selectedselectedTypes.length === 0) {
       alert('Please select at least one type of irregularity if you do not choose specific verbs..');
@@ -1501,7 +1494,6 @@ async function loadVerbs() {
         )
       )
     );
-    console.log("Verbos después de filtro por irregularidad y tiempo:", verbsToConsiderForGame.map(v=>v.infinitive_es));
   }
 
   // Comprobación final y asignación
@@ -1512,7 +1504,6 @@ async function loadVerbs() {
   }
 
   allVerbData = verbsToConsiderForGame;
-  console.log(`Se usarán ${allVerbData.length} verbos para el juego.`);
   return true;
 }
 // Helper para obtener los tiempos seleccionados
@@ -1813,7 +1804,6 @@ function prepareNextQuestion() {
 		 prizeNote.textContent = '🎁Lucky life if you conjugate this one correctly🎁!';
 		 qPrompt.parentNode.insertBefore(prizeNote, qPrompt.nextSibling);
 		// TODO: Modificar promptText para indicar que es premio
-		console.log("VERBO PREMIO ACTIVADO!");
 	  }
 	}
 
@@ -1930,7 +1920,6 @@ function checkAnswer() {
     ));
 
     if (engProns.length === 0 && spPronouns.length > 0) {
-        console.warn(`Modo Receptivo: No se mapearon pronombres ingleses para la forma '${spanishForm}' (pronombres ES: ${spPronouns.join(', ')}). Usando infinitivo como pista.`);
         if (ans !== '') { 
             timerTimeLeft = Math.max(0, timerTimeLeft - 3);
             checkTickingSound();
@@ -2087,7 +2076,6 @@ function checkAnswer() {
     if (totalCorrectAnswersForLife >= correctAnswersToNextLife) {
       remainingLives++;
       // TODO: Llamar a función para animación/sonido de ganar vida
-      console.log("VIDA EXTRA por acumulación! Vidas:", remainingLives);
 	  // refrescar UI de vidas y título ANTES de la animación
       updateTotalCorrectForLifeDisplay();
       updateGameTitle();
@@ -2101,7 +2089,6 @@ function checkAnswer() {
     currentStreakForLife++;
     if (currentStreakForLife >= streakGoalForLife) {
       remainingLives++;
-      console.log("VIDA EXTRA por racha! Vidas:", remainingLives);
 	  updateGameTitle();
 	  updateStreakForLifeDisplay();
 	  updateTotalCorrectForLifeDisplay();
@@ -2118,7 +2105,6 @@ function checkAnswer() {
     if (isPrizeVerbActive) {
       remainingLives++;
       // TODO: Llamar a función para animación/sonido de ganar vida (SONIDO ESPECIAL)
-      console.log("VIDA EXTRA por VERBO PREMIO! Vidas:", remainingLives);
       showLifeGainedAnimation(true); // true indica que es por verbo premio para sonido especial
 
       isPrizeVerbActive = false; // Se consume el premio
@@ -2191,7 +2177,6 @@ function checkAnswer() {
 		streak: bestStreak
       })
       .then(() => {
-        console.log("Record saved online!");
                 renderSetupRecords();
       })
       .catch(error => console.error("Error saving record:", error))
@@ -2312,7 +2297,6 @@ function startTimerMode() {
           streak: bestStreak
         })
         .then(() => {
-          console.log("Record saved online!");
           renderSetupRecords();
         })
         .catch(error => console.error("Error saving record:", error))
@@ -2335,11 +2319,9 @@ function updateTotalCorrectForLifeDisplay() {
 }
 
 function skipQuestion() {
-	console.log('⏭ skipQuestion called');
 	if (soundSkip) {
 	  soundSkip
 		.play()
-		.then(() => console.log('🔈 skip sound played'))
 		.catch(err => console.error('❌ skip sound error:', err));
 	} else {
 	  console.error('❌ soundSkip is undefined');
@@ -2673,10 +2655,8 @@ function checkFinalStartButtonState() {
                     verb: currentQuestion.verb.infinitive_es, // currentQuestion debe estar disponible
                     streak: bestStreak 
                 };
-                console.log("Intentando guardar este récord (endButton):", JSON.stringify(recordData, null, 2));
                 db.collection("records").add(recordData)
                   .then(() => {
-                    console.log("Record saved online!");
                     renderSetupRecords();
                     updateRanking();
                   })
@@ -2741,14 +2721,11 @@ function renderVerbTypeButtons() {
           if ((button.dataset.value === 'first_person_irregular' || 
               (button.dataset.value === 'irregular_root' && irregularRootAppliesToPresent)) && 
               !isNowSelected) { 
-            console.log(`Deseleccionando 'multiple_irregularities' por dependencia con ${button.dataset.value}`);
             multipleIrrBtn.classList.remove('selected');
           }
         }
       }
       
-		console.log(`Clic en tipo irregular: ${button.dataset.value}, ahora seleccionado: ${isNowSelected}`);
-		console.log("Listener de Tipo Irregular -> llamando a applyIrregularityAndTenseFiltersToVerbList");
 		applyIrregularityAndTenseFiltersToVerbList(); 
         updateVerbTypeButtonsVisualState(); // Añadido en tu código original, mantenerlo.
     });
@@ -2784,7 +2761,6 @@ function openSpecificModal(infoKey) {
     if (produceAnim) setTimeout(() => typeWriter(produceAnim, 'amo', 150), 50);
 
   } else {
-    console.warn('Modal, content area, backdrop not found, or infoKey invalid:', infoKey);
   }
 }
 
@@ -3007,22 +2983,14 @@ function showLifeGainedAnimation() {
   if (soundLifeGained) {
     try {
       soundLifeGained.currentTime = 0;
-      const playPromise = soundLifeGained.play();
-      if (playPromise && typeof playPromise.then === 'function') {
-        playPromise
-          .then(() => console.log('🔊 soundLifeGained.play() OK'))
-          .catch(err => console.warn('⚠️ Error al reproducir sonido:', err));
-      }
+      soundLifeGained.play();
     } catch (e) {
       console.error('⚠️ Excepción al reproducir sonido:', e);
     }
-  } else {
-    console.warn('⚠️ soundLifeGained es null o undefined');
   }
   
   // 2) POP en contador de vidas
   const livesEl = document.getElementById('lives-count');
-  console.log('❤️ Preparando pop en:', livesEl);
   if (livesEl) {
     livesEl.classList.add('just-gained');
     livesEl.addEventListener('animationend', () => {
@@ -3032,18 +3000,15 @@ function showLifeGainedAnimation() {
 
   // 3) CONFETI: asegurarnos de que el canvas está visible
   const canvas = document.getElementById('life-confetti-canvas');
-  console.log('🎨 Canvas encontrado:', canvas);
   if (!canvas) return;
   // mostrarlo explícitamente
   canvas.style.display = 'block';
-  console.log('🎨 Canvas style after display:', getComputedStyle(canvas).display);
 
   
   const ctx  = canvas.getContext('2d');
   const rect = canvas.getBoundingClientRect();
   canvas.width  = rect.width;
   canvas.height = rect.height;
-  console.log('🎨 Canvas tamaño de backing:', canvas.width, canvas.height);
 
   // generar partículas…
   const particles = [];
@@ -3098,7 +3063,6 @@ function showLifeGainedAnimation() {
     } else {
       ctx.clearRect(0,0,canvas.width,canvas.height);
       canvas.style.display = 'none';
-      console.log('🎨 Animación terminada y canvas oculto');
     }
   }
   requestAnimationFrame(animate);
