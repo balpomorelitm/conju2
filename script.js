@@ -77,6 +77,15 @@ function playFromStart(audio) {
   audio.play().catch(() => {});
 }
 
+// Ensure antagonist container stays at the right of the game layout
+function ensureChuachePosition() {
+  const layout = document.getElementById('game-layout');
+  const box = document.getElementById('chuache-box');
+  if (layout && box && box.parentNode !== layout) {
+    layout.appendChild(box);
+  }
+}
+
 // Ensure a Firestore instance is available when this script runs
 if (typeof window !== 'undefined') {
   if (typeof window.db === 'undefined' &&
@@ -2650,6 +2659,7 @@ finalStartGameButton.addEventListener('click', async () => {
     // Ocultar pantalla de configuración de flujo y mostrar pantalla de juego
     configFlowScreen.style.display = 'none';
     gameScreen.style.display = 'block';
+    ensureChuachePosition();
     // El resto de tu lógica de inicio de juego (setupScreen.style.display = 'none'; gameScreen.style.display = 'block'; etc.)
     // ...
     feedback.innerHTML = '';
