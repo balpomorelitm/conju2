@@ -395,8 +395,8 @@ button:active {
     flex-direction: column;
     align-items: center;
 }
-.tense-container {
-    flex-direction: row;
+.tense-badges {
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 4px;
