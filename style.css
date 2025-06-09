@@ -67,14 +67,6 @@ body::before {
 }
 
 
-@keyframes scan {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(0%);
-  }
-}
 
 body::after {
   content: "";
@@ -94,14 +86,6 @@ body::after {
   z-index: 2;
 }
 
-@keyframes scan {
-  0% {
-    top: -100%;
-  }
-  100% {
-    top: 100%;
-  }
-}
 
 .main-header .glitch-title {
   font-size: clamp(1em, 8vw, 2.2em);
@@ -238,13 +222,6 @@ body::after {
   100% { box-shadow: 0 0 8px rgba(255,  0,   0, 0.8); }
 }
 
-.toggle-button.selected {
-  /* Gradient de fondo y animación pulsante */
-  background: linear-gradient(45deg, #ff6ec4, #7873f5);
-  color: #fff;
-  animation: pulse-colors 2s infinite;
-  border-color: transparent;
-}
 
 .screen {
   background-color: var(--container-bg);
@@ -556,44 +533,6 @@ button:active {
 }
 
 
-#hku-logo {
-  width: 50px; // Ajusta tamaño
-  height: auto;
-  image-rendering: pixelated; // Intenta forzar estilo pixelado
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
-  vertical-align: middle; // Alinear con el título
-}
-
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 10px;
-}
-
-.logo-img {
-  height: 80px;
-}
-
-.wobble-text {
-  font-family: 'PixelSerif', sans-serif;
-  font-size: 24px;
-  color: #ffffff;
-  animation: wobble 1s infinite ease-in-out;
-  display: inline-block;
-  text-transform: uppercase;
-  line-height: 1;
-}
-
-@keyframes wobble {
-  0%   { transform: rotate(0deg); }
-  25%  { transform: rotate(2deg); }
-  50%  { transform: rotate(0deg); }
-  75%  { transform: rotate(-2deg); }
-  100% { transform: rotate(0deg); }
-}
 
 
 .music-button {
@@ -734,19 +673,6 @@ button:active {
  .verb-type-button.disabled .verb-type-hint {
      color: #777 !important; 
  }
-/* --- Vibración para feedback --- */
-@keyframes vibrate {
-  0%   { transform: translate(0); }
-  20%  { transform: translate(-1px, 1px); }
-  40%  { transform: translate(1px, -1px); }
-  60%  { transform: translate(-1px, -1px); }
-  80%  { transform: translate(1px, 1px); }
-  100% { transform: translate(0); }
-}
-
-.vibrate {
-  animation: vibrate 0.3s infinite;
-}
 
 #volume-slider{
   appearance:none;
@@ -2130,7 +2056,6 @@ body.game-active, html.game-active {
   to   { opacity: 0.6; }
 }
 /* Helpers */
-.hidden { display: none !important; }
 .invisible { visibility: hidden !important; }
 
 .dropdown {
