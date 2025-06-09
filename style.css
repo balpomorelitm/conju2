@@ -482,9 +482,10 @@ button:active {
 }
 
 #answer-area label {
-  display: block; /* Cada label en su línea */
-  margin-bottom: 5px;
+  display: inline-block;
+  margin-right: 10px;
   font-size: 1.1em;
+  margin-bottom: 0;
 }
 
 #answer-area input[type="text"] {
@@ -494,7 +495,7 @@ button:active {
   color: var(--text-color);
   border: 1px solid var(--border-color);
   padding: 8px 10px;
-  width: calc(100% - 22px); /* Ajustar ancho con padding/border */
+  width: auto;
   margin-bottom: 15px;
   border-radius: 0;
 }
@@ -545,9 +546,13 @@ button:active {
 /* Área de Puntuación */
 #score-display {
   margin-top: 20px;
-  font-size: 2.1em;
+  font-size: 1.2em;
   background-color: transparent;
   padding: 10px;
+}
+
+#streak-display {
+  font-size: 1em;
 }
 
 
@@ -841,6 +846,10 @@ button:active {
 #input-en-container {
   width: 80%;
   margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 #answer-area button,
@@ -850,8 +859,8 @@ button:active {
 }
 
 #answer-area {
-  flex: 0 0 70%;
-  max-width: 70%;
+  flex: 0 0 100%;
+  max-width: 100%;
 }
 
 #action-buttons {
@@ -3205,17 +3214,18 @@ td.irregular-highlight {
 
 #game-layout {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 #game-main {
-  flex: 1 1 auto;
+  flex: 0 0 70%;
+  max-width: 70%;
 }
 
 #answer-row {
   display: flex;
-  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
 }
 
 #chuache-box {
@@ -3252,7 +3262,6 @@ td.irregular-highlight {
     flex-basis: 100%;
     max-width: 100%;
   }
-}
 }
 
 .speech-bubble {
