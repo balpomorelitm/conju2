@@ -1232,6 +1232,10 @@ button:active {
   display: inline-block;
   width: 0.5em;        /* ajusta a cuánto quieras el espacio */
 }
+.glitch-title .word {
+  display: inline-block;
+  white-space: nowrap;
+}
 .hidden {
   display: none !important;
 }

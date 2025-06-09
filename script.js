@@ -518,31 +518,30 @@ backButton.addEventListener('click', () => {
     }, 600);
   }, 3000);
 
-	const titleEl = document.querySelector('.glitch-title, #main-title');
-	if (titleEl) {
-	  const letters = Array.from(titleEl.textContent);
-
+        const titleEl = document.querySelector('.glitch-title, #main-title');
+        if (titleEl) {
+          const words = titleEl.textContent.trim().split(/\s+/);
           let seenT = false;
           let seenC = false;
 
-	  titleEl.innerHTML = letters
-		.map(ch => {
-		  if (ch === ' ') {
-			return '<span class="letter space">&nbsp;</span>';
-		  }
-                  let extraClass = '';
-		  if (ch === 'T' && !seenT) {
-			extraClass = ' big-letter';
-			seenT = true;
-		  }
-		  if (ch === 'C' && !seenC) {
-			extraClass += ' big-letter';
-			seenC = true;
-		  }
-		  return `<span class="letter${extraClass}">${ch}</span>`;
-		})
-		.join('');
-	}
+          const processed = words.map(word => {
+            const letters = Array.from(word).map(ch => {
+              let extraClass = '';
+              if (ch === 'T' && !seenT) {
+                extraClass = ' big-letter';
+                seenT = true;
+              }
+              if (ch === 'C' && !seenC) {
+                extraClass += ' big-letter';
+                seenC = true;
+              }
+              return `<span class="letter${extraClass}">${ch}</span>`;
+            }).join('');
+            return `<span class="word">${letters}</span>`;
+          }).join('<span class="letter space">&nbsp;</span>');
+
+          titleEl.innerHTML = processed;
+        }
     let loaded = false;
     try {
       const resp = await fetch(`verbos.json?cb=${Date.now()}`);
