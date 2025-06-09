@@ -529,7 +529,7 @@ button:active {
   border: 1px dashed var(--border-color);
   border-radius: 0;
   line-height: 1.4;
-  width: 100%;
+  width: 80%;
 }
 #feedback-area:empty { /* Ocultar borde si está vacío */
     border: none;
@@ -780,10 +780,9 @@ button:active {
 /*--- contenedor relativo para score+llamas ---*/
 #score-container {
   position: relative;
-  display: block;
-  width: 100%;
-  background-color: #0e1f0e;
-  margin: 0 auto;
+  display: inline-block;
+  background-color: #0e1f0e;  /* Para que el ancho sea el justo */
+  margin: 0 auto;           /* Centra horizontalmente */
   overflow: hidden;          /* Oculta el fuego que sobresale */
   padding: 5px 12px;      /* espacio arriba/abajo y a los lados */
   font-size: 1.1em;         /* Igual que #score-display */
@@ -1180,7 +1179,7 @@ button:active {
 
   #score-container {
     padding: 8px 10px;
-    width: 100%;
+    width: 90%;
   }
 
   #score-display {
