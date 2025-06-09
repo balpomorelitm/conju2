@@ -80,7 +80,6 @@ const specificInfoData = {
     html: `When this option is <strong>ON</strong>, you don't need to type accent marks to be correct.<br>
            Leaving it <strong>OFF</strong> grants a <span class="points-value">+8</span> bonus each time you include the correct accents.`
   },
-  },
   presentInfo: {
     title: "Present Tense (Presente de Indicativo)",
     html: `<p>The Present Tense describes actions happening <strong>now</strong>, <strong>habits</strong>, and <strong>universal truths</strong>.</p>
