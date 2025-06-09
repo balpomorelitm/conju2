@@ -384,8 +384,8 @@ button:active {
 
 .mode-tense-container {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: center;
+    gap: 15px;
     flex-wrap: wrap;
 }
 
@@ -395,6 +395,12 @@ button:active {
     flex-direction: column;
     align-items: center;
 }
+.tense-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+}
 
 .badge-label {
     font-size: 0.75em;
@@ -403,8 +409,7 @@ button:active {
     color: var(--text-color);
 }
 
-.mode-badge,
-.tense-badge {
+.mode-badge {
     padding: 6px 12px;
     border: 2px solid #fff;
     border-radius: 12px;
@@ -414,12 +419,35 @@ button:active {
     background-color: #333;
     text-shadow: 1px 1px 2px #000;
 }
+.mode-badge.receptive { background-color: #dc3545; }
+.mode-badge.productive_easy { background-color: #6f42c1; }
+.mode-badge.productive { background-color: #28a745; }
+.mode-badge.infinite { background-color: #e68a00; }
+.mode-badge.timer { background-color: #ee3c30; }
+.mode-badge.lives { background-color: #0b5ac8; }
 
-.tense-badge.present { background-color: #4caf50; }
-.tense-badge.past_simple { background-color: #e57373; }
-.tense-badge.present_perfect { background-color: #64b5f6; }
-.tense-badge.imperfect_indicative { background-color: #ffb74d; }
-.tense-badge.future_simple { background-color: #ba68c8; }
+.tense-badge {
+    padding: 4px 8px;
+    border: 2px solid #fff;
+    border-radius: 12px;
+    font-family: var(--font-pixel);
+    font-size: 0.7em;
+    color: #fff;
+    background-color: #333;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.mode-badge,
+.tense-badge {
+    pointer-events: none;
+    cursor: default;
+}
+
+.tense-badge.present { background-color: transparent; border-color: #aaa; color: #aaa; }
+.tense-badge.past_simple { background-color: #b71c1c; }
+.tense-badge.present_perfect { background-color: #d32f2f; }
+.tense-badge.imperfect_indicative { background-color: #e57373; }
+.tense-badge.future_simple { background-color: #00e5ff; color: #000; }
 .tense-badge.condicional_simple { background-color: #4dd0e1; }
 
 #question-area p { /* El texto "Question:" */

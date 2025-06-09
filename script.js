@@ -2802,21 +2802,21 @@ if (specificModalBackdrop) {
 
 function updateGameTitle() {
   const modeLabels = {
-    'infinite':   'Infinite',
-    'timer':      'Timer 4m',
-    'lives':      'Lives',
-    'receptive':  'Recall',
-    'productive_easy': 'Conjugate',
-    'productive': 'Produce'
+    'infinite':   '♾️Infinite♾️',
+    'timer':      'Timer 4m⏱️',
+    'lives':      '5x💖',
+    'receptive':  '💭ReCall💭',
+    'productive_easy': '⚙️conjugATE⚙️',
+    'productive': '⌨️Pr0duc€⌨️'
   };
 
   const tenseNames = currentOptions.tenses.map(t => t.replace('_', ' '));
   const displayMode = modeLabels[currentOptions.mode] || currentOptions.mode;
 
-  const modeBtn = `<button class="mode-badge">${displayMode}</button>`;
+  const modeBtn = `<span class="mode-badge ${currentOptions.mode}">${displayMode}</span>`;
   const tenseBtns = tenseNames.map(t => {
     const cls = 'tense-badge ' + t.replace(/\s+/g, '_');
-    return `<button class="${cls}">${t}</button>`;
+    return `<span class="${cls}">${t}</span>`;
   }).join(' ');
 
   let html = `
