@@ -17,6 +17,14 @@ const chuacheSound = new Audio('sounds/talks.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+// Track last index used for each type of reaction
+const lastChuacheIndex = {
+  correct: -1,
+  wrong: -1,
+  skip: -1,
+  gameover: -1
+};
+
 const chuacheReactions = {
   correct: [
     "You have been upgraded from 'terrible' to 'adequate'.",
@@ -63,7 +71,14 @@ function chuacheSpeaks(type) {
   if (!image || !bubble) return;
 
   const messages = chuacheReactions[type];
-  const message = messages[Math.floor(Math.random() * messages.length)];
+  if (!messages || messages.length === 0) return;
+
+  let index;
+  do {
+    index = Math.floor(Math.random() * messages.length);
+  } while (index === lastChuacheIndex[type] && messages.length > 1);
+  lastChuacheIndex[type] = index;
+  const message = messages[index];
 
   image.src = "images/chuachetalks.gif";
   bubble.textContent = message;
