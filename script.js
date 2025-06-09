@@ -1998,12 +1998,14 @@ function checkAnswer() {
     if (streak > bestStreak) bestStreak = streak;
     multiplier = Math.min(5, multiplier + 0.5);
     
-    let basePoints = 10;  
-    if (currentOptions.mode === 'receptive') {  
-      basePoints = 5;  
-    } else if (currentOptions.mode === 'productive') {  
-      basePoints = 15;  
-    }  
+    let basePoints = 10;
+    if (currentOptions.mode === 'receptive') {
+      basePoints = 5;
+    } else if (currentOptions.mode === 'productive') {
+      basePoints = 15;
+    }
+    const tenseBonus = Math.max(0, (currentOptions.tenses?.length || 1) - 1) * 2;
+    basePoints += tenseBonus;
     multiplier = 1 + 0.1 * streak;
 	
 	const pts = Math.round(basePoints * multiplier * bonus)
@@ -2868,19 +2870,19 @@ function typewriterEffect(textElement, text, interval) {
 						<div class="tooltip-row">
 							<div class="tooltip-box">
 								<h5>💭 Recall</h5>
-								<p>EASY - Given a Spanish tense and conjugation, type the English pronoun and <strong>base verb in present tense</strong>.</p><p><strong>Base points:</strong> +5</p>
+                                                                <p>EASY - Given a Spanish tense and conjugation, type the English pronoun and <strong>base verb in present tense</strong>.</p><p><strong>Base points:</strong> +5 (+2 per extra tense)</p>
 								<div class="example-prompt">"SIMPLE PAST: recordé"</div>
 								<div class="typing-animation" id="recall-anim"></div>
 							</div>
 							<div class="tooltip-box">
 								<h5>⚙️ Conjugate</h5>
-								<p>NORMAL - Given a Spanish verb and pronoun, type the correct conjugated form in Spanish.</p><p><strong>Base points:</strong> +10</p>
+                                                                <p>NORMAL - Given a Spanish verb and pronoun, type the correct conjugated form in Spanish.</p><p><strong>Base points:</strong> +10 (+2 per extra tense)</p>
 								<div class="example-prompt">"conjugar – nosotros"</div>
 								<div class="typing-animation" id="easy-anim"></div>
 							</div>
 							<div class="tooltip-box">
 								<h5>⌨️ Produce</h5>
-								<p>HARD - Given the English verb and a Spanish pronoun, type the correct conjugation in Spanish.</p><p><strong>Base points:</strong> +15</p>
+                                                                <p>HARD - Given the English verb and a Spanish pronoun, type the correct conjugation in Spanish.</p><p><strong>Base points:</strong> +15 (+2 per extra tense)</p>
 								<div class="example-prompt">"Present: to love – yo"</div>
 								<div class="typing-animation" id="produce-anim"></div>
 							</div>
