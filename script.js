@@ -2827,7 +2827,9 @@ function updateGameTitle() {
       </div>
       <div class="tense-container">
         <span class="badge-label">${tenseNames.length > 1 ? 'Tenses' : 'Tense'}</span>
-        ${tenseBtns}
+        <div class="tense-badges">
+          ${tenseBtns}
+        </div>
       </div>
     </div>
   `;
