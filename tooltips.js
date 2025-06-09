@@ -49,6 +49,7 @@ const specificInfoData = {
            <em>Example:</em> <span class="example-prompt-text">SIMPLE PAST: comí</span> You type:
            <div class="typing-animation-container"><div class="typing-animation" id="recall-example-anim"></div></div>
            <strong>Base Points:</strong> <span class="points-value">+5</span> per correct answer.<br>
+           <span class="points-value">+2</span> for each extra tense selected.<br>
            While this is the easiest mode, translation can be tricky! Some Spanish verbs don't have a single, direct English equivalent, and tenses can translate in multiple ways.`
   },
   productiveEasyConfig: {
@@ -59,6 +60,7 @@ const specificInfoData = {
            <em>Example:</em> <span class="example-prompt-text">Presente: conjugar – nosotros</span> You type:
            <div class="typing-animation-container"><div class="typing-animation" id="conjugate-example-anim"></div></div>
            <strong>Base Points:</strong> <span class="points-value">+10</span> per correct answer.<br>
+           <span class="points-value">+2</span> for each extra tense selected.<br>
            <strong class="emphasis-mechanic">💖 Lives Mode Bonus:</strong> When playing in "Lives Mode", irregular or reflexive verbs in "Conjugate" have a <span class="emphasis-mechanic">~1 in 30</span> chance of being a 🎁 Prize Verb for an extra life!`
   },
   productiveConfig: {
@@ -73,6 +75,7 @@ const specificInfoData = {
            <em>Example:</em> <span class="example-prompt-text">Present: to love – yo</span> You type:
            <div class="typing-animation-container"><div class="typing-animation" id="produce-example-anim"></div></div>
            <strong>Base Points:</strong> <span class="points-value">+15</span> per correct answer.<br>
+           <span class="points-value">+2</span> for each extra tense selected.<br>
           <strong class="emphasis-mechanic">💖 Lives Mode Bonus:</strong> When playing in "Lives Mode", irregular or reflexive verbs in "Produce" have a <span class="emphasis-mechanic">~1 in 20</span> chance of being a 🎁 Prize Verb for an extra life!`
   },
   accentHelp: {
