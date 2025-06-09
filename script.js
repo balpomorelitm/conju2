@@ -852,7 +852,6 @@ function updateCurrentPronouns() {
 }
   
 function filterVerbTypes() {
-  console.log("filterVerbTypes ejecutándose...");
   const selectedTenses = getSelectedTenses();
 
   document.querySelectorAll('.verb-type-button').forEach(button => {
@@ -884,10 +883,8 @@ function filterVerbTypes() {
     }
   });
 
-  console.log("filterVerbTypes -> llamando a applyIrregularityAndTenseFiltersToVerbList");
   applyIrregularityAndTenseFiltersToVerbList();
-  console.log("filterVerbTypes -> llamando a updateVerbTypeButtonsVisualState");
-  updateVerbTypeButtonsVisualState(); 
+  updateVerbTypeButtonsVisualState();
 }
 
   const gameModeButtons = document.querySelectorAll('#game-modes .mode-button');
