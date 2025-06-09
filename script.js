@@ -242,6 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 let currentConfigStep = 'splash'; // 'splash', 'mode', 'difficulty', 'details'
 let selectedMode = null;
 let selectedDifficulty = null;
+const DEFAULT_DIFFICULTY = 'productive_easy';
 let provisionallySelectedOption = null;
 
 const configFlowScreen = document.getElementById('config-flow-screen');
@@ -645,6 +646,12 @@ function navigateToStep(stepName) {
         const diffInfoTitle = selectedDifficulty ? (specificInfoData[configButtonsData[selectedDifficulty]?.infoKey]?.title || selectedDifficulty.replace(/_/g, ' ')) : "Not selected";
 
         if (stepName === 'difficulty') {
+            if (!selectedDifficulty) {
+                const defaultBtn = difficultyButtonsContainer.querySelector(`[data-mode="${DEFAULT_DIFFICULTY}"]`);
+                if (defaultBtn) {
+                    handleOptionProvisionalSelection(defaultBtn, 'difficulty', defaultBtn.dataset.infokey);
+                }
+            }
             updateInfoPanelContent('Select Difficulty', `<p>Mode: <strong>${modeInfoTitle}</strong>.<br>Choose the game's challenge level. Details for the selected difficulty will appear here.</p>`);
             const firstDiffButton = difficultyButtonsContainer.querySelector('.config-flow-button:not([style*="display: none"])');
             if (firstDiffButton) focusOption(firstDiffButton, difficultyButtonsContainer);
