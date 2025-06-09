@@ -824,6 +824,10 @@ button:active {
 #score-section {
   text-align: center;
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 #question-prompt,
@@ -3207,6 +3211,7 @@ td.irregular-highlight {
 
 #chuache-box {
   flex: 0 0 30%;
+  max-width: 170px;
   position: relative;
 }
 
@@ -3227,6 +3232,7 @@ td.irregular-highlight {
 @media (max-width: 600px) {
   #chuache-box {
     flex-basis: 30%;
+    max-width: 120px;
     width: 120px;
   }
   #chuache-container {
