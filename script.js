@@ -2798,24 +2798,32 @@ function updateGameTitle() {
     'productive': 'Produce'
   };
 
-  // 2) Construye la lista de tiempos separados por comas
-  const tm = currentOptions.tenses
-    .map(t => t.replace('_', ' '))
-    .join(', ');
-
-  // 3) Elige la etiqueta correcta o, si no existe, el valor crudo
+  const tenseNames = currentOptions.tenses.map(t => t.replace('_', ' '));
   const displayMode = modeLabels[currentOptions.mode] || currentOptions.mode;
 
-  // 4) Monta el HTML del título con saltos de línea
-  let html = `Mode: ${displayMode}<br>`;
-  html += `Tenses: ${tm}`;
+  const modeBtn = `<button class="mode-badge">${displayMode}</button>`;
+  const tenseBtns = tenseNames.map(t => {
+    const cls = 'tense-badge ' + t.replace(/\s+/g, '_');
+    return `<button class="${cls}">${t}</button>`;
+  }).join(' ');
 
-  // 5) Si es modo vidas, añade otra línea con el contador
+  let html = `
+    <div class="mode-tense-container">
+      <div class="mode-container">
+        <span class="badge-label">Mode</span>
+        ${modeBtn}
+      </div>
+      <div class="tense-container">
+        <span class="badge-label">${tenseNames.length > 1 ? 'Tenses' : 'Tense'}</span>
+        ${tenseBtns}
+      </div>
+    </div>
+  `;
+
   if (selectedGameMode === 'lives') {
-    html += `<br><span id="lives-count" style="font-size: 1.5em; vertical-align: middle;">${remainingLives}</span><img src="images/heart.webp" alt="life" style="width:40px; height:40px; vertical-align: middle; margin-left: 6px;">`;
+    html += `<div class="lives-display"><span id="lives-count">${remainingLives}</span><img src="images/heart.webp" alt="life" style="width:40px; height:40px; vertical-align: middle; margin-left: 6px;"></div>`;
   }
 
-  // 6) Renderiza como HTML en lugar de textContent
   gameTitle.innerHTML = html;
 }
 
