@@ -114,7 +114,7 @@ body::after {
   -moz-osx-font-smoothing: grayscale;
   image-rendering: pixelated;
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 
 .glitch-title {
@@ -1100,7 +1100,7 @@ button:active {
         word-break: break-word;
         text-align: center;
         position: relative;
-        z-index: 2;
+        z-index: 5;
     }
 
   #main-title {
