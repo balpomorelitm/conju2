@@ -544,15 +544,10 @@ button:active {
 
 /* Área de Puntuación */
 #score-display {
-  margin-top: 10px;
-  font-size: 1.2em;
+  margin-top: 20px;
+  font-size: 2.1em;
   background-color: transparent;
-  padding: 6px;
-}
-
-#streak-display {
-  font-size: 0.9em;
-  margin-top: 4px;
+  padding: 10px;
 }
 
 
@@ -786,16 +781,14 @@ button:active {
 /*--- contenedor relativo para score+llamas ---*/
 #score-container {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: #0e1f0e;
-  margin: 0;
-  overflow: hidden;
-  padding: 5px 6px;
-  font-size: 1.1em;
-  min-height: 40px;
-  border: 2px dashed #7f461a;
-  width: 100%;
+  display: inline-block;
+  background-color: #0e1f0e;  /* Para que el ancho sea el justo */
+  margin: 0 auto;           /* Centra horizontalmente */
+  overflow: hidden;          /* Oculta el fuego que sobresale */
+  padding: 5px 12px;      /* espacio arriba/abajo y a los lados */
+  font-size: 1.1em;         /* Igual que #score-display */
+  min-height: 40px;       /* suficiente para el texto */
+  border: 2px dashed #7f461a
 }
 
 /*--- llamas en loop horizontal al fondo ---*/
@@ -831,20 +824,14 @@ button:active {
 
 #score-section {
   text-align: center;
-  margin-top: 0;
-  margin-right: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90px;
-  flex: 0 0 90px;
+  margin-top: 20px;
 }
 
 #question-prompt,
 #feedback-area,
 #score-container,
 #ranking-box {
-  margin: 0 0 10px 0;
+  margin: 0 auto 20px;     /* margen automático a los lados, 20px abajo */
 }
 
 #question-prompt {
@@ -3221,11 +3208,17 @@ td.irregular-highlight {
 
 #game-layout {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
 
 #game-main {
   flex: 1 1 auto;
+}
+
+#answer-row {
+  display: flex;
+  align-items: flex-start;
 }
 
 #chuache-box {
@@ -3237,7 +3230,7 @@ td.irregular-highlight {
 #chuache-container {
   position: absolute;
   right: 0;
-  top: 210px;
+  top: 30px;
   width: 160px;
   z-index: 100;
   text-align: center;
@@ -3255,7 +3248,7 @@ td.irregular-highlight {
     width: 120px;
   }
   #chuache-container {
-    top: 160px;
+    top: 20px;
     width: 110px;
   }
 }
