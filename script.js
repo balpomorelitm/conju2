@@ -68,7 +68,7 @@ function chuacheSpeaks(type) {
   image.src = "images/chuachetalks.gif";
   bubble.textContent = message;
   bubble.classList.remove("hidden");
-  if (type === "wrong") bubble.classList.add("error");
+  if (type === "wrong" || type === "skip") bubble.classList.add("error");
   else bubble.classList.remove("error");
 
   playFromStart(chuacheSound);
