@@ -846,6 +846,24 @@ button:active {
   width: 100%;
 }
 
+#action-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+#action-buttons button {
+  flex: 1 1 auto;
+}
+
+@media (max-width: 600px) {
+  #action-buttons button {
+    font-size: 0.8em;
+    padding: 6px 8px;
+    margin: 5px 4px;
+  }
+}
+
 
 #setup-records {
   display: flex;
