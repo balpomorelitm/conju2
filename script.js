@@ -83,6 +83,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
 
+  function updateClueButton() {
+    const maxClues = currentOptions.mode === 'receptive' ? 1 : 2;
+    if (!checkButton) return;
+    if (currentQuestion.hintLevel >= maxClues) {
+      checkButton.innerHTML = `<span class="no-clues-left">Get Clue ${maxClues}/${maxClues}</span> / Check Answer`;
+    } else {
+      const next = currentQuestion.hintLevel + 1;
+      checkButton.innerHTML = `Get Clue ${next}/${maxClues} / Check Answer`;
+    }
+  }
+
   function checkTickingSound() {
     // Only relevant in timer mode; ensure sound doesn't play in other modes
     if (selectedGameMode !== 'timer') {
@@ -1780,8 +1791,9 @@ function prepareNextQuestion() {
   startTime = Date.now();
   ansES.value = '';
   ansEN.value = '';
+  updateClueButton();
     isPrizeVerbActive = false; // Reset por defecto
-	qPrompt.classList.remove('prize-verb-active'); // Quitar estilo especial
+        qPrompt.classList.remove('prize-verb-active'); // Quitar estilo especial
 
 	if (selectedGameMode === 'lives' && (currentOptions.mode === 'productive_easy' || currentOptions.mode === 'productive')) {
 	  let prizeChance = 0;
@@ -1880,8 +1892,9 @@ function checkAnswer() {
         timerTimeLeft = Math.max(0, timerTimeLeft - 3);
         checkTickingSound();
         currentQuestion.hintLevel = 1; // Marcar que la pista ha sido solicitada/dada
+        updateClueButton();
         ansEN.focus();
-        return; 
+        return;
     }
 
     const allForms = verbData.conjugations[tense];
@@ -2213,8 +2226,9 @@ function checkAnswer() {
 			feedback.innerHTML =
 			  `❌ Incorrect. <em>Clue 1:</em> infinitive is ` +
 			  `<strong>${currentQuestion.verb.infinitive_es}</strong>.`; // This refers to Spanish infinitive, which is contextually correct for this mode
-			currentQuestion.hintLevel = 1;
-		} else if (currentQuestion.hintLevel === 1) {
+                        currentQuestion.hintLevel = 1;
+                        updateClueButton();
+                } else if (currentQuestion.hintLevel === 1) {
 			// Ensure tenseKey is used if currentOptions.tenses can be an array
 			const conjTenseKey = currentQuestion.tenseKey;
 			const conj = currentQuestion.verb.conjugations[conjTenseKey];
@@ -2222,10 +2236,11 @@ function checkAnswer() {
 				.filter(([pr]) => pr !== currentQuestion.pronoun)
 				.map(([, form]) => `<span class="hint-btn">${form}</span>`)
 				.join('');
-			feedback.innerHTML =
-				`❌ Incorrect. <em>Clue 2:</em> ` + botones;
-			// currentQuestion.hintLevel = 2; // No level 2 in original
-		}
+                        feedback.innerHTML =
+                                `❌ Incorrect. <em>Clue 2:</em> ` + botones;
+                        currentQuestion.hintLevel = 2;
+                        updateClueButton();
+                }
 		ansES.value = '';
 		setTimeout(() => ansES.focus(), 0);
 	}

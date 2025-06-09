@@ -363,6 +363,11 @@ button:hover {
   transform: translate(1px, 1px); /* Efecto de pulsado */
   text-shadow: 1px 1px #111; /* Sombra sutil para darle profundidad */
 }
+
+.no-clues-left {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
 button:active {
     box-shadow: none;
     transform: translate(2px, 2px);
