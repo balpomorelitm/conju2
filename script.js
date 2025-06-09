@@ -2788,15 +2788,18 @@ function checkFinalStartButtonState() {
     if (endButton) {
         endButton.addEventListener('click', () => {
             playFromStart(soundElectricShock);
+            soundGameOver.play();
+            chuacheSpeaks('gameover');
             endButton.classList.add('electric-effect');
             setTimeout(() => endButton.classList.remove('electric-effect'), 1000);
-            const name = prompt('¿Cómo te llamas?'); // La variable name debe ser local a este scope
-            if (name) {
-                const recordData = {
-                    name: name,
-                    score: score,
-                    mode: selectedGameMode, // Asegúrate que selectedGameMode esté disponible (global o en este ámbito)
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            setTimeout(() => {
+                const name = prompt('¿Cómo te llamas?'); // La variable name debe ser local a este scope
+                if (name) {
+                    const recordData = {
+                        name: name,
+                        score: score,
+                        mode: selectedGameMode, // Asegúrate que selectedGameMode esté disponible (global o en este ámbito)
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     tense: currentOptions.tenses, // currentOptions debe estar disponible
                     verb: currentQuestion.verb.infinitive_es, // currentQuestion debe estar disponible
                     streak: bestStreak 
@@ -2813,6 +2816,7 @@ function checkFinalStartButtonState() {
             } else {
                 fadeOutToMenu(quitToSettings);
             }
+            }, 100); // Esperar un momento para mostrar el mensaje de Chuache
         });
     }
 
