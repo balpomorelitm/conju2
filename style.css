@@ -821,6 +821,11 @@ button:active {
   text-align: center;      /* centra títulos, botones inline, etc. */
 }
 
+#score-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
 #question-prompt,
 #feedback-area,
 #score-container,
@@ -3197,11 +3202,11 @@ td.irregular-highlight {
 }
 
 #game-main {
-  flex: 1;
+  flex: 0 0 70%;
 }
 
 #chuache-box {
-  width: 170px;
+  flex: 0 0 30%;
   position: relative;
 }
 
@@ -3221,6 +3226,7 @@ td.irregular-highlight {
 
 @media (max-width: 600px) {
   #chuache-box {
+    flex-basis: 30%;
     width: 120px;
   }
   #chuache-container {
