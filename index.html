@@ -190,8 +190,10 @@
   </div>
 
   <div id="game-screen" class="screen" style="display: none;">
-    <canvas id="life-confetti-canvas"></canvas> 
-    <h2 id="game-title"></h2>
+    <div id="game-layout">
+      <div id="game-main">
+        <canvas id="life-confetti-canvas"></canvas>
+        <h2 id="game-title"></h2>
 
 	  <div id="lives-mechanics-display" style="display: none; text-align: center; margin-bottom: 15px;">
 		<span id="total-correct-for-life-display" style="margin-right: 20px;"></span>
@@ -239,10 +241,13 @@
       </div>
 
       <div id="ranking-box"></div>
-    </div>
-    <div id="chuache-container">
-      <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
-      <div id="speech-bubble" class="speech-bubble hidden">You just got lucky.</div>
+      </div>
+      <div id="chuache-box">
+        <div id="chuache-container">
+          <div id="speech-bubble" class="speech-bubble hidden">You just got lucky.</div>
+          <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
+        </div>
+      </div>
     </div>
   </div>
   <div id="left-bubbles"></div>
