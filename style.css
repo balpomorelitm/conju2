@@ -374,13 +374,53 @@ button:active {
     font-size: 1.4em;
     text-align: center;
     margin-bottom: 25px;
-    color: var(--accent-color-blue); 
-	letter-spacing: 0.11em;
-	text-shadow: 
-    1px 1px 0 rgba(0, 0, 0, 0.7),
-    2px 2px 4px rgba(0, 0, 0, 0.5);
-	white-space: nowrap;
+    color: var(--accent-color-blue);
+    letter-spacing: 0.11em;
+    text-shadow:
+        1px 1px 0 rgba(0, 0, 0, 0.7),
+        2px 2px 4px rgba(0, 0, 0, 0.5);
+    white-space: normal;
 }
+
+.mode-tense-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.mode-container,
+.tense-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.badge-label {
+    font-size: 0.75em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    color: var(--text-color);
+}
+
+.mode-badge,
+.tense-badge {
+    padding: 6px 12px;
+    border: 2px solid #fff;
+    border-radius: 12px;
+    font-family: var(--font-pixel);
+    font-size: 1em;
+    color: #fff;
+    background-color: #333;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.tense-badge.present { background-color: #4caf50; }
+.tense-badge.past_simple { background-color: #e57373; }
+.tense-badge.present_perfect { background-color: #64b5f6; }
+.tense-badge.imperfect_indicative { background-color: #ffb74d; }
+.tense-badge.future_simple { background-color: #ba68c8; }
+.tense-badge.condicional_simple { background-color: #4dd0e1; }
 
 #question-area p { /* El texto "Question:" */
     margin-bottom: 5px;
