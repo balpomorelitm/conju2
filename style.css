@@ -54,13 +54,10 @@ body {
 body::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   box-shadow: inset 0 0 100px 30px rgba(0, 0, 0, 0.85);
-  /* Use the same radius as the body to avoid visible gaps on mobile */
-  border-radius: 20px;
+  /* Match the body's curvature and ensure perfect alignment on all sides */
+  border-radius: inherit;
   pointer-events: none;
   z-index: 3;
 }
