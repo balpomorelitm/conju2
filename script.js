@@ -1923,7 +1923,7 @@ function checkAnswer() {
         if (ans !== '') { 
             timerTimeLeft = Math.max(0, timerTimeLeft - 3);
             checkTickingSound();
-                        feedback.innerHTML = `❌ Incorrecto. La pista es el infinitivo: <strong>${verbData.infinitive_en}</strong>.`;
+        feedback.innerHTML = `❌ La pista es el infinitivo: <strong>${verbData.infinitive_en}</strong>.`;
             currentQuestion.hintLevel = 1;
             ansEN.value = '';
             ansEN.focus();
@@ -2023,7 +2023,7 @@ function checkAnswer() {
 			  + reflexiveBonus;
 	
     score += pts;
-    let feedbackText = `✅ ¡Correcto!<br>Time: ${rt.toFixed(1)}s ×${bonus.toFixed(1)}`;
+    let feedbackText = `✅ Time: ${rt.toFixed(1)}s ×${bonus.toFixed(1)}`;
     if (accentBonus > 0) {
        feedbackText += ` +${accentBonus} accent bonus!`; 
     }
@@ -2205,9 +2205,9 @@ function checkAnswer() {
 	} else if (currentOptions.mode === 'productive' || currentOptions.mode === 'productive_easy') {
 		// Existing hint logic for productive modes (should be in English already based on your original code)
 		if (currentQuestion.hintLevel === 0) {
-			feedback.innerHTML =
-			  `❌ Incorrect. <em>Clue 1:</em> infinitive is ` +
-			  `<strong>${currentQuestion.verb.infinitive_es}</strong>.`; // This refers to Spanish infinitive, which is contextually correct for this mode
+                        feedback.innerHTML =
+                          `❌ <em>Clue 1:</em> infinitive is ` +
+                          `<strong>${currentQuestion.verb.infinitive_es}</strong>.`; // This refers to Spanish infinitive, which is contextually correct for this mode
                         currentQuestion.hintLevel = 1;
                         updateClueButton();
                 } else if (currentQuestion.hintLevel === 1) {
@@ -2219,7 +2219,7 @@ function checkAnswer() {
 				.map(([, form]) => `<span class="hint-btn">${form}</span>`)
 				.join('');
                         feedback.innerHTML =
-                                `❌ Incorrect. <em>Clue 2:</em> ` + botones;
+                                `❌ <em>Clue 2:</em> ` + botones;
                         currentQuestion.hintLevel = 2;
                         updateClueButton();
                 }
