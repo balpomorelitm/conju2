@@ -3162,6 +3162,16 @@ td.irregular-highlight {
   image-rendering: pixelated;
 }
 
+@media (max-width: 600px) {
+  #chuache-box {
+    width: 120px;
+  }
+  #chuache-container {
+    top: 160px;
+    width: 110px;
+  }
+}
+
 .speech-bubble {
   background: #001f00;
   border: 2px solid #00ff88;
