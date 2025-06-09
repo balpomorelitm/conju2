@@ -1411,10 +1411,10 @@ function renderSetupRecords() {
             <div class="record-item">
               <span class="medal">${medal}</span>
               <strong>${name}:</strong> ${score} pts
-              <span class="record-date">${dateStr}</span>
               ${streak
-                ? `<span class="record-streak">· Max🔥: ${streak}</span>`
+                ? `<span class="record-streak">🔥${streak}</span>`
                 : ''}
+              <span class="record-date">${dateStr}</span>
             </div>
           `;
           ul.appendChild(li);

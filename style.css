@@ -886,6 +886,17 @@ button:active {
 .mode-records .record-list li {
   margin: 6px 0;
 }
+
+/* Estilo para cada entrada de récord */
+.record-item {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.record-date {
+  font-size: 0.75em;
+}
 @keyframes vibrate {
   0%   { transform: translate(0); }
   20%  { transform: translate(-1px, 1px); }
