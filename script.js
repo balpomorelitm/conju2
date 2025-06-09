@@ -2830,11 +2830,11 @@ function updateGameTitle() {
   const displayMode = modeLabels[currentOptions.mode] || currentOptions.mode;
 
   const modeInfoKey = configButtonsData[currentOptions.mode]?.infoKey || '';
-  const modeBtn = `<span class="mode-badge ${currentOptions.mode}" data-info-key="${modeInfoKey}">${displayMode}</span>`;
+  const modeBtn = `<span class="mode-badge ${currentOptions.mode}" data-info-key="${modeInfoKey}">${displayMode}<span class="context-info-icon" data-info-key="${modeInfoKey}"></span></span>`;
 
   const tenseBtns = tenseObjs.map(o => {
     const cls = 'tense-badge ' + o.key.replace(/\s+/g, '_');
-    return `<span class="${cls}" data-info-key="${o.infoKey}">${o.name}</span>`;
+    return `<span class="${cls}" data-info-key="${o.infoKey}">${o.name}<span class="context-info-icon" data-info-key="${o.infoKey}"></span></span>`;
   }).join(' ');
 
   let html = `

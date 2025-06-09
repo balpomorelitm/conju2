@@ -424,6 +424,8 @@ button:active {
     color: #fff;
     background-color: #333;
     text-shadow: 1px 1px 2px #000;
+    position: relative;
+    padding-right: 24px;
 }
 .mode-badge.receptive { background-color: #dc3545; }
 .mode-badge.productive_easy { background-color: #6f42c1; }
@@ -441,6 +443,8 @@ button:active {
     color: #fff;
     background-color: #333;
     text-shadow: 1px 1px 2px #000;
+    position: relative;
+    padding-right: 24px;
 }
 
 .mode-badge,
