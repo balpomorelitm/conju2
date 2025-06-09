@@ -1533,6 +1533,7 @@ button:active {
   width: 100%;
   border-collapse: collapse;
   margin-top: 8px;
+  border: 1px solid var(--border-color);
 }
 .tense-tooltip-table th,
 .tense-tooltip-table td {
@@ -1540,13 +1541,16 @@ button:active {
   padding: 4px 6px;
 }
 .tense-tooltip-table th {
-  background-color: var(--container-bg);
-  color: var(--title-color);
-  text-shadow: 1px 1px #fff; /* Improve readability on dark headers */
+  background: linear-gradient(#3f5f3f, #2b472b);
+  color: #e6ffe6;
+  text-shadow: 1px 1px #000;
 }
 .tense-tooltip-table td {
-  background-color: var(--bg-color);
+  background-color: #223322;
   color: var(--text-color);
+}
+.tense-tooltip-table tr:nth-child(even) td {
+  background-color: #273a27;
 }
 
 .irregular-tooltip-table th:nth-child(1) {
