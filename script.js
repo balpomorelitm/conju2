@@ -1955,7 +1955,7 @@ function checkAnswer() {
             timerTimeLeft = Math.max(0, timerTimeLeft - 3);
             checkTickingSound();
             playFromStart(soundElectricShock);
-                        feedback.innerHTML = `❌ Incorrecto. La pista es el infinitivo: <strong>${verbData.infinitive_en}</strong>.`;
+                        feedback.innerHTML = `❌ Pista: el infinitivo es <strong>${verbData.infinitive_en}</strong>.`;
             currentQuestion.hintLevel = 1;
             ansEN.value = '';
             ansEN.focus();
@@ -2056,7 +2056,7 @@ function checkAnswer() {
 			  + reflexiveBonus;
 	
     score += pts;
-    let feedbackText = `✅ ¡Correcto!<br>Time: ${rt.toFixed(1)}s ×${bonus.toFixed(1)}`;
+    let feedbackText = `✅<br><span class="feedback-time">Time: ${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span>`;
     if (accentBonus > 0) {
        feedbackText += ` +${accentBonus} accent bonus!`; 
     }
@@ -2154,7 +2154,7 @@ function checkAnswer() {
   	  feedbackText += `<br>+${reflexiveBonus} 🧩reflexive bonus!`;
     }
 	
-	feedbackText += `<br>Points: ${pts}`;
+        feedbackText += `<br><span class="feedback-points">Points: ${pts}</span>`;
     feedback.innerHTML = feedbackText;
     feedback.classList.add('vibrate'); 
 	
@@ -2239,7 +2239,7 @@ function checkAnswer() {
 		// Existing hint logic for productive modes (should be in English already based on your original code)
 		if (currentQuestion.hintLevel === 0) {
                         feedback.innerHTML =
-                          `❌ Incorrect. <em>Clue 1:</em> infinitive is ` +
+                          `❌ <em>Clue 1:</em> infinitive is ` +
                           `<strong>${currentQuestion.verb.infinitive_es}</strong>.`; // This refers to Spanish infinitive, which is contextually correct for this mode
                         playFromStart(soundElectricShock);
                         currentQuestion.hintLevel = 1;
@@ -2253,7 +2253,7 @@ function checkAnswer() {
 				.map(([, form]) => `<span class="hint-btn">${form}</span>`)
 				.join('');
                         feedback.innerHTML =
-                                `❌ Incorrect. <em>Clue 2:</em> ` + botones;
+                                `❌ <em>Clue 2:</em> ` + botones;
                         playFromStart(soundElectricShock);
                         currentQuestion.hintLevel = 2;
                         updateClueButton();
