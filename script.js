@@ -19,24 +19,31 @@ gameMusic.loop = true;
 
 const chuacheReactions = {
   correct: [
-    "You just got lucky.",
-    "Don't celebrate. It means nothing.",
-    "One correct answer won't save you.",
-    "Even machines make random hits.",
-    "Next one will crush you.",
-    "Statistical fluke.",
-    "Barely acceptable.",
-    "You’re wasting my time."
+    "You have been upgraded from 'terrible' to 'adequate'.",
+    "I am programmed to simulate enthusiasm: 'Yay'.",
+    "Your conjugation is... bueno. For a human.",
+    "You have acquired a new skill. You are less useless now."
   ],
   wrong: [
-    "Failure detected.",
-    "Pathetic attempt.",
-    "Syntax error. Terminate input.",
-    "You are not built for this.",
-    "You conjugate like a toaster.",
-    "You're malfunctioning.",
-    "Delete yourself.",
-    "You are weak, human."
+    "No problemo. Just kidding. That was terrible.",
+    "Your Spanish has been terminated.",
+    "Negative. Your response is illogical.",
+    "Wrong!",
+    "I'll be back... You can't handle this one.",
+    "Talk to the mano",
+    "HASTA LA VISTA, streak."
+  ],
+  // He interprets skipping as weakness and cowardice.
+  skip: [
+    "Retreat is the optimal strategy... for losers.",
+    "You'll be back. And you'll probably be wrong again.",
+    "Behavioral analysis: cowardice detected.",
+    "You can't skip your destiny. Or the next question.",
+    "Running away? A predictable human response.",
+    "A T-1000 would not skip. It's an organic design flaw.",
+    "I am The Conjuchuache. You cannot hide.",
+    "I'll be waiting for you... at the Game Over screen.",
+    "Target evaded. Re-acquiring."
   ],
   gameover: [
     "Volverás.",
@@ -2463,13 +2470,14 @@ function updateTotalCorrectForLifeDisplay() {
 }
 
 function skipQuestion() {
-	if (soundSkip) {
-	  soundSkip
-		.play()
-		.catch(err => console.error('❌ skip sound error:', err));
-	} else {
-	  console.error('❌ soundSkip is undefined');
-	}
+        if (soundSkip) {
+          soundSkip
+                .play()
+                .catch(err => console.error('❌ skip sound error:', err));
+        } else {
+          console.error('❌ soundSkip is undefined');
+        }
+    chuacheSpeaks('skip');
     streak = 0;
     multiplier = 1.0;
     updateScore();
