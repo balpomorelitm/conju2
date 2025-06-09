@@ -84,6 +84,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   let tickingSoundPlaying = false;
 
   function checkTickingSound() {
+    // Only relevant in timer mode; ensure sound doesn't play in other modes
+    if (selectedGameMode !== 'timer') {
+      if (tickingSoundPlaying) {
+        soundTicking.pause();
+        soundTicking.currentTime = 0;
+        tickingSoundPlaying = false;
+      }
+      return;
+    }
+
     if (timerTimeLeft <= 10) {
       if (!tickingSoundPlaying) {
         soundTicking.currentTime = 0;
