@@ -850,7 +850,8 @@ button:active {
 }
 
 #answer-area {
-  width: 100%;
+  flex: 0 0 70%;
+  max-width: 70%;
 }
 
 #action-buttons {
@@ -3218,8 +3219,8 @@ td.irregular-highlight {
 }
 
 #chuache-box {
-  flex: 0 0 170px;
-  max-width: 170px;
+  flex: 0 0 30%;
+  max-width: 30%;
   position: relative;
 }
 
@@ -3239,14 +3240,19 @@ td.irregular-highlight {
 
 @media (max-width: 600px) {
   #chuache-box {
-    flex-basis: 120px;
-    max-width: 120px;
-    width: 120px;
+    flex-basis: 100%;
+    max-width: 100%;
+    width: 100%;
   }
   #chuache-container {
     top: 20px;
     width: 110px;
   }
+  #answer-area {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
 }
 
 .speech-bubble {
