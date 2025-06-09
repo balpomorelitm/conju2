@@ -16,6 +16,13 @@ const soundTicking = new Audio('sounds/ticking.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+function playFromStart(audio) {
+  if (!audio) return;
+  audio.pause();
+  audio.currentTime = 0;
+  audio.play().catch(() => {});
+}
+
 // Ensure a Firestore instance is available when this script runs
 if (typeof window !== 'undefined') {
   if (typeof window.db === 'undefined' &&
@@ -267,7 +274,7 @@ const configButtonsData = {}; // Se llenará al inicializar
 
 confirmModeButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
-        if (soundElectricShock) soundElectricShock.play();
+        playFromStart(soundElectricShock);
         confirmModeButton.classList.add('electric-effect');
         setTimeout(() => confirmModeButton.classList.remove('electric-effect'), 1000);
         selectedMode = provisionallySelectedOption.dataset.mode;
@@ -299,7 +306,7 @@ confirmModeButton.addEventListener('click', () => {
 
 confirmDifficultyButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
-        if (soundElectricShock) soundElectricShock.play();
+        playFromStart(soundElectricShock);
         confirmDifficultyButton.classList.add('electric-effect');
         setTimeout(() => confirmDifficultyButton.classList.remove('electric-effect'), 1000);
         selectedDifficulty = provisionallySelectedOption.dataset.mode;
@@ -1651,7 +1658,7 @@ let usedVerbs = [];
 
 
         function handleInitialStart() {
-                if (soundElectricShock) soundElectricShock.play();
+                playFromStart(soundElectricShock);
                 if (initialStartButton) {
                         initialStartButton.classList.add('electric-effect');
                         setTimeout(() => initialStartButton.classList.remove('electric-effect'), 1000);
@@ -1878,6 +1885,7 @@ function checkAnswer() {
         feedback.innerHTML = `💡 The English infinitive is <strong>${verbData.infinitive_en}</strong>.`;
         timerTimeLeft = Math.max(0, timerTimeLeft - 3);
         checkTickingSound();
+        playFromStart(soundElectricShock);
         currentQuestion.hintLevel = 1; // Marcar que la pista ha sido solicitada/dada
         updateClueButton();
         ansEN.focus();
@@ -1923,6 +1931,7 @@ function checkAnswer() {
         if (ans !== '') { 
             timerTimeLeft = Math.max(0, timerTimeLeft - 3);
             checkTickingSound();
+            playFromStart(soundElectricShock);
                         feedback.innerHTML = `❌ Incorrecto. La pista es el infinitivo: <strong>${verbData.infinitive_en}</strong>.`;
             currentQuestion.hintLevel = 1;
             ansEN.value = '';
@@ -1932,6 +1941,7 @@ function checkAnswer() {
     } else if (engProns.length === 0 && spPronouns.length === 0) {
        console.error(`Modo Receptivo: No se encontraron pronombres en español para la forma '<span class="math-inline">\{spanishForm\}' del verbo '</span>{verbData.infinitive_es}'.`);
        feedback.innerHTML = `Error: No se pudo procesar la pregunta. La pista es el infinitivo: <strong>${verbData.infinitive_en}</strong>.`;
+       playFromStart(soundElectricShock);
        currentQuestion.hintLevel = 1;
        ansEN.value = '';
        ansEN.focus();
@@ -2205,9 +2215,10 @@ function checkAnswer() {
 	} else if (currentOptions.mode === 'productive' || currentOptions.mode === 'productive_easy') {
 		// Existing hint logic for productive modes (should be in English already based on your original code)
 		if (currentQuestion.hintLevel === 0) {
-			feedback.innerHTML =
-			  `❌ Incorrect. <em>Clue 1:</em> infinitive is ` +
-			  `<strong>${currentQuestion.verb.infinitive_es}</strong>.`; // This refers to Spanish infinitive, which is contextually correct for this mode
+                        feedback.innerHTML =
+                          `❌ Incorrect. <em>Clue 1:</em> infinitive is ` +
+                          `<strong>${currentQuestion.verb.infinitive_es}</strong>.`; // This refers to Spanish infinitive, which is contextually correct for this mode
+                        playFromStart(soundElectricShock);
                         currentQuestion.hintLevel = 1;
                         updateClueButton();
                 } else if (currentQuestion.hintLevel === 1) {
@@ -2220,6 +2231,7 @@ function checkAnswer() {
 				.join('');
                         feedback.innerHTML =
                                 `❌ Incorrect. <em>Clue 2:</em> ` + botones;
+                        playFromStart(soundElectricShock);
                         currentQuestion.hintLevel = 2;
                         updateClueButton();
                 }
@@ -2538,7 +2550,7 @@ finalStartGameButton.addEventListener('click', async () => {
     // Sincronizar el modo global por si acaso
     selectedGameMode = window.selectedGameMode || selectedMode;
 
-    if (soundElectricShock) soundElectricShock.play();
+    playFromStart(soundElectricShock);
     finalStartGameButton.classList.add('glitch-effect');
     setTimeout(() => finalStartGameButton.classList.remove('glitch-effect'), 1000);
 
@@ -2641,7 +2653,7 @@ function checkFinalStartButtonState() {
     if (skipButton) skipButton.addEventListener('click', skipQuestion);
     if (endButton) {
         endButton.addEventListener('click', () => {
-            if (soundElectricShock) soundElectricShock.play();
+            playFromStart(soundElectricShock);
             endButton.classList.add('electric-effect');
             setTimeout(() => endButton.classList.remove('electric-effect'), 1000);
             const name = prompt('¿Cómo te llamas?'); // La variable name debe ser local a este scope
