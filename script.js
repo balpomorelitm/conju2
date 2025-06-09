@@ -1807,31 +1807,47 @@ function prepareNextQuestion() {
 	  }
 	}
 
+  const tenseBadge =
+    `<span class="tense-badge ${tKey}" data-info-key="${tenseObj.infoKey}">${tenseLabel}<span class="context-info-icon" data-info-key="${tenseObj.infoKey}"></span></span>`;
+
   let promptText;
   if (currentOptions.mode === 'productive') {
-     promptText = `<span class="tense-label">${tenseLabel}:</span> `
-                + `"${v.infinitive_en}" – `
-                + `<span class="pronoun" id="${displayPronoun}">${displayPronoun}</span>`;
+    promptText = `${tenseBadge}: "${v.infinitive_en}" – ` +
+                 `<span class="pronoun" id="${displayPronoun}">${displayPronoun}</span>`;
     qPrompt.innerHTML = promptText;
     esContainer.style.display = 'block';
     enContainer.style.display = 'none';
     ansES.focus();
   } else if (currentOptions.mode === 'productive_easy') {
-    promptText = `<span class="tense-label">${tenseLabel}:</span> `
-               + `"${v.infinitive_es}" – `
-               + `<span class="pronoun" id="${displayPronoun}">${displayPronoun}</span>`;
+    promptText = `${tenseBadge}: "${v.infinitive_es}" – ` +
+                 `<span class="pronoun" id="${displayPronoun}">${displayPronoun}</span>`;
     qPrompt.innerHTML = promptText;
     esContainer.style.display = 'block';
     enContainer.style.display = 'none';
     ansES.focus();
   } else {
-  // sólo la forma en español, p.ej. “come”
-    promptText = `<span class="tense-label">${tenseLabel}:</span> `
-               + `"${currentQuestion.answer}"`;
+    // sólo la forma en español, p.ej. “come”
+    promptText = `${tenseBadge}: "${currentQuestion.answer}"`;
     qPrompt.innerHTML = promptText;
     esContainer.style.display = 'none';
     enContainer.style.display = 'block';
     ansEN.focus();
+  }
+
+  const promptBadge = qPrompt.querySelector('.tense-badge');
+  const promptIcon = qPrompt.querySelector('.context-info-icon');
+  if (promptBadge && promptBadge.dataset.infoKey) {
+    promptBadge.addEventListener('click', () => {
+      if (typeof soundClick !== 'undefined') soundClick.play();
+      openSpecificModal(promptBadge.dataset.infoKey);
+    });
+  }
+  if (promptIcon && promptIcon.dataset.infoKey) {
+    promptIcon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (typeof soundClick !== 'undefined') soundClick.play();
+      openSpecificModal(promptIcon.dataset.infoKey);
+    });
   }
 }
 
