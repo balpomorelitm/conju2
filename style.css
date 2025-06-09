@@ -3063,3 +3063,13 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     text-align: center;
   }
 }
+.irregular-highlight {
+  color: #E57373; 
+  font-weight: bold;
+}
+
+td.irregular-highlight {
+  text-align: center;
+  font-weight: bold;
+  color: #E57373;
+}
