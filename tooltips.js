@@ -101,7 +101,8 @@ const specificInfoData = {
              <tr><td>nosotros</td><td>-amos</td><td>-emos</td><td>-imos</td></tr>
              <tr><td>vosotros</td><td>-áis</td><td>-éis</td><td>-ís</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-an</td><td>-en</td><td>-en</td></tr>
-           </table>`
+           </table>
+           <p class="recall-tip"><strong>Recall Mode:</strong> "I eat" / "he eats"</p>`
   },
   pastSimpleInfo: {
     title: "Simple Past / Preterite (Pretérito)",
@@ -120,7 +121,8 @@ const specificInfoData = {
              <tr><td>nosotros</td><td>-amos</td><td>-imos</td></tr>
              <tr><td>vosotros</td><td>-asteis</td><td>-isteis</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-aron</td><td>-ieron</td></tr>
-           </table>`
+           </table>
+           <p class="recall-tip"><strong>Recall Mode:</strong> "I ate" / "he ate"</p>`
   },
   presentPerfectInfo: {
     title: "Present Perfect (Pretérito Perfecto)",
@@ -140,7 +142,8 @@ const specificInfoData = {
              <tr><td>vosotros</td><td>habéis</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>han</td></tr>
            </table>
-           <p><strong>Irregular Participles:</strong> abrir → abierto, decir → dicho, ver → visto, poner → puesto.</p>`
+           <p><strong>Irregular Participles:</strong> abrir → abierto, decir → dicho, ver → visto, poner → puesto.</p>
+           <p class="recall-tip"><strong>Recall Mode:</strong> "I have eaten" / "he has eaten"</p>`
   },
   imperfectInfo: {
     title: "Imperfect (Pretérito Imperfecto)",
@@ -163,7 +166,8 @@ const specificInfoData = {
              <tr><td>vosotros</td><td>-abais</td><td>-íais</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-aban</td><td>-ían</td></tr>
            </table>
-           <p><strong>Only 3 Irregular Verbs:</strong> ir (iba), ser (era), and ver (veía).</p>`
+           <p><strong>Only 3 Irregular Verbs:</strong> ir (iba), ser (era), and ver (veía).</p>
+           <p class="recall-tip"><strong>Recall Mode:</strong> "I was eating" / "I used to eat"</p>`
   },
   futureInfo: {
     title: "Future (Futuro Simple)",
@@ -183,7 +187,8 @@ const specificInfoData = {
              <tr><td>vosotros</td><td>-éis</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-án</td></tr>
            </table>
-           <p><strong>Irregular Stems:</strong> decir → dir-, hacer → har-, poder → podr-, tener → tendr-.</p>`
+           <p><strong>Irregular Stems:</strong> decir → dir-, hacer → har-, poder → podr-, tener → tendr-.</p>
+           <p class="recall-tip"><strong>Recall Mode:</strong> "I will eat" / "he will eat"</p>`
   },
   conditionalInfo: {
     title: "Conditional (Condicional Simple)",
@@ -204,7 +209,8 @@ const specificInfoData = {
              <tr><td>vosotros</td><td>-íais</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-ían</td></tr>
            </table>
-           <p><strong>Irregular Stems:</strong> Same as the future tense (dir-, har-, podr-, tendr-, etc.).</p>`
+           <p><strong>Irregular Stems:</strong> Same as the future tense (dir-, har-, podr-, tendr-, etc.).</p>
+           <p class="recall-tip"><strong>Recall Mode:</strong> "I would eat" / "he would eat"</p>`
   },
   regularInfo: {
     title: "Regular Verbs",
