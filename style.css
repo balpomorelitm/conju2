@@ -467,7 +467,8 @@ button:active {
 
 #answer-area input[type="text"] {
   font-family: var(--font-pixel);
-  font-size: 1.2em;
+  /* Reduce font size to prevent overlap with the character panel */
+  font-size: 1.1em;
   background-color: var(--input-bg);
   color: var(--text-color);
   border: 1px solid var(--border-color);
@@ -504,7 +505,8 @@ button:active {
   /* REGLAS MODIFICADAS: Haz que esta área se asemeje al input */
   width: 100%;
   max-width: 500px;
-  min-height: 48px; /* Altura mínima similar a la del input + label */
+  /* Increase height so hints and messages fit comfortably on two lines */
+  min-height: 70px;
   padding: 12px;
   border: 1px solid var(--border-color);
   background-color: var(--input-bg);
@@ -512,6 +514,7 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1.4; /* Improve line spacing for multiline messages */
 }
 #feedback-area:empty { /* Ocultar borde si está vacío */
     border: none;
@@ -719,10 +722,13 @@ button:active {
   background-color: #0e1f0e;  /* Para que el ancho sea el justo */
   margin: 0 auto;           /* Centra horizontalmente */
   overflow: hidden;          /* Oculta el fuego que sobresale */
-  padding: 10px;      /* caja más grande */
+  /* Aumenta el padding para que la caja sea más grande */
+  padding: 15px;
   font-size: 1.1em;         /* Igual que #score-display */
   min-height: 40px;       /* suficiente para el texto */
-  border: 2px dashed #7f461a
+  border: 2px dashed #7f461a;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /*--- llamas en loop horizontal al fondo ---*/
@@ -750,7 +756,9 @@ button:active {
   color: white;
   text-shadow: 1px 1px 0 #111; /* Sombra más pequeña y nítida */
   -webkit-text-stroke: 0.5px rgba(0,0,0,0.6); /* Borde más fino y suave */
-  font-weight: bold; /* Opcional: fuerza ligeramente el trazo sin perder píxel */
+  /* Aumenta el tamaño de la fuente para mayor visibilidad */
+  font-size: 1.4em;
+  font-weight: bold;
 }
 .screen {
   text-align: center;      /* centra títulos, botones inline, etc. */
@@ -1102,7 +1110,7 @@ button:active {
   }
 
   #answer-area input[type="text"] {
-    font-size: 1.2em;
+    font-size: 1.1em;
     padding: 10px;
     width: 100%;
   }
@@ -1125,8 +1133,9 @@ button:active {
   }
 
   #score-container {
-    padding: 10px;
+    padding: 15px;
     width: 90%;
+    box-sizing: border-box;
   }
 
   #score-display {
@@ -3326,8 +3335,9 @@ td.irregular-highlight {
 
 /* Estilo destacado para la puntuación */
 #score-container #score-display {
-  font-size: 1.2em; /* Aumenta el tamaño de la fuente de la puntuación */
-  font-weight: bold; /* Hazla más visible */
+  /* Tamaño de fuente mayor para destacar la puntuación */
+  font-size: 1.4em;
+  font-weight: bold;
 }
 
 /* Ensure ranking box is centered and has space */
@@ -3415,7 +3425,9 @@ td.irregular-highlight {
 }
 
 #bottom-panel #feedback-area {
-    min-height: 45px; /* Un poco más de altura mínima */
+    /* Permite mostrar fácilmente dos líneas de texto */
+    min-height: 70px;
+    line-height: 1.4;
 }
 
 #bottom-panel #score-section {
