@@ -3425,3 +3425,73 @@ td.irregular-highlight {
     gap: 5px;
   }
 }
+
+/* --- Corrección del Panel de Chuache --- */
+#chuache-box {
+  flex: 1 1 30%;
+  max-width: 200px;
+  order: 2; /* A la derecha */
+  background-color: #162416;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 2px solid var(--border-color);
+  margin-top: 50px;
+  position: relative; /* Esto asegura que el contenido con 'position: absolute' (el bocadillo) se posicione dentro de esta caja y no en otro lugar de la página. */
+  display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+}
+
+#chuache-container {
+  /* Aseguramos que el contenedor interno se comporte bien */
+  position: relative; /* Cambiamos de 'absolute' a 'relative' para que fluya dentro del #chuache-box */
+  width: 100%;
+  top: 0; /* Reseteamos posicionamientos previos */
+  right: 0;
+}
+
+/* --- Estilo del Nuevo Panel Inferior Independiente --- */
+#bottom-panel {
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px dashed var(--border-color); /* Separador visual */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra sus hijos horizontalmente */
+  gap: 15px; /* Espacio entre los botones, el feedback y la puntuación */
+}
+
+/* --- Hijos del Panel Inferior --- */
+#bottom-panel #action-buttons,
+#bottom-panel #feedback-area,
+#bottom-panel #score-section {
+    width: 100%;
+    max-width: 500px; /* Un ancho máximo para que no se vea demasiado estirado en pantallas grandes */
+    text-align: center; /* Centra el contenido de texto y los botones inline */
+}
+
+#bottom-panel #feedback-area {
+    min-height: 45px; /* Un poco más de altura mínima */
+}
+
+#bottom-panel #score-section {
+    margin-bottom: 20px; /* Espacio antes del ranking */
+}
+
+/* --- Ajuste Responsive para Móvil --- */
+@media (max-width: 768px) {
+  #game-layout {
+    flex-direction: column; 
+  }
+
+  #game-main {
+      order: 1; 
+  }
+
+  #chuache-box {
+    order: 2;
+    border-left: none; 
+  }
+
+  /* El #bottom-panel fluirá naturalmente debajo de #game-layout, no necesita cambios aquí. */
+}
