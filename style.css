@@ -445,8 +445,8 @@ button:active {
 
 .mode-badge,
 .tense-badge {
-    pointer-events: none;
-    cursor: default;
+    pointer-events: auto;
+    cursor: help;
 }
 
 .tense-badge.present { background-color: transparent; border-color: #aaa; color: #aaa; }

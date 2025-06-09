@@ -2825,13 +2825,19 @@ function updateGameTitle() {
     'productive': '⌨️Pr0duc€⌨️'
   };
 
-  const tenseNames = currentOptions.tenses.map(t => t.replace('_', ' '));
+  const tenseObjs = currentOptions.tenses.map(tKey => {
+    const obj = tenses.find(t => t.value === tKey);
+    return { key: tKey, name: obj ? obj.name : tKey.replace('_', ' '), infoKey: obj?.infoKey || '' };
+  });
+  const tenseNames = tenseObjs.map(o => o.name);
   const displayMode = modeLabels[currentOptions.mode] || currentOptions.mode;
 
-  const modeBtn = `<span class="mode-badge ${currentOptions.mode}">${displayMode}</span>`;
-  const tenseBtns = tenseNames.map(t => {
-    const cls = 'tense-badge ' + t.replace(/\s+/g, '_');
-    return `<span class="${cls}">${t}</span>`;
+  const modeInfoKey = configButtonsData[currentOptions.mode]?.infoKey || '';
+  const modeBtn = `<span class="mode-badge ${currentOptions.mode}" data-info-key="${modeInfoKey}">${displayMode}</span>`;
+
+  const tenseBtns = tenseObjs.map(o => {
+    const cls = 'tense-badge ' + o.key.replace(/\s+/g, '_');
+    return `<span class="${cls}" data-info-key="${o.infoKey}">${o.name}</span>`;
   }).join(' ');
 
   let html = `
@@ -2854,6 +2860,25 @@ function updateGameTitle() {
   }
 
   gameTitle.innerHTML = html;
+
+  const modeBadgeEl = gameTitle.querySelector('.mode-badge');
+  if (modeBadgeEl && modeBadgeEl.dataset.infoKey) {
+    modeBadgeEl.addEventListener('click', () => {
+      if (typeof soundClick !== 'undefined') soundClick.play();
+      openSpecificModal(modeBadgeEl.dataset.infoKey);
+    });
+  }
+
+  const tenseBadgeEls = gameTitle.querySelectorAll('.tense-badge');
+  tenseBadgeEls.forEach(tb => {
+    const key = tb.dataset.infoKey;
+    if (key) {
+      tb.addEventListener('click', () => {
+        if (typeof soundClick !== 'undefined') soundClick.play();
+        openSpecificModal(key);
+      });
+    }
+  });
 }
 
 function typewriterEffect(textElement, text, interval) {
