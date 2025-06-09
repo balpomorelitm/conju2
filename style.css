@@ -1062,6 +1062,10 @@ button:active {
     max-height: 85vh;
   }
 
+  #name-entry-modal {
+    max-height: 42.5vh;
+  }
+
   .specific-modal-content {
     font-size: 0.9em; /* Ajusta el tamaño del texto del contenido si es necesario */
     line-height: 1.45;
@@ -2767,6 +2771,11 @@ body,
   line-height: 1;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
+#name-entry-modal {
+  height: 37.5vh;
+  max-height: 300px;
+}
+
 .specific-modal-close-btn:hover {
   color: var(--accent-color-red);
 }
