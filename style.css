@@ -113,6 +113,8 @@ body::after {
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
   image-rendering: pixelated;
+  position: relative;
+  z-index: 2;
 }
 
 .glitch-title {
@@ -1092,11 +1094,13 @@ button:active {
     margin-bottom: 5px;
   }
 
-	.main-header .glitch-title {
-        font-size: clamp(0.8em,  7vw, 1.1em);    
+        .main-header .glitch-title {
+        font-size: clamp(0.8em,  7vw, 1.1em);
         white-space: normal;
         word-break: break-word;
         text-align: center;
+        position: relative;
+        z-index: 2;
     }
 
   #main-title {
