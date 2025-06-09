@@ -3050,11 +3050,16 @@ function updateGameTitle() {
     </div>
   `;
 
-  if (selectedGameMode === 'lives') {
-    html += `<div class="lives-display"><span id="lives-count">${remainingLives}</span><img src="images/heart.webp" alt="life" style="width:40px; height:40px; vertical-align: middle; margin-left: 6px;"></div>`;
-  }
-
   gameTitle.innerHTML = html;
+
+  const livesWrapper = document.getElementById('lives-count-wrapper');
+  if (livesWrapper) {
+    if (selectedGameMode === 'lives') {
+      livesWrapper.innerHTML = `<span id="lives-count">${remainingLives}</span><img src="images/heart.webp" alt="life" style="width:40px; height:40px; vertical-align: middle; margin-left: 6px;">`;
+    } else {
+      livesWrapper.innerHTML = '';
+    }
+  }
 
   const modeBadgeEl = gameTitle.querySelector('.mode-badge');
   if (modeBadgeEl && modeBadgeEl.dataset.infoKey) {

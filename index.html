@@ -203,15 +203,21 @@
   <div id="game-screen" class="screen" style="display: none;">
     <h2 id="game-title"></h2>
     <div id="game-layout">
-
+      <div id="chuache-box">
+        <div id="chuache-container">
+          <div id="speech-bubble" class="speech-bubble hidden">You just got lucky.</div>
+          <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
+        </div>
+      </div>
 
       <div id="game-main">
         <canvas id="life-confetti-canvas"></canvas>
 
-	  <div id="lives-mechanics-display" style="display: none; text-align: center; margin-bottom: 15px;">
-		<span id="total-correct-for-life-display" style="margin-right: 20px;"></span>
-		<span id="streak-for-life-display"></span>
-	  </div>
+          <div id="lives-mechanics-display" style="display: none; text-align: center; margin-bottom: 15px;">
+                <span id="total-correct-for-life-display" style="margin-right: 20px;"></span>
+                <span id="streak-for-life-display"></span>
+                <span id="lives-count-wrapper"></span>
+          </div>
 	  
     <div id="timer-container" class="timer-container" style="display:none;">
       <div id="timer-clock" class="timer-item">⏳ 4:00</div>
@@ -243,13 +249,6 @@
         </div>		   
       </div>
 	  
-        </div>
-        <div id="chuache-box">
-          <div id="chuache-container">
-            <div id="speech-bubble" class="speech-bubble hidden">You just got lucky.</div>
-            <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
-          </div>
-        </div>
         </div>
       </div>
       <div id="action-buttons">
