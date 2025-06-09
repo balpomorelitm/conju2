@@ -3298,7 +3298,7 @@ td.irregular-highlight {
 /* --- Game Screen Layout Engine --- */
 #game-layout {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: flex-start;
   gap: 15px;
 }
@@ -3306,6 +3306,7 @@ td.irregular-highlight {
 /* --- Right Panel: Main Game Board (70%) --- */
 #game-main {
   flex: 1 1 70%;
+  order: 1;
   display: flex;
   flex-direction: column;
 }
@@ -3314,10 +3315,11 @@ td.irregular-highlight {
 #chuache-box {
   flex: 1 1 30%;
   max-width: 200px;
+  order: 2;
   background-color: #162416;
   padding: 15px;
   border-radius: 8px;
-  border: 1px solid var(--border-color);
+  border-left: 2px solid var(--border-color);
   margin-top: 50px;
 }
 
@@ -3339,11 +3341,23 @@ td.irregular-highlight {
   text-align: center;
 }
 
-#answer-area,
-#action-buttons,
-#feedback-area,
-#score-section {
+#answer-area {
   width: 100%;
+}
+
+/* --- New Bottom Panel occupying full width --- */
+#bottom-panel {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#bottom-panel #action-buttons,
+#bottom-panel #feedback-area,
+#bottom-panel #score-section {
+    width: 100%;
 }
 
 #input-es-container,
@@ -3386,7 +3400,7 @@ td.irregular-highlight {
   }
 
   #game-main {
-    order: 1;
+      order: 1;
   }
 
   #chuache-box {
@@ -3394,6 +3408,8 @@ td.irregular-highlight {
     max-width: 100%;
     width: 100%;
     margin-top: 15px;
+    border-left: none;
+    border-top: 2px solid var(--border-color);
   }
 
   #chuache-container {
