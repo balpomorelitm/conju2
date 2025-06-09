@@ -34,7 +34,7 @@ body {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  padding-bottom: 80px; /* espacio extra para el footer fijo */
+  padding-bottom: 20px; /* espacio inferior */
   font-size: 20px;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
@@ -1090,6 +1090,7 @@ button:active {
 
   #name-entry-modal {
     max-height: 42.5vh;
+    font-size: 0.6em;
   }
 
   .specific-modal-content {
@@ -1309,14 +1310,8 @@ button:active {
   font-size: 0.8em;
   color: #ddd;            /* más claro para mayor contraste */
   text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
-  margin: 0;               /* reset para footer fijo */
+  margin-top: 10px; 
   padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: var(--bg-color);
-  z-index: 50;
 }
 .game-footer .feedback-link {
   color: var(--accent-color-blue);
@@ -2811,6 +2806,7 @@ body,
 #name-entry-modal {
   height: 37.5vh;
   max-height: 300px;
+  font-size: 0.6em;
 }
 
 .specific-modal-close-btn:hover {
