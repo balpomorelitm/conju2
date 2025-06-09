@@ -61,12 +61,15 @@ function chuacheSpeaks(type) {
   image.src = "images/chuachetalks.gif";
   bubble.textContent = message;
   bubble.classList.remove("hidden");
+  if (type === "wrong") bubble.classList.add("error");
+  else bubble.classList.remove("error");
 
   playFromStart(chuacheSound);
 
   setTimeout(() => {
     image.src = "images/conjuchuache.webp";
     bubble.classList.add("hidden");
+    bubble.classList.remove("error");
   }, 2000);
 }
 
@@ -84,6 +87,44 @@ function ensureChuachePosition() {
   if (layout && box && box.parentNode !== layout) {
     layout.appendChild(box);
   }
+}
+
+function animateChuacheToGame() {
+  const headerChar = document.querySelector('.header-char');
+  const targetImg = document.getElementById('chuache-image');
+  if (!headerChar || !targetImg) return;
+
+  targetImg.classList.add('invisible');
+  const startRect = headerChar.getBoundingClientRect();
+  const endRect = targetImg.getBoundingClientRect();
+
+  const clone = headerChar.cloneNode(true);
+  clone.style.position = 'fixed';
+  clone.style.left = `${startRect.left}px`;
+  clone.style.top = `${startRect.top}px`;
+  clone.style.width = `${startRect.width}px`;
+  clone.style.height = `${startRect.height}px`;
+  clone.style.transformOrigin = 'bottom right';
+  clone.style.zIndex = '1000';
+  document.body.appendChild(clone);
+
+  headerChar.style.visibility = 'hidden';
+
+  const dx = endRect.left - startRect.left;
+  const dy = endRect.top - startRect.top;
+  const sx = endRect.width / startRect.width;
+  const sy = endRect.height / startRect.height;
+
+  requestAnimationFrame(() => {
+    clone.style.transition = 'transform 0.8s ease-out';
+    clone.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+  });
+
+  clone.addEventListener('transitionend', () => {
+    clone.remove();
+    headerChar.style.display = 'none';
+    targetImg.classList.remove('invisible');
+  }, { once: true });
 }
 
 // Ensure a Firestore instance is available when this script runs
@@ -2661,6 +2702,7 @@ finalStartGameButton.addEventListener('click', async () => {
     configFlowScreen.style.display = 'none';
     gameScreen.style.display = 'block';
     ensureChuachePosition();
+    animateChuacheToGame();
     // El resto de tu lógica de inicio de juego (setupScreen.style.display = 'none'; gameScreen.style.display = 'block'; etc.)
     // ...
     feedback.innerHTML = '';
@@ -2747,13 +2789,19 @@ function checkFinalStartButtonState() {
     if (endButton) {
         endButton.addEventListener('click', () => {
             playFromStart(soundElectricShock);
+            soundGameOver.play();
+            chuacheSpeaks('gameover');
             endButton.classList.add('electric-effect');
             setTimeout(() => endButton.classList.remove('electric-effect'), 1000);
+
             openNameModal('¿Cómo te llamas?', function(name) {
+
+
                 if (name) {
                     const recordData = {
                         name: name,
                         score: score,
+
                         mode: selectedGameMode,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                         tense: currentOptions.tenses,
@@ -2773,6 +2821,8 @@ function checkFinalStartButtonState() {
                     fadeOutToMenu(quitToSettings);
                 }
             });
+
+
         });
     }
 
