@@ -3129,3 +3129,40 @@ td.irregular-highlight {
   font-weight: bold;
   color: #E57373;
 }
+
+#chuache-container {
+  position: absolute;
+  right: 0;
+  top: 250px;
+  width: 160px;
+  z-index: 100;
+  text-align: center;
+}
+
+#chuache-image {
+  width: 100%;
+  image-rendering: pixelated;
+}
+
+.speech-bubble {
+  background: #001f00;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  font-family: var(--font-pixel);
+  font-size: 1em;
+  padding: 8px 10px;
+  margin-top: 8px;
+  border-radius: 0;
+  animation: popIn 0.3s ease;
+  white-space: normal;
+  display: inline-block;
+}
+
+.speech-bubble.hidden {
+  display: none;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

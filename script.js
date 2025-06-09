@@ -13,8 +13,62 @@ const soundbubblepop = new Audio('sounds/soundbubblepop.mp3');
 const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
 const soundElectricShock = new Audio('sounds/electricshock.mp3');
 const soundTicking = new Audio('sounds/ticking.mp3');
+const chuacheSound = new Audio('sounds/talks.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
+
+const chuacheReactions = {
+  correct: [
+    "You just got lucky.",
+    "Don't celebrate. It means nothing.",
+    "One correct answer won't save you.",
+    "Even machines make random hits.",
+    "Next one will crush you.",
+    "Statistical fluke.",
+    "Barely acceptable.",
+    "You’re wasting my time."
+  ],
+  wrong: [
+    "Failure detected.",
+    "Pathetic attempt.",
+    "Syntax error. Terminate input.",
+    "You are not built for this.",
+    "You conjugate like a toaster.",
+    "You're malfunctioning.",
+    "Delete yourself.",
+    "You are weak, human."
+  ],
+  gameover: [
+    "Volverás.",
+    "Has sido... conjugado.",
+    "Game over, human.",
+    "You’ve been terminated.",
+    "La resistencia ha caído.",
+    "Your verbs betrayed you.",
+    "Hasta la vista, conjugador.",
+    "Mission: complete."
+  ]
+};
+
+function chuacheSpeaks(type) {
+  const image = document.getElementById("chuache-image");
+  const bubble = document.getElementById("speech-bubble");
+  if (!image || !bubble) return;
+
+  const messages = chuacheReactions[type];
+  const message = messages[Math.floor(Math.random() * messages.length)];
+
+  image.src = "images/chuachetalks.gif";
+  bubble.textContent = message;
+  bubble.classList.remove("hidden");
+
+  playFromStart(chuacheSound);
+
+  setTimeout(() => {
+    image.src = "images/conjuchuache.webp";
+    bubble.classList.add("hidden");
+  }, 2000);
+}
 
 function playFromStart(audio) {
   if (!audio) return;
@@ -2034,6 +2088,7 @@ function checkAnswer() {
       soundCorrect.currentTime = 0;
       soundCorrect.play().catch(()=>{/* ignora errores por autoplay */});
     } // CIERRE DEL if (soundCorrect)
+    chuacheSpeaks('correct');
 	
     // El resto de la lógica para una respuesta correcta DEBE ESTAR AQUÍ DENTRO
     streak++;
@@ -2161,6 +2216,7 @@ function checkAnswer() {
     return;   
   } else {
     soundWrong.play();
+    chuacheSpeaks('wrong');
     streak = 0;
     multiplier = 1.0;
 	
@@ -2192,7 +2248,8 @@ function checkAnswer() {
 
        updateGameTitle();              
       if (remainingLives <= 0) {
-        soundGameOver.play();  
+        soundGameOver.play();
+        chuacheSpeaks('gameover');
 		gameTitle.textContent = '💀 ¡Estás MUERTO!';
 		checkButton.disabled = true;
         skipButton.disabled  = true;
@@ -2318,6 +2375,7 @@ function startTimerMode() {
           soundTicking.currentTime = 0;
           tickingSoundPlaying = false;
           soundGameOver.play();
+          chuacheSpeaks('gameover');
       clearInterval(countdownTimer);
   
       const name = prompt('⏱️ Time is up! Your name?');
@@ -2436,9 +2494,10 @@ function skipQuestion() {
 		updateTotalCorrectForLifeDisplay();
 
 		// 3) Comprobar GAME OVER
-		if (remainingLives <= 0) {
-		  soundGameOver.play();
-		  gameTitle.textContent   = '💀¡Estás MUERTO!💀';
+                if (remainingLives <= 0) {
+                  soundGameOver.play();
+                  chuacheSpeaks('gameover');
+                  gameTitle.textContent   = '💀¡Estás MUERTO!💀';
 		  checkButton.disabled    = true;
 		  skipButton.disabled     = true;
 		  ansEN.disabled          = true;
