@@ -3139,7 +3139,9 @@ td.irregular-highlight {
 
 #game-layout {
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
+  gap: 20px;
 }
 
 #game-main {
@@ -3225,7 +3227,7 @@ td.irregular-highlight {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 15px;
+  gap: 20px;
 }
 
 /* --- Right Panel: Main Game Board (70%) --- */
@@ -3297,6 +3299,7 @@ td.irregular-highlight {
 #input-en-container label {
   flex-shrink: 0;
   white-space: nowrap;
+  font-size: 1.1em;
 }
 
 #answer-input-es,
@@ -3383,7 +3386,7 @@ td.irregular-highlight {
   display: flex;
   flex-direction: column;
   align-items: center; /* Centra sus hijos horizontalmente */
-  gap: 15px; /* Espacio entre los botones, el feedback y la puntuación */
+  gap: 10px; /* Espacio entre los botones, el feedback y la puntuación */
 }
 
 /* --- Hijos del Panel Inferior --- */
@@ -3406,7 +3409,7 @@ td.irregular-highlight {
 /* --- Ajuste Responsive para Móvil --- */
 @media (max-width: 768px) {
   #game-layout {
-    flex-direction: column; 
+    flex-direction: column;
   }
 
   #game-main {
@@ -3419,4 +3422,39 @@ td.irregular-highlight {
   }
 
   /* El #bottom-panel fluirá naturalmente debajo de #game-layout, no necesita cambios aquí. */
+}
+
+/* --- Lives Mode Visual Tweaks --- */
+#lives-mechanics-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.lives-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#lives-count {
+  color: #ff8a80;
+  font-weight: bold;
+  font-size: 1.5em;
+  text-shadow: 0 0 5px #fff, 0 0 10px #ff5252, 0 0 15px #ff5252, 0 0 20px #ff5252;
+  animation: pulse-glow 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #ff5252, 0 0 15px #ff5252;
+  }
+  50% {
+    text-shadow: 0 0 10px #fff, 0 0 20px #ff8a80, 0 0 30px #ff8a80;
+  }
+  100% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #ff5252, 0 0 15px #ff5252;
+  }
 }
