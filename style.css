@@ -827,6 +827,7 @@ button:active {
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 
 #question-prompt,
@@ -3232,6 +3233,7 @@ td.irregular-highlight {
   #chuache-box {
     flex-basis: 30%;
     max-width: 120px;
+    width: 120px;
   }
   #chuache-container {
     top: 160px;

@@ -2609,7 +2609,14 @@ function quitToSettings() {
   }
   musicToggle.style.display = 'none';
   volumeSlider.disabled = false;
-  
+
+  // Restore header character visibility for the next game
+  const headerChar = document.querySelector('.header-char');
+  if (headerChar) {
+    headerChar.style.display = '';
+    headerChar.style.visibility = 'visible';
+  }
+
     gameScreen.style.display = 'none';
     configFlowScreen.style.display = 'flex'; // Mostrar la nueva pantalla de flujo
     //document.getElementById('setup-records').classList.remove('hidden');
