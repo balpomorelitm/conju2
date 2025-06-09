@@ -203,6 +203,7 @@
   <div id="game-screen" class="screen" style="display: none;">
     <h2 id="game-title"></h2>
     <div id="game-layout">
+
       <div id="score-section">
         <div id="score-container">
            <div id="score-display"></div>
@@ -216,6 +217,7 @@
           <a class="coffee-link" id="coffee-link" href="https://buymeacoffee.com/theconjugator" target="_blank" rel="noopener">Support the Game!</a>
         </div>
       </div>
+
       <div id="game-main">
         <canvas id="life-confetti-canvas"></canvas>
 
@@ -234,7 +236,8 @@
       <div id="question-prompt">Loading…</div>
       <p>Your goal:</p>
     </div>
-    <div id="answer-area">
+      <div id="answer-row">
+        <div id="answer-area">
       <div id="input-es-container">
         <label for="answer-input-es">Conjugate in Spanish:</label>
         <input type="text" id="answer-input-es">
@@ -259,14 +262,23 @@
           <button id="end-button">END GAME</button>
         </div>
         <div id="feedback-area"></div>
-      </div>
-      <div id="chuache-box">
-        <div id="chuache-container">
-          <div id="speech-bubble" class="speech-bubble hidden">You just got lucky.</div>
-          <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
+        </div>
+        <div id="chuache-box">
+          <div id="chuache-container">
+            <div id="speech-bubble" class="speech-bubble hidden">You just got lucky.</div>
+            <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
+          </div>
+        </div>
         </div>
       </div>
-    </div>
+      <div id="score-section">
+        <div id="score-container">
+           <div id="score-display"></div>
+           <div id="streak-display"></div>
+           <div id="flames"></div>
+        </div>
+        <div id="ranking-box"></div>
+      </div>
   </div>
   <div id="left-bubbles"></div>
   <div id="right-bubbles"></div>
