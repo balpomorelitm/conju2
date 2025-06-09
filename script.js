@@ -61,12 +61,15 @@ function chuacheSpeaks(type) {
   image.src = "images/chuachetalks.gif";
   bubble.textContent = message;
   bubble.classList.remove("hidden");
+  if (type === "wrong") bubble.classList.add("error");
+  else bubble.classList.remove("error");
 
   playFromStart(chuacheSound);
 
   setTimeout(() => {
     image.src = "images/conjuchuache.webp";
     bubble.classList.add("hidden");
+    bubble.classList.remove("error");
   }, 2000);
 }
 

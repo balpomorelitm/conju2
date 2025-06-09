@@ -3174,6 +3174,12 @@ td.irregular-highlight {
   left: -20px;
 }
 
+.speech-bubble.error {
+  background: #330000;
+  border-color: #ff5555;
+  color: #ff5555;
+}
+
 .speech-bubble.hidden {
   display: none;
 }
