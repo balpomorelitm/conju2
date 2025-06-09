@@ -80,9 +80,17 @@ const specificInfoData = {
     html: `When this option is <strong>ON</strong>, you don't need to type accent marks to be correct.<br>
            Leaving it <strong>OFF</strong> grants a <span class="points-value">+8</span> bonus each time you include the correct accents.`
   },
+  },
   presentInfo: {
     title: "Present Tense (Presente de Indicativo)",
-    html: `<p>Use the present tense for habitual actions, universal truths, current events and the near future.</p>
+    html: `<p>The Present Tense describes actions happening <strong>now</strong>, <strong>habits</strong>, and <strong>universal truths</strong>.</p>
+           <strong class="modal-subtitle">Key Uses:</strong>
+           <ul>
+             <li><strong>Current Actions:</strong> <em>"¿Qué <strong>haces</strong>?"</em> (What are you doing?)</li>
+             <li><strong>Habits/Routines:</strong> <em>"Yo <strong>como</strong> paella los domingos."</em> (I eat paella on Sundays.)</li>
+             <li><strong>General Truths:</strong> <em>"El sol <strong>sale</strong> por el este."</em> (The sun rises in the east.)</li>
+             <li><strong>Near Future:</strong> <em>"Mañana <strong>tengo</strong> un examen."</em> (Tomorrow I have an exam.)</li>
+           </ul>
            <table class="tense-tooltip-table">
              <tr><th>Pronoun</th><th>-ar</th><th>-er</th><th>-ir</th></tr>
              <tr><td>yo</td><td>-o</td><td>-o</td><td>-o</td></tr>
@@ -91,13 +99,17 @@ const specificInfoData = {
              <tr><td>nosotros</td><td>-amos</td><td>-emos</td><td>-imos</td></tr>
              <tr><td>vosotros</td><td>-áis</td><td>-éis</td><td>-ís</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-an</td><td>-en</td><td>-en</td></tr>
-           </table>
-           <p><strong>Common Irregular Verbs:</strong> ser, estar, ir, and "yo-go" verbs like tener (<em>tengo</em>) or hacer (<em>hago</em>).</p>
-           <p><strong>Common Stem Changes:</strong> querer → quiero, poder → puedo, pedir → pido, jugar → juego.</p>`
+           </table>`
   },
   pastSimpleInfo: {
     title: "Simple Past / Preterite (Pretérito)",
-    html: `<p>This tense expresses actions completed at a specific point in the past.</p>
+    html: `<p>The Preterite is used for actions that were <strong>completed in the past</strong> at a specific moment.</p>
+           <strong class="modal-subtitle">Key Uses:</strong>
+           <ul>
+             <li><strong>Single, Completed Actions:</strong> <em>"Ayer <strong>compré</strong> un libro."</em> (Yesterday I bought a book.)</li>
+             <li><strong>Beginning/End of an Action:</strong> <em>"La película <strong>empezó</strong> a las nueve."</em> (The movie started at nine.)</li>
+             <li><strong>A Series of Events:</strong> <em>"<strong>Llegué</strong>, <strong>vi</strong> y <strong>vencí</strong>."</em> (I arrived, I saw, and I conquered.)</li>
+           </ul>
            <table class="tense-tooltip-table">
              <tr><th>Pronoun</th><th>-ar</th><th>-er/-ir</th></tr>
              <tr><td>yo</td><td>-é</td><td>-í</td></tr>
@@ -106,28 +118,40 @@ const specificInfoData = {
              <tr><td>nosotros</td><td>-amos</td><td>-imos</td></tr>
              <tr><td>vosotros</td><td>-asteis</td><td>-isteis</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-aron</td><td>-ieron</td></tr>
-           </table>
-           <p><strong>Common Irregular Roots:</strong> estar → estuv-, tener → tuv-, poder → pud-, etc.</p>
-           <p><strong>Stem & Spelling Changes:</strong> sentir → sintió, buscar → busqué, leer → leyó.</p>`
+           </table>`
   },
   presentPerfectInfo: {
     title: "Present Perfect (Pretérito Perfecto)",
-    html: `<p>This tense links past actions to the present. It uses <em>haber</em> + past participle.</p>
+    html: `<p>This tense connects <strong>past actions to the present</strong>. It's formed with <strong>haber</strong> + past participle.</p>
+           <strong class="modal-subtitle">Key Uses:</strong>
+           <ul>
+             <li><strong>Recent Past:</strong> <em>"Esta mañana <strong>he bebido</strong> café."</em> (This morning I drank coffee.)</li>
+             <li><strong>Life Experiences:</strong> <em>"¿Alguna vez <strong>has viajado</strong> a España?"</em> (Have you ever traveled to Spain?)</li>
+             <li><strong>Actions that Continue:</strong> <em>"Siempre <strong>hemos vivido</strong> aquí."</em> (We have always lived here.)</li>
+           </ul>
            <table class="tense-tooltip-table">
-             <tr><th>Pronoun</th><th>Haber</th></tr>
-             <tr><td>yo</td><td>he</td></tr>
+             <tr><th>Pronoun</th><th>Haber</th><th>+ Participle</th></tr>
+             <tr><td>yo</td><td>he</td><td rowspan="6">habl<strong>ado</strong><br>com<strong>ido</strong><br>viv<strong>ido</strong></td></tr>
              <tr><td>tú</td><td>has</td></tr>
              <tr><td>él/ella/ud.</td><td>ha</td></tr>
              <tr><td>nosotros</td><td>hemos</td></tr>
              <tr><td>vosotros</td><td>habéis</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>han</td></tr>
            </table>
-           <p><strong>Regular Participles:</strong> hablar → hablado, comer → comido.</p>
-           <p><strong>Irregular Participles:</strong> abrir → abierto, decir → dicho, ver → visto, volver → vuelto.</p>`
+           <p><strong>Irregular Participles:</strong> abrir → abierto, decir → dicho, ver → visto, poner → puesto.</p>`
   },
   imperfectInfo: {
     title: "Imperfect (Pretérito Imperfecto)",
-    html: `<p>Describes ongoing or repeated past actions and sets the scene.</p>
+    html: `<p>The Imperfect describes <strong>ongoing or repeated actions in the past</strong> without a clear end.</p>
+           <strong class="modal-subtitle">Key Uses (W.A.T.E.R.S.):</strong>
+           <ul>
+             <li><strong>Weather:</strong> <em>"<strong>Llovía</strong> mucho."</em> (It was raining a lot.)</li>
+             <li><strong>Age:</strong> <em>"Cuando <strong>tenía</strong> diez años..."</em> (When I was ten years old...)</li>
+             <li><strong>Time:</strong> <em>"<strong>Eran</strong> las tres de la tarde."</em> (It was 3 PM.)</li>
+             <li><strong>Emotion/Condition:</strong> <em>"Yo <strong>estaba</strong> cansado."</em> (I was tired.)</li>
+             <li><strong>Repetition:</strong> <em>"Siempre <strong>jugábamos</strong> en el parque."</em> (We always used to play in the park.)</li>
+             <li><strong>Setting the Scene:</strong> <em>"La luna <strong>brillaba</strong> y los pájaros <strong>cantaban</strong>..."</em> (The moon was shining and the birds were singing...)</li>
+           </ul>
            <table class="tense-tooltip-table">
              <tr><th>Pronoun</th><th>-ar</th><th>-er/-ir</th></tr>
              <tr><td>yo</td><td>-aba</td><td>-ía</td></tr>
@@ -137,13 +161,19 @@ const specificInfoData = {
              <tr><td>vosotros</td><td>-abais</td><td>-íais</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-aban</td><td>-ían</td></tr>
            </table>
-           <p><strong>Irregular Verbs:</strong> Only ir, ser and ver.</p>`
+           <p><strong>Only 3 Irregular Verbs:</strong> ir (iba), ser (era), and ver (veía).</p>`
   },
   futureInfo: {
     title: "Future (Futuro Simple)",
-    html: `<p>Used to talk about what <em>will</em> happen or to express probability.</p>
+    html: `<p>Used for actions that <strong>will happen</strong>. The endings are added to the <strong>entire infinitive</strong>.</p>
+           <strong class="modal-subtitle">Key Uses:</strong>
+           <ul>
+             <li><strong>Predictions/Future Events:</strong> <em>"Mañana <strong>lloverá</strong>."</em> (It will rain tomorrow.)</li>
+             <li><strong>Promises:</strong> <em>"Te <strong>llamaré</strong> luego."</em> (I will call you later.)</li>
+             <li><strong>Wonder/Probability in the Present:</strong> <em>"¿Dónde <strong>estará</strong> María?"</em> (I wonder where Maria is? / Where could Maria be?)</li>
+           </ul>
            <table class="tense-tooltip-table">
-             <tr><th>Pronoun</th><th>Ending</th></tr>
+             <tr><th>Pronoun</th><th>Ending (for all verbs)</th></tr>
              <tr><td>yo</td><td>-é</td></tr>
              <tr><td>tú</td><td>-ás</td></tr>
              <tr><td>él/ella/ud.</td><td>-á</td></tr>
@@ -151,13 +181,20 @@ const specificInfoData = {
              <tr><td>vosotros</td><td>-éis</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-án</td></tr>
            </table>
-           <p><strong>Irregular Stems:</strong> decir → dir-, hacer → har-, tener → tendr-, venir → vendr-, etc.</p>`
+           <p><strong>Irregular Stems:</strong> decir → dir-, hacer → har-, poder → podr-, tener → tendr-.</p>`
   },
   conditionalInfo: {
     title: "Conditional (Condicional Simple)",
-    html: `<p>Expresses what would happen under certain conditions or in polite requests.</p>
+    html: `<p>Expresses what <strong>would happen</strong>. Like the future, endings are added to the <strong>entire infinitive</strong>.</p>
+           <strong class="modal-subtitle">Key Uses:</strong>
+           <ul>
+             <li><strong>Hypothetical Situations:</strong> <em>"Yo <strong>viajaría</strong> por el mundo."</em> (I would travel the world.)</li>
+             <li><strong>Polite Requests:</strong> <em>"¿Me <strong>podrías</strong> ayudar?"</em> (Could you help me?)</li>
+             <li><strong>Advice:</strong> <em>"Yo en tu lugar, no lo <strong>haría</strong>."</em> (If I were you, I wouldn't do it.)</li>
+             <li><strong>Future in the Past:</strong> <em>"Dijo que <strong>vendría</strong>."</em> (He said he would come.)</li>
+           </ul>
            <table class="tense-tooltip-table">
-             <tr><th>Pronoun</th><th>Ending</th></tr>
+             <tr><th>Pronoun</th><th>Ending (for all verbs)</th></tr>
              <tr><td>yo</td><td>-ía</td></tr>
              <tr><td>tú</td><td>-ías</td></tr>
              <tr><td>él/ella/ud.</td><td>-ía</td></tr>
@@ -165,15 +202,11 @@ const specificInfoData = {
              <tr><td>vosotros</td><td>-íais</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>-ían</td></tr>
            </table>
-           <p><strong>Irregular Stems:</strong> Same as the future tense: decir → dir-, poner → pondr-, querer → querr-, etc.</p>`
+           <p><strong>Irregular Stems:</strong> Same as the future tense (dir-, har-, podr-, tendr-, etc.).</p>`
   },
   regularInfo: {
     title: "Regular Verbs",
-    html: `<p>Regular verbs keep their stem and use predictable endings.</p>
-           <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>-ar (hablar)</th><th>-er (comer)</th><th>-ir (vivir)</th></tr>
-             <tr><td>hablo, hablas...</td><td>como, comes...</td><td>vivo, vives...</td></tr>
-           </table>
+    html: `<p>Regular verbs follow predictable patterns. The stem (the part of the verb before -ar, -er, or -ir) does not change.</p>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
                <caption>hablar (pres.)</caption>
@@ -207,15 +240,16 @@ const specificInfoData = {
   },
   firstPersonInfo: {
     title: "1st Person Irregular (Present)",
-    html: `<p>Only the <em>yo</em> form changes.</p>
+    html: `<p>Only the <em>yo</em> form is irregular. The other forms are regular.</p>
            <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>hablar → hablo</td><td>salir → salgo</td></tr>
+             <tr><th>Pattern</th><th>Example</th></tr>
+             <tr><td>-cer/-cir → -zco</td><td>conocer → cono<span class="irregular-highlight">zco</span></td></tr>
+             <tr><td>-go Verbs</td><td>salir → sal<span class="irregular-highlight">go</span>, poner → pon<span class="irregular-highlight">go</span></td></tr>
            </table>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
                <caption>dar (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">doy</td></tr>
+               <tr><td>yo</td><td>d<span class="irregular-highlight">oy</span></td></tr>
                <tr><td>tú</td><td>das</td></tr>
                <tr><td>él</td><td>da</td></tr>
                <tr><td>nosotros</td><td>damos</td></tr>
@@ -223,235 +257,215 @@ const specificInfoData = {
                <tr><td>ellos</td><td>dan</td></tr>
              </table>
              <table class="conjugation-box">
-               <caption>conocer (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">conozco</td></tr>
-               <tr><td>tú</td><td>conoces</td></tr>
-               <tr><td>él</td><td>conoce</td></tr>
-               <tr><td>nosotros</td><td>conocemos</td></tr>
-               <tr><td>vosotros</td><td>conocéis</td></tr>
-               <tr><td>ellos</td><td>conocen</td></tr>
+               <caption>saber (pres.)</caption>
+               <tr><td>yo</td><td><span class="irregular-highlight">sé</span></td></tr>
+               <tr><td>tú</td><td>sabes</td></tr>
+               <tr><td>él</td><td>sabe</td></tr>
+               <tr><td>nosotros</td><td>sabemos</td></tr>
+               <tr><td>vosotros</td><td>sabéis</td></tr>
+               <tr><td>ellos</td><td>saben</td></tr>
              </table>
              <table class="conjugation-box">
-               <caption>salir (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">salgo</td></tr>
-               <tr><td>tú</td><td>sales</td></tr>
-               <tr><td>él</td><td>sale</td></tr>
-               <tr><td>nosotros</td><td>salimos</td></tr>
-               <tr><td>vosotros</td><td>salís</td></tr>
-               <tr><td>ellos</td><td>salen</td></tr>
+               <caption>ver (pres.)</caption>
+               <tr><td>yo</td><td>v<span class="irregular-highlight">eo</span></td></tr>
+               <tr><td>tú</td><td>ves</td></tr>
+               <tr><td>él</td><td>ve</td></tr>
+               <tr><td>nosotros</td><td>vemos</td></tr>
+               <tr><td>vosotros</td><td>veis</td></tr>
+               <tr><td>ellos</td><td>ven</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> caber, caer, componer, conducir, conocer, dar, parecer, poner, ponerse, saber, salir, suponer, traer, valer, ver, verse</p>`
+           </div>`
   },
   stemChangingInfo: {
     title: "Stem Changing (Present)",
-    html: `<p>The stem vowel changes in all forms except nosotros/vosotros.</p>
+    html: `<p>The stem vowel changes in all forms except <strong>nosotros</strong> and <strong>vosotros</strong> (the "boot" verbs).</p>
            <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>vivir → vivo</td><td>dormir → duermo</td></tr>
+             <tr><th>Change</th><th>Example</th></tr>
+             <tr><td>e → ie</td><td>querer → qu<span class="irregular-highlight">ie</span>ro</td></tr>
+             <tr><td>o → ue</td><td>poder → p<span class="irregular-highlight">ue</span>do</td></tr>
+             <tr><td>e → i</td><td>pedir → p<span class="irregular-highlight">i</span>do</td></tr>
+             <tr><td>u → ue</td><td>jugar → j<span class="irregular-highlight">ue</span>go</td></tr>
            </table>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
-               <caption>jugar (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">juego</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">juegas</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">juega</td></tr>
-               <tr><td>nosotros</td><td>jugamos</td></tr>
-               <tr><td>vosotros</td><td>jugáis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">juegan</td></tr>
+               <caption>querer (e→ie)</caption>
+               <tr><td>yo</td><td>qu<span class="irregular-highlight">ie</span>ro</td></tr>
+               <tr><td>tú</td><td>qu<span class="irregular-highlight">ie</span>res</td></tr>
+               <tr><td>él</td><td>qu<span class="irregular-highlight">ie</span>re</td></tr>
+               <tr><td>nosotros</td><td>queremos</td></tr>
+               <tr><td>vosotros</td><td>queréis</td></tr>
+               <tr><td>ellos</td><td>qu<span class="irregular-highlight">ie</span>ren</td></tr>
              </table>
              <table class="conjugation-box">
-               <caption>perder (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">pierdo</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">pierdes</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">pierde</td></tr>
-               <tr><td>nosotros</td><td>perdemos</td></tr>
-               <tr><td>vosotros</td><td>perdéis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">pierden</td></tr>
-             </table>
-             <table class="conjugation-box">
-               <caption>dormir (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">duermo</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">duermes</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">duerme</td></tr>
+               <caption>dormir (o→ue)</caption>
+               <tr><td>yo</td><td>d<span class="irregular-highlight">ue</span>rmo</td></tr>
+               <tr><td>tú</td><td>d<span class="irregular-highlight">ue</span>rmes</td></tr>
+               <tr><td>él</td><td>d<span class="irregular-highlight">ue</span>rme</td></tr>
                <tr><td>nosotros</td><td>dormimos</td></tr>
                <tr><td>vosotros</td><td>dormís</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">duermen</td></tr>
+               <tr><td>ellos</td><td>d<span class="irregular-highlight">ue</span>rmen</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> acostarse, arrepentirse, conseguir, convertirse, divertirse, dormir, dormirse, empezar, encontrar, jugar, mentir, morir, pedir, perder, poder, querer, recordar, repetir, reírse, seguir, sentarse, sentir, sentirse, volver</p>`
+             <table class="conjugation-box">
+               <caption>pedir (e→i)</caption>
+               <tr><td>yo</td><td>p<span class="irregular-highlight">i</span>do</td></tr>
+               <tr><td>tú</td><td>p<span class="irregular-highlight">i</span>des</td></tr>
+               <tr><td>él</td><td>p<span class="irregular-highlight">i</span>de</td></tr>
+               <tr><td>nosotros</td><td>pedimos</td></tr>
+               <tr><td>vosotros</td><td>pedís</td></tr>
+               <tr><td>ellos</td><td>p<span class="irregular-highlight">i</span>den</td></tr>
+             </table>
+           </div>`
   },
   multipleIrregularInfo: {
     title: "Multiple Irregularities (Present)",
-    html: `<p>These verbs combine several changes.</p>
-           <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>comer → como</td><td>tener → tengo, tienes</td></tr>
-           </table>
+    html: `<p>These verbs have both an irregular <strong>yo</strong> form and <strong>stem changes</strong> in other forms.</p>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
-               <caption>estar (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">estoy</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">estás</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">está</td></tr>
-               <tr><td>nosotros</td><td>estamos</td></tr>
-               <tr><td>vosotros</td><td>estáis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">están</td></tr>
-             </table>
-             <table class="conjugation-box">
-               <caption>tener (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">tengo</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">tienes</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">tiene</td></tr>
+               <caption>tener</caption>
+               <tr><td>yo</td><td>ten<span class="irregular-highlight">go</span></td></tr>
+               <tr><td>tú</td><td>t<span class="irregular-highlight">ie</span>nes</td></tr>
+               <tr><td>él</td><td>t<span class="irregular-highlight">ie</span>ne</td></tr>
                <tr><td>nosotros</td><td>tenemos</td></tr>
                <tr><td>vosotros</td><td>tenéis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">tienen</td></tr>
+               <tr><td>ellos</td><td>t<span class="irregular-highlight">ie</span>nen</td></tr>
              </table>
              <table class="conjugation-box">
-               <caption>decir (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">digo</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">dices</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">dice</td></tr>
+               <caption>decir</caption>
+               <tr><td>yo</td><td>d<span class="irregular-highlight">igo</span></td></tr>
+               <tr><td>tú</td><td>d<span class="irregular-highlight">i</span>ces</td></tr>
+               <tr><td>él</td><td>d<span class="irregular-highlight">i</span>ce</td></tr>
                <tr><td>nosotros</td><td>decimos</td></tr>
                <tr><td>vosotros</td><td>decís</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">dicen</td></tr>
+               <tr><td>ellos</td><td>d<span class="irregular-highlight">i</span>cen</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> decir, estar, hacer, ir, irse, obtener, ser, tener, venir</p>`
+             <table class="conjugation-box">
+               <caption>venir</caption>
+               <tr><td>yo</td><td>ven<span class="irregular-highlight">go</span></td></tr>
+               <tr><td>tú</td><td>v<span class="irregular-highlight">ie</span>nes</td></tr>
+               <tr><td>él</td><td>v<span class="irregular-highlight">ie</span>ne</td></tr>
+               <tr><td>nosotros</td><td>venimos</td></tr>
+               <tr><td>vosotros</td><td>venís</td></tr>
+               <tr><td>ellos</td><td>v<span class="irregular-highlight">ie</span>nen</td></tr>
+             </table>
+           </div>`
   },
   yChangeInfo: {
     title: "Y Change",
-    html: `<p>Spelling changes to a 'y' in certain forms.</p>
-           <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>leer → leí</td><td>leer → leyó</td></tr>
-           </table>
+    html: `<p>For -er and -ir verbs with a vowel before the ending, the 'i' becomes a 'y' in some forms to avoid three vowels in a row (e.g., 'le-i-ó' → 'leyó').</p>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
                <caption>leer (pret.)</caption>
                <tr><td>yo</td><td>leí</td></tr>
                <tr><td>tú</td><td>leíste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">leyó</td></tr>
+               <tr><td>él</td><td>le<span class="irregular-highlight">y</span>ó</td></tr>
                <tr><td>nosotros</td><td>leímos</td></tr>
                <tr><td>vosotros</td><td>leísteis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">leyeron</td></tr>
+               <tr><td>ellos</td><td>le<span class="irregular-highlight">y</span>eron</td></tr>
              </table>
              <table class="conjugation-box">
                <caption>oír (pret.)</caption>
                <tr><td>yo</td><td>oí</td></tr>
                <tr><td>tú</td><td>oíste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">oyó</td></tr>
+               <tr><td>él</td><td>o<span class="irregular-highlight">y</span>ó</td></tr>
                <tr><td>nosotros</td><td>oímos</td></tr>
                <tr><td>vosotros</td><td>oísteis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">oyeron</td></tr>
+               <tr><td>ellos</td><td>o<span class="irregular-highlight">y</span>eron</td></tr>
              </table>
              <table class="conjugation-box">
                <caption>construir (pres.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">construyo</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">construyes</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">construye</td></tr>
+               <tr><td>yo</td><td>constru<span class="irregular-highlight">y</span>o</td></tr>
+               <tr><td>tú</td><td>constru<span class="irregular-highlight">y</span>es</td></tr>
+               <tr><td>él</td><td>constru<span class="irregular-highlight">y</span>e</td></tr>
                <tr><td>nosotros</td><td>construimos</td></tr>
                <tr><td>vosotros</td><td>construís</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">construyen</td></tr>
+               <tr><td>ellos</td><td>constru<span class="irregular-highlight">y</span>en</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> caer, construir, creer, leer, oír</p>`
+           </div>`
   },
   irregularRootInfo: {
     title: "Irregular Root (Preterite)",
-    html: `<p>The stem changes completely in the simple past.</p>
+    html: `<p>In the preterite, a group of verbs uses a completely different stem. They also use a unique set of endings.</p>
            <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>hablar → hablé</td><td>estar → estuve</td></tr>
+             <tr><th>Infinitive</th><th>Irregular Stem</th><th>Endings</th></tr>
+             <tr><td>estar</td><td>estuv-</td><td rowspan="4">-e, -iste, -o, -imos, -isteis, -eron</td></tr>
+             <tr><td>poder</td><td>pud-</td></tr>
+             <tr><td>saber</td><td>sup-</td></tr>
+             <tr><td>decir</td><td>dij- (*dijeron)</td></tr>
            </table>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
                <caption>estar (pret.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">estuve</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">estuviste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">estuvo</td></tr>
-               <tr><td>nosotros</td><td class="irregular-highlight">estuvimos</td></tr>
-               <tr><td>vosotros</td><td class="irregular-highlight">estuvisteis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">estuvieron</td></tr>
+               <tr><td>yo</td><td><span class="irregular-highlight">estuv</span>e</td></tr>
+               <tr><td>tú</td><td><span class="irregular-highlight">estuv</span>iste</td></tr>
+               <tr><td>él</td><td><span class="irregular-highlight">estuv</span>o</td></tr>
+               <tr><td>nosotros</td><td><span class="irregular-highlight">estuv</span>imos</td></tr>
+               <tr><td>vosotros</td><td><span class="irregular-highlight">estuv</span>isteis</td></tr>
+               <tr><td>ellos</td><td><span class="irregular-highlight">estuv</span>ieron</td></tr>
              </table>
              <table class="conjugation-box">
-               <caption>poder (pret.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">pude</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">pudiste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">pudo</td></tr>
-               <tr><td>nosotros</td><td class="irregular-highlight">pudimos</td></tr>
-               <tr><td>vosotros</td><td class="irregular-highlight">pudisteis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">pudieron</td></tr>
+               <caption>hacer (pret.)</caption>
+               <tr><td>yo</td><td><span class="irregular-highlight">hic</span>e</td></tr>
+               <tr><td>tú</td><td><span class="irregular-highlight">hic</span>iste</td></tr>
+               <tr><td>él</td><td><span class="irregular-highlight">hiz</span>o</td></tr>
+               <tr><td>nosotros</td><td><span class="irregular-highlight">hic</span>imos</td></tr>
+               <tr><td>vosotros</td><td><span class="irregular-highlight">hic</span>isteis</td></tr>
+               <tr><td>ellos</td><td><span class="irregular-highlight">hic</span>ieron</td></tr>
              </table>
              <table class="conjugation-box">
-               <caption>venir (pret.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">vine</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">viniste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">vino</td></tr>
-               <tr><td>nosotros</td><td class="irregular-highlight">vinimos</td></tr>
-               <tr><td>vosotros</td><td class="irregular-highlight">vinisteis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">vinieron</td></tr>
+               <caption>querer (pret.)</caption>
+               <tr><td>yo</td><td><span class="irregular-highlight">quis</span>e</td></tr>
+               <tr><td>tú</td><td><span class="irregular-highlight">quis</span>iste</td></tr>
+               <tr><td>él</td><td><span class="irregular-highlight">quis</span>o</td></tr>
+               <tr><td>nosotros</td><td><span class="irregular-highlight">quis</span>imos</td></tr>
+               <tr><td>vosotros</td><td><span class="irregular-highlight">quis</span>isteis</td></tr>
+               <tr><td>ellos</td><td><span class="irregular-highlight">quis</span>ieron</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> andar, caber, componer, conducir, decir, estar, hacer, obtener, poder, poner, ponerse, querer, reírse, saber, suponer, tener, traer, venir</p>`
+           </div>`
   },
   stemChange3rdInfo: {
     title: "3rd Person Stem Change (Preterite)",
-    html: `<p>-ir verbs change stem only in third person forms.</p>
+    html: `<p>Only -ir verbs with a stem change in the present tense have this irregularity. The vowel changes only in the <strong>3rd person singular and plural</strong> (él/ella & ellos/ellas).</p>
            <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>vivir → vivió</td><td>dormir → durmió</td></tr>
+             <tr><th>Change</th><th>Example</th></tr>
+             <tr><td>e → i</td><td>pedir → p<span class="irregular-highlight">i</span>dió</td></tr>
+             <tr><td>o → u</td><td>dormir → d<span class="irregular-highlight">u</span>rmió</td></tr>
            </table>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
                <caption>pedir (pret.)</caption>
                <tr><td>yo</td><td>pedí</td></tr>
                <tr><td>tú</td><td>pediste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">pidió</td></tr>
+               <tr><td>él</td><td>p<span class="irregular-highlight">i</span>dió</td></tr>
                <tr><td>nosotros</td><td>pedimos</td></tr>
                <tr><td>vosotros</td><td>pedisteis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">pidieron</td></tr>
+               <tr><td>ellos</td><td>p<span class="irregular-highlight">i</span>dieron</td></tr>
              </table>
              <table class="conjugation-box">
                <caption>dormir (pret.)</caption>
                <tr><td>yo</td><td>dormí</td></tr>
                <tr><td>tú</td><td>dormiste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">durmió</td></tr>
+               <tr><td>él</td><td>d<span class="irregular-highlight">u</span>rmió</td></tr>
                <tr><td>nosotros</td><td>dormimos</td></tr>
                <tr><td>vosotros</td><td>dormisteis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">durmieron</td></tr>
+               <tr><td>ellos</td><td>d<span class="irregular-highlight">u</span>rmieron</td></tr>
              </table>
              <table class="conjugation-box">
                <caption>morir (pret.)</caption>
                <tr><td>yo</td><td>morí</td></tr>
                <tr><td>tú</td><td>moriste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">murió</td></tr>
+               <tr><td>él</td><td>m<span class="irregular-highlight">u</span>rió</td></tr>
                <tr><td>nosotros</td><td>morimos</td></tr>
                <tr><td>vosotros</td><td>moristeis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">murieron</td></tr>
+               <tr><td>ellos</td><td>m<span class="irregular-highlight">u</span>rieron</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> arrepentirse, conseguir, convertirse, divertirse, dormir, dormirse, mentir, morir, pedir, repetir, seguir, sentir, sentirse</p>`
+           </div>`
   },
   totallyIrregularInfo: {
     title: "Totally Irregular (Preterite)",
-    html: `<p>Unique forms not derived from the infinitive.</p>
-           <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>hablar → hablé</td><td>ser → fui</td></tr>
-           </table>
+    html: `<p>The verbs <strong>ser</strong> (to be) and <strong>ir</strong> (to go) are identical in the preterite and completely irregular. You must use context to tell them apart.</p>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
-               <caption>ser (pret.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">fui</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">fuiste</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">fue</td></tr>
-               <tr><td>nosotros</td><td class="irregular-highlight">fuimos</td></tr>
-               <tr><td>vosotros</td><td class="irregular-highlight">fuisteis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">fueron</td></tr>
-             </table>
-             <table class="conjugation-box">
-               <caption>ir (pret.)</caption>
+               <caption>ser / ir (pret.)</caption>
                <tr><td>yo</td><td class="irregular-highlight">fui</td></tr>
                <tr><td>tú</td><td class="irregular-highlight">fuiste</td></tr>
                <tr><td>él</td><td class="irregular-highlight">fue</td></tr>
@@ -468,15 +482,27 @@ const specificInfoData = {
                <tr><td>vosotros</td><td class="irregular-highlight">disteis</td></tr>
                <tr><td>ellos</td><td class="irregular-highlight">dieron</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> dar, ir, irse, ser</p>`
+             <table class="conjugation-box">
+               <caption>ver (pret.)</caption>
+               <tr><td>yo</td><td class="irregular-highlight">vi</td></tr>
+               <tr><td>tú</td><td class="irregular-highlight">viste</td></tr>
+               <tr><td>él</td><td class="irregular-highlight">vio</td></tr>
+               <tr><td>nosotros</td><td class="irregular-highlight">vimos</td></tr>
+               <tr><td>vosotros</td><td class="irregular-highlight">visteis</td></tr>
+               <tr><td>ellos</td><td class="irregular-highlight">vieron</td></tr>
+             </table>
+           </div>`
   },
   irregularParticipleInfo: {
     title: "Irregular Participle",
-    html: `<p>Past participle has an unexpected form.</p>
+    html: `<p>Some verbs have irregular past participles, used with <strong>haber</strong> in perfect tenses (like Present Perfect).</p>
            <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>hablar → hablado</td><td>ver → visto</td></tr>
+             <tr><th>Infinitive</th><th>Irregular Participle</th></tr>
+             <tr><td>abrir</td><td>abie<span class="irregular-highlight">rto</span></td></tr>
+             <tr><td>escribir</td><td>escri<span class="irregular-highlight">to</span></td></tr>
+             <tr><td>hacer</td><td>he<span class="irregular-highlight">cho</span></td></tr>
+             <tr><td>ver</td><td>vi<span class="irregular-highlight">sto</span></td></tr>
+             <tr><td>poner</td><td>pue<span class="irregular-highlight">sto</span></td></tr>
            </table>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
@@ -506,54 +532,53 @@ const specificInfoData = {
                <tr><td>vosotros</td><td>habéis <span class="irregular-highlight">puesto</span></td></tr>
                <tr><td>ellos</td><td>han <span class="irregular-highlight">puesto</span></td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> componer, decir, escribir, hacer, leer, morir, oír, poner, ponerse, ver, verse, volver</p>`
+           </div>`
   },
   irregularFutureInfo: {
     title: "Irregular Future/Conditional",
-    html: `<p>Future and conditional use a modified stem.</p>
+    html: `<p>These verbs use an irregular stem for both the <strong>Future</strong> and <strong>Conditional</strong> tenses. The endings are still regular.</p>
            <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>comer → comeré</td><td>tener → tendré</td></tr>
+             <tr><th>Infinitive</th><th>Irregular Stem</th></tr>
+             <tr><td>decir</td><td><span class="irregular-highlight">dir</span>-</td></tr>
+             <tr><td>hacer</td><td><span class="irregular-highlight">har</span>-</td></tr>
+             <tr><td>poder</td><td><span class="irregular-highlight">podr</span>-</td></tr>
+             <tr><td>poner</td><td><span class="irregular-highlight">pondr</span>-</td></tr>
+             <tr><td>saber</td><td><span class="irregular-highlight">sabr</span>-</td></tr>
+             <tr><td>tener</td><td><span class="irregular-highlight">tendr</span>-</td></tr>
            </table>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
                <caption>tener (fut.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">tendré</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">tendrás</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">tendrá</td></tr>
-               <tr><td>nosotros</td><td class="irregular-highlight">tendremos</td></tr>
-               <tr><td>vosotros</td><td class="irregular-highlight">tendréis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">tendrán</td></tr>
+               <tr><td>yo</td><td>ten<span class="irregular-highlight">dr</span>é</td></tr>
+               <tr><td>tú</td><td>ten<span class="irregular-highlight">dr</span>ás</td></tr>
+               <tr><td>él</td><td>ten<span class="irregular-highlight">dr</span>á</td></tr>
+               <tr><td>nosotros</td><td>ten<span class="irregular-highlight">dr</span>emos</td></tr>
+               <tr><td>vosotros</td><td>ten<span class="irregular-highlight">dr</span>éis</td></tr>
+               <tr><td>ellos</td><td>ten<span class="irregular-highlight">dr</span>án</td></tr>
              </table>
              <table class="conjugation-box">
                <caption>salir (fut.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">saldré</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">saldrás</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">saldrá</td></tr>
-               <tr><td>nosotros</td><td class="irregular-highlight">saldremos</td></tr>
-               <tr><td>vosotros</td><td class="irregular-highlight">saldréis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">saldrán</td></tr>
+               <tr><td>yo</td><td>sal<span class="irregular-highlight">dr</span>é</td></tr>
+               <tr><td>tú</td><td>sal<span class="irregular-highlight">dr</span>ás</td></tr>
+               <tr><td>él</td><td>sal<span class="irregular-highlight">dr</span>á</td></tr>
+               <tr><td>nosotros</td><td>sal<span class="irregular-highlight">dr</span>emos</td></tr>
+               <tr><td>vosotros</td><td>sal<span class="irregular-highlight">dr</span>éis</td></tr>
+               <tr><td>ellos</td><td>sal<span class="irregular-highlight">dr</span>án</td></tr>
              </table>
              <table class="conjugation-box">
                <caption>decir (fut.)</caption>
-               <tr><td>yo</td><td class="irregular-highlight">diré</td></tr>
-               <tr><td>tú</td><td class="irregular-highlight">dirás</td></tr>
-               <tr><td>él</td><td class="irregular-highlight">dirá</td></tr>
-               <tr><td>nosotros</td><td class="irregular-highlight">diremos</td></tr>
-               <tr><td>vosotros</td><td class="irregular-highlight">diréis</td></tr>
-               <tr><td>ellos</td><td class="irregular-highlight">dirán</td></tr>
+               <tr><td>yo</td><td>d<span class="irregular-highlight">ir</span>é</td></tr>
+               <tr><td>tú</td><td>d<span class="irregular-highlight">ir</span>ás</td></tr>
+               <tr><td>él</td><td>d<span class="irregular-highlight">ir</span>á</td></tr>
+               <tr><td>nosotros</td><td>d<span class="irregular-highlight">ir</span>emos</td></tr>
+               <tr><td>vosotros</td><td>d<span class="irregular-highlight">ir</span>éis</td></tr>
+               <tr><td>ellos</td><td>d<span class="irregular-highlight">ir</span>án</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> caber, componer, decir, hacer, obtener, poder, poner, ponerse, querer, saber, suponer, tener, valer, venir</p>`
+           </div>`
   },
   irregularImperfectInfo: {
     title: "Irregular Imperfect",
-    html: `<p>Only three verbs have irregular imperfect forms.</p>
-           <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Regular</th><th>Irregular</th></tr>
-             <tr><td>hablar → hablaba</td><td>ir → iba</td></tr>
-           </table>
+    html: `<p>There are only <strong>three</strong> verbs with irregular forms in the Imperfect tense. All others are regular.</p>
            <div class="conjugation-boxes">
              <table class="conjugation-box">
                <caption>ir (impf.)</caption>
@@ -582,14 +607,15 @@ const specificInfoData = {
                <tr><td>vosotros</td><td class="irregular-highlight">veíais</td></tr>
                <tr><td>ellos</td><td class="irregular-highlight">veían</td></tr>
              </table>
-           </div>
-           <p><strong>Verbs:</strong> irse, ser, ver, verse</p>`
+           </div>`
   },
   reflexiveInfo: {
     title: "Reflexive Verbs",
-    html: `<p>The subject performs the action on itself. Use reflexive pronouns before the verb.</p>
+    html: `<p>The subject performs and receives the action. They use reflexive pronouns (me, te, se, nos, os, se) placed <strong>before</strong> the conjugated verb.</p>
+           <strong class="modal-subtitle">Example: Lavarse (to wash oneself)</strong>
+           <p><em>"Yo <strong>me lavo</strong> las manos."</em> (I wash my hands.)</p>
            <table class="tense-tooltip-table irregular-tooltip-table">
-             <tr><th>Pronoun</th><th>Reflexive</th></tr>
+             <tr><th>Pronoun</th><th>Reflexive Pronoun</th></tr>
              <tr><td>yo</td><td>me</td></tr>
              <tr><td>tú</td><td>te</td></tr>
              <tr><td>él/ella/ud.</td><td>se</td></tr>
@@ -597,6 +623,6 @@ const specificInfoData = {
              <tr><td>vosotros</td><td>os</td></tr>
              <tr><td>ellos/ellas/uds.</td><td>se</td></tr>
            </table>
-           <p><strong>Verbs:</strong> aburrirse, acercarse, acostarse, alejarse, arrepentirse, comunicarse, convertirse, divertirse, dormirse, ducharse, enfermarse, irse, levantarse, llamarse, mudarse, olvidarse, ponerse, quedarse, quitarse, reírse, sentarse, sentirse, verse</p>`
+           <p>Notice how the infinitive ends in <strong>-se</strong> (e.g., levantar<strong>se</strong>, duchar<strong>se</strong>, llamar<strong>se</strong>).</p>`
   },
 };
