@@ -1,4 +1,4 @@
-const CACHE_NAME = 'conjugator-cache-v1';
+const CACHE_NAME = 'conjugator-cache-v2';
 const URLS_TO_CACHE = [
   'index.html',
   'style.css',
@@ -16,6 +16,7 @@ const URLS_TO_CACHE = [
   'sounds/click.mp3',
   'sounds/correct.mp3',
   'sounds/wrong.mp3',
+  'sounds/wongstudy.mp3',
   'sounds/gameover.mp3',
   'sounds/musicmenu.mp3',
   'sounds/musicgame.mp3',
