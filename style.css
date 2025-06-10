@@ -3187,9 +3187,18 @@ td.irregular-highlight {
 }
 
 #chuache-box {
-  flex: 0 0 30%;
-  max-width: 30%;
+  flex: 1 1 30%;
+  max-width: 200px;
+  order: 2;
+  background-color: #162416;
+  border-left: 2px solid var(--border-color);
+  margin-top: 50px;
   position: relative;
+
+  /* --- INSTRUCCIONES MODIFICADAS --- */
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 #chuache-container {
@@ -3270,17 +3279,6 @@ td.irregular-highlight {
   flex-direction: column;
 }
 
-/* --- Left Panel: Chuache Character (30%) --- */
-#chuache-box {
-  flex: 1 1 30%;
-  max-width: 200px;
-  order: 2;
-  background-color: #162416;
-  padding: 15px;
-  border-radius: 8px;
-  border-left: 2px solid var(--border-color);
-  margin-top: 50px;
-}
 
 /* --- Element Adjustments based on User Request --- */
 #question-area {
@@ -3386,23 +3384,6 @@ td.irregular-highlight {
   }
 }
 
-/* --- Corrección del Panel de Chuache --- */
-#chuache-box {
-  flex: 1 1 30%;
-  max-width: 200px;
-  order: 2;
-  background-color: #162416;
-  border-left: 2px solid var(--border-color);
-  margin-top: 50px;
-  position: relative;
-
-  /* --- INSTRUCCIONES MODIFICADAS --- */
-  display: flex;
-  /* En lugar de 'justify-content: center', usamos 'flex-end' para alinear a la derecha. */
-  justify-content: flex-end;
-  /* Añadimos 'align-items: flex-end' para alinear al fondo. */
-  align-items: flex-end;
-}
 
 #chuache-container {
   /* Aseguramos que el contenedor interno se comporte bien */
