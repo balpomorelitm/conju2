@@ -215,20 +215,11 @@
         <div id="total-time" class="timer-item">🏁 0:00</div>
       </div>
     </div>
-    <div id="game-layout">
-      <div id="game-main">
-        <canvas id="life-confetti-canvas"></canvas>
-
-        <div id="question-area">
-          <div id="tense-label" class="tense-label"></div>
-          <div id="question-prompt">Loading…</div>
-          <p>Your goal:</p>
-        </div>
-
+    <div id="input-panel">
         <div id="answer-row">
           <div id="answer-area">
             <div id="input-es-container">
-              <label for="answer-input-es">Conjugate in Spanish:</label>
+              <label for="answer-input-es">Tu objetivo es conjugar en español:</label>
               <input type="text" id="answer-input-es">
             </div>
             <div id="input-en-container" style="display:none;">
@@ -246,6 +237,18 @@
             </div>
           </div>
         </div>
+    </div>
+    <div id="game-layout">
+      <div id="game-main">
+        <canvas id="life-confetti-canvas"></canvas>
+
+        <div id="question-area">
+          <div id="tense-label" class="tense-label"></div>
+          <div id="question-prompt">Loading…</div>
+          <p>Your goal:</p>
+        </div>
+
+        <div id="feedback-area"></div>
 
       </div>
 
@@ -257,14 +260,13 @@
       </div>
       </div>
 
-      <div id="bottom-panel">
-        <div id="action-buttons">
-          <button id="check-button">Get Clue / Check Answer</button>
-          <button id="skip-button">Skip</button>
-          <button id="end-button">END GAME</button>
+        <div id="interaction-panel">
+          <div id="action-buttons">
+            <button id="check-button">Get Clue / Check Answer</button>
+            <button id="skip-button">Skip</button>
+            <button id="end-button">END GAME</button>
+          </div>
         </div>
-
-        <div id="feedback-area"></div>
         <div id="score-section">
           <div id="score-container">
             <div id="score-display"></div>
@@ -272,9 +274,6 @@
             <div id="flames"></div>
           </div>
         </div>
-      </div>
-
-    <div id="ranking-box"></div>
 
       <div id="ranking-box"></div>
       <div class="game-footer">
