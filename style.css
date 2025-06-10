@@ -3382,15 +3382,18 @@ td.irregular-highlight {
 #chuache-box {
   flex: 1 1 30%;
   max-width: 200px;
-  order: 2; /* A la derecha */
+  order: 2;
   background-color: #162416;
-  padding: 15px;
-  border-radius: 8px;
   border-left: 2px solid var(--border-color);
   margin-top: 50px;
-  position: relative; /* Esto asegura que el contenido con 'position: absolute' (el bocadillo) se posicione dentro de esta caja y no en otro lugar de la página. */
+  position: relative;
+
+  /* --- INSTRUCCIONES MODIFICADAS --- */
   display: flex;
-  justify-content: center; /* Centra el contenido horizontalmente */
+  /* En lugar de 'justify-content: center', usamos 'flex-end' para alinear a la derecha. */
+  justify-content: flex-end;
+  /* Añadimos 'align-items: flex-end' para alinear al fondo. */
+  align-items: flex-end;
 }
 
 #chuache-container {
