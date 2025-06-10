@@ -375,6 +375,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 let currentConfigStep = 'splash'; // 'splash', 'mode', 'difficulty', 'details'
 let selectedMode = null;
 let selectedDifficulty = null;
+const DEFAULT_MODE = 'timer';
 const DEFAULT_DIFFICULTY = 'productive_easy';
 let provisionallySelectedOption = null;
 
@@ -757,6 +758,14 @@ function navigateToStep(stepName) {
         } else { // stepName === 'mode'
             if (initialStartButton) initialStartButton.disabled = true;
             updateInfoPanelContent('Select Game Mode', '<p>Choose how you want to play. Details will appear here when you select a mode.</p>');
+
+            if (!selectedMode) {
+                const defaultBtn = gameModesContainer.querySelector(`[data-mode="${DEFAULT_MODE}"]`);
+                if (defaultBtn) {
+                    handleOptionProvisionalSelection(defaultBtn, 'mode', defaultBtn.dataset.infokey);
+                }
+            }
+
             const firstModeButton = gameModesContainer.querySelector('.config-flow-button:not([style*="display: none"])');
             if (firstModeButton) focusOption(firstModeButton, gameModesContainer);
         }
