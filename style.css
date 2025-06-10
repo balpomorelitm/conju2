@@ -522,10 +522,6 @@ button:active {
     min-height: 0;
     margin-top: 0;
 }
-
-#feedback-area .hint-btn {
-  margin: 3px; /* NUEVA REGLA: Añade un pequeño margen alrededor de cada pista. */
-}
 /* Colores específicos para feedback (necesitarías añadir clases en JS) */
 /* .feedback-correct { color: var(--feedback-correct); border-color: var(--feedback-correct); } */
 /* .feedback-incorrect { color: var(--feedback-incorrect); border-color: var(--feedback-incorrect); } */
@@ -768,6 +764,10 @@ button:active {
   text-align: center;      /* centra títulos, botones inline, etc. */
 }
 
+#score-section {
+  text-align: center;
+  margin-top: 20px;
+}
 
 #question-prompt,
 #feedback-area,
@@ -3169,26 +3169,15 @@ td.irregular-highlight {
 }
 
 #game-main {
-  flex: 1 1 70%;
-  order: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* Espacio entre la pregunta y la caja de feedback */
-}
-
-#input-panel {
-  width: 100%;
-  padding: 10px 0;
-  margin-bottom: 15px;
-  display: flex;
-  justify-content: center;
+  flex: 0 0 70%;
+  max-width: 70%;
 }
 
 #answer-row {
-  width: 100%;
-  max-width: 600px; /* Ancho máximo para el área de input */
   display: flex;
   justify-content: center;
+  width: 100%;
+  margin-top: 15px; /* Añade espacio entre la pregunta y la caja de respuesta */
 }
 
 #chuache-box {
@@ -3272,7 +3261,6 @@ td.irregular-highlight {
   order: 1;
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
 /* --- Left Panel: Chuache Character (30%) --- */
@@ -3309,6 +3297,20 @@ td.irregular-highlight {
   width: 100%;
 }
 
+/* --- New Bottom Panel occupying full width --- */
+#bottom-panel {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#bottom-panel #action-buttons,
+#bottom-panel #feedback-area,
+#bottom-panel #score-section {
+    width: 100%;
+}
 
 #input-es-container,
 #input-en-container {
@@ -3401,23 +3403,37 @@ td.irregular-highlight {
   right: 0;
 }
 
-/* --- Estilo del Panel de Interacción y Puntuación --- */
-#interaction-panel {
+/* --- Estilo del Nuevo Panel Inferior Independiente --- */
+#bottom-panel {
   width: 100%;
   margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px dashed var(--border-color); /* Separador visual */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra sus hijos horizontalmente */
+  gap: 5px; /* Reduce el espacio para acercar la puntuación */
 }
 
-#interaction-panel #action-buttons {
-  width: 100%;
-  max-width: 500px;
-  text-align: center;
+/* --- Hijos del Panel Inferior --- */
+#bottom-panel #action-buttons,
+#bottom-panel #feedback-area,
+#bottom-panel #score-section {
+    width: 100%;
+    max-width: 500px; /* Un ancho máximo para que no se vea demasiado estirado en pantallas grandes */
+    text-align: center; /* Centra el contenido de texto y los botones inline */
 }
 
-#score-section {
-  width: 100%;
-  margin-top: 20px; /* Margen para separarlo de los botones de acción */
-  max-width: 600px;
-  text-align: center;
+#bottom-panel #feedback-area {
+    /* Permite mostrar fácilmente dos líneas de texto */
+    min-height: 70px;
+    line-height: 1.4;
+}
+
+#bottom-panel #score-section {
+    width: 100%;
+    max-width: 600px; /* Aumenta el ancho máximo para que sea más prominente. */
+    margin-top: 10px; /* Separación visual superior */
 }
 
 /* --- Ajuste Responsive para Móvil --- */
@@ -3435,12 +3451,11 @@ td.irregular-highlight {
     border-left: none; 
   }
 
-  /* El #interaction-panel fluirá naturalmente debajo de #game-layout, no necesita cambios aquí. */
+  /* El #bottom-panel fluirá naturalmente debajo de #game-layout, no necesita cambios aquí. */
 }
 
 /* --- Lives Mode Visual Tweaks --- */
 #lives-mechanics-display {
-  font-size: 1.1em; /* REGLA MODIFICADA: Aumenta ligeramente la fuente. */
   display: flex;
   justify-content: center;
   align-items: center;
