@@ -93,7 +93,7 @@ function chuacheSpeaks(type) {
     image.src = "images/conjuchuache.webp";
     bubble.classList.add("hidden");
     bubble.classList.remove("error");
-  }, 2000);
+  }, 3000);
 }
 
 function playFromStart(audio) {
