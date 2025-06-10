@@ -3557,26 +3557,46 @@ td.irregular-highlight {
   
   /* Estilo para el panel de Chuache en la parte inferior */
   #chuache-box {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 25px;
-    padding: 15px 0;
-    order: 8; /* Nos aseguramos de que mantenga su orden */
-    border-left: none; /* Quitar el borde lateral que tenía en escritorio */
-    border-top: 2px dashed var(--border-color); /* Añadir un separador superior */
+    order: 8; /* This keeps its position in the vertical flow */
+
+    /* --- NEW AND MODIFIED RULES FOR RESIZING/POSITIONING --- */
+    width: 40%; /* Reduce container width to 40% of the screen */
+    max-width: 140px; /* Set a maximum pixel width to prevent it from getting too large */
+    align-self: flex-end; /* This aligns the box itself to the right edge of the screen */
+    margin-top: 20px;
+    margin-right: 10px; /* Add a small margin so it doesn't touch the very edge */
+    padding: 5px; /* Reduce internal padding */
+
+    /* Adjust borders for the new position */
+    border-top: none; 
+    border-left: 2px dashed var(--border-color); /* Add a separator on its left */
   }
 
   /* Aseguramos que el contenedor de la imagen esté centrado dentro de su nueva posición */
   #chuache-container {
-    margin: 0 auto;
+    width: 100%;
   }
 
-  /* Nos aseguramos de que los demás paneles ocupen el ancho y tengan un margen adecuado */
-  #input-panel, 
-  #interaction-panel, 
+  /* --- NEW RULES FOR FORCING FULL-WIDTH PANELS ON MOBILE --- */
+
+  /* This rule targets all panels that should stretch across the screen. */
+  #input-panel,
+  #interaction-panel,
   #score-section,
   #feedback-area {
     width: 100%;
+    max-width: 100%; /* This is important to override any max-width set for desktop. */
+    box-sizing: border-box; /* Ensures padding is included in the width calculation. */
     margin-top: 15px;
+  }
+
+  /* We also need to ensure the children of these panels are correctly sized. */
+  #answer-row,
+  #action-buttons,
+  #score-container {
+      width: 100%;
+      max-width: 95%; /* Use 95% width with auto margin to center them nicely. */
+      margin-left: auto;
+      margin-right: auto;
   }
 }
