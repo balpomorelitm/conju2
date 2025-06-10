@@ -2002,6 +2002,7 @@ function prepareNextQuestion() {
 }
 
 function checkAnswer() {
+  const isStudyMode = (selectedGameMode === 'study');
   let possibleCorrectAnswers = [];
   const rt    = (Date.now() - startTime) / 1000;
   const bonus = Math.max(1, 2 - Math.max(0, rt - 5) * 0.1); 
@@ -2164,12 +2165,18 @@ function checkAnswer() {
 }
 
   if (correct) {
+    if (isStudyMode) {
+      soundCorrect.play();
+      feedback.innerHTML = `✅ Correct!`;
+      setTimeout(prepareNextQuestion, 200);
+      return;
+    }
     // Manejo del sonido
     if (soundCorrect) {
       soundCorrect.pause();
       soundCorrect.currentTime = 0;
       soundCorrect.play().catch(()=>{/* ignora errores por autoplay */});
-    } // CIERRE DEL if (soundCorrect)
+    }
     chuacheSpeaks('correct');
 	
     // El resto de la lógica para una respuesta correcta DEBE ESTAR AQUÍ DENTRO
@@ -2297,6 +2304,12 @@ function checkAnswer() {
 	
     return;   
   } else {
+    if (isStudyMode) {
+      soundWrong.play();
+      feedback.innerHTML = `❌ Incorrect. The correct answer was <strong>"${currentQuestion.answer}"</strong>.`;
+      setTimeout(prepareNextQuestion, 1500);
+      return;
+    }
     soundWrong.play();
     chuacheSpeaks('wrong');
     streak = 0;
@@ -2629,6 +2642,7 @@ function updateStreakForLifeDisplay() {
 
 function quitToSettings() {
   document.getElementById('timer-container').style.display = 'none';
+  document.getElementById('game-screen').classList.remove('study-mode-active');
   clearInterval(countdownTimer);
   stopBubbles();
   gameMusic.pause();
@@ -2750,6 +2764,10 @@ finalStartGameButton.addEventListener('click', async () => {
     // Ocultar pantalla de configuración de flujo y mostrar pantalla de juego
     configFlowScreen.style.display = 'none';
     gameScreen.style.display = 'block';
+    gameScreen.classList.remove('study-mode-active');
+    if (selectedGameMode === 'study') {
+        gameScreen.classList.add('study-mode-active');
+    }
     ensureChuachePosition();
     animateChuacheToGame();
     if (window.innerWidth > 1200) startBubbles();

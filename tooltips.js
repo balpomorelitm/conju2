@@ -32,7 +32,19 @@ const specificInfoData = {
               - Appear randomly in "<span class="difficulty-normal">Conjugate</span>" (⚙️) and "<span class="difficulty-hard">Produce</span>" (⌨️) difficulties if the verb is irregular or reflexive.<br>
               - Chance: Approx. <span class="emphasis-mechanic">1 in 30</span> for "Conjugate", approx. <span class="emphasis-mechanic">1 in 20</span> for "Produce".<br>
               - Correctly conjugating a prize verb (marked with 🎁) grants an <span class="emphasis-mechanic">extra life!</span><br>
-           <br><strong class="modal-subtitle">Goal:</strong> Stay alive and get the highest score!`
+          <br><strong class="modal-subtitle">Goal:</strong> Stay alive and get the highest score!`
+  },
+  studyMode: {
+    title: "📚 Study Mode",
+    html: `<p>A minimalist mode for focused practice without distractions.</p>
+         <strong class="modal-subtitle">Features:</strong>
+         <ul>
+           <li>No points, no score, no streaks.</li>
+           <li>No timer or lives.</li>
+           <li>No character or character sounds.</li>
+           <li>The feedback area is used only for providing clues or showing the correct answer.</li>
+         </ul>
+         <p><strong>Goal:</strong> Practice conjugations at your own pace.</p>`
   },
   receptiveConfig: {
     title: "💭 Recall Mode",

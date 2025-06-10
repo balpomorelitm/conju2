@@ -13,6 +13,34 @@
   font-style: normal;
 }
 
+/* ==========================================================================
+   ====== STYLES FOR MINIMALIST STUDY MODE ======
+   ========================================================================== */
+
+/* When the game screen has the 'study-mode-active' class... */
+
+/* 1. Hide all non-essential UI elements */
+.study-mode-active #chuache-box,
+.study-mode-active #score-section,
+.study-mode-active #game-mechanics-bar,
+.study-mode-active #interaction-panel {
+  display: none !important;
+}
+
+/* 2. Re-center the main game layout */
+.study-mode-active #game-layout {
+  display: block;
+  width: 100%;
+}
+
+/* 3. Make the main content area centered and appropriately sized */
+.study-mode-active #game-main {
+  flex-basis: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding-right: 0;
+}
+
 :root {
   --bg-color: #1a2a1a;
   --container-bg: #2a3a2a;
