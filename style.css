@@ -3109,11 +3109,6 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     /* pointer-events: none;  // Considera quitar esto si quieres que sea clickeable para volver */
     display: block !important; /* Asegurar que sea visible */
 }
-.config-flow-button[data-infokey="studyMode"].confirmed-selection {
-    background-color: #ffffff !important; /* Blanco */
-    color: #000000 !important; /* Texto negro */
-    border: 2px solid #000000 !important;
-}
 .config-step.step-section-completed .config-flow-button:not(.confirmed-selection) {
     display: none !important; /* Oculta los otros botones */
 }
