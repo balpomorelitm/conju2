@@ -2452,25 +2452,31 @@ function startTimerMode() {
       clearInterval(countdownTimer);
   
       setTimeout(() => {
-        openNameModal('⏱️ Time is up! Your name?', function(name) {
-        if (name) {
-          db.collection("records").add({
-            name: name,
-            score: score,
-            mode: selectedGameMode,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            tense: currentOptions.tenses,
-            verb: currentQuestion.verb.infinitive_es,
-            streak: bestStreak
-          })
-          .then(() => {
-            renderSetupRecords();
-          })
-          .catch(error => console.error("Error saving record:", error))
-          .then(() => fadeOutToMenu(quitToSettings));
-        } else {
-          fadeOutToMenu(quitToSettings);
-        }
+        qualifiesForRecord(score, selectedGameMode).then(qualifies => {
+          if (!qualifies) {
+            fadeOutToMenu(quitToSettings);
+            return;
+          }
+          openNameModal('⏱️ Time is up! Your name?', function(name) {
+            if (name) {
+              db.collection("records").add({
+                name: name,
+                score: score,
+                mode: selectedGameMode,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                tense: currentOptions.tenses,
+                verb: currentQuestion.verb.infinitive_es,
+                streak: bestStreak
+              })
+              .then(() => {
+                renderSetupRecords();
+              })
+              .catch(error => console.error("Error saving record:", error))
+              .then(() => fadeOutToMenu(quitToSettings));
+            } else {
+              fadeOutToMenu(quitToSettings);
+            }
+          });
         });
       }, 2000);
     }
@@ -2830,32 +2836,37 @@ function checkFinalStartButtonState() {
             setTimeout(() => endButton.classList.remove('electric-effect'), 1000);
 
             setTimeout(() => {
-                openNameModal('¿Cómo te llamas?', function(name) {
+                qualifiesForRecord(score, selectedGameMode).then(qualifies => {
+                    if (!qualifies) {
+                        fadeOutToMenu(quitToSettings);
+                        return;
+                    }
+                    openNameModal('¿Cómo te llamas?', function(name) {
 
+                        if (name) {
+                            const recordData = {
+                                name: name,
+                                score: score,
 
-                if (name) {
-                    const recordData = {
-                        name: name,
-                        score: score,
-
-                        mode: selectedGameMode,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                        tense: currentOptions.tenses,
-                        verb: currentQuestion.verb.infinitive_es,
-                        streak: bestStreak
-                    };
-                    db.collection("records").add(recordData)
-                      .then(() => {
-                        renderSetupRecords();
-                        updateRanking();
-                      })
-                      .catch(error => {
-                        console.error("Error saving record (endButton):", error);
-                      })
-                      .then(() => fadeOutToMenu(quitToSettings));
-                } else {
-                    fadeOutToMenu(quitToSettings);
-                }
+                                mode: selectedGameMode,
+                                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                                tense: currentOptions.tenses,
+                                verb: currentQuestion.verb.infinitive_es,
+                                streak: bestStreak
+                            };
+                            db.collection("records").add(recordData)
+                              .then(() => {
+                                renderSetupRecords();
+                                updateRanking();
+                              })
+                              .catch(error => {
+                                console.error("Error saving record (endButton):", error);
+                              })
+                              .then(() => fadeOutToMenu(quitToSettings));
+                        } else {
+                            fadeOutToMenu(quitToSettings);
+                        }
+                    });
                 });
             }, 2000);
 
@@ -2977,8 +2988,30 @@ infoIcons.forEach(icon => {
 if (closeSpecificModalBtn) {
   closeSpecificModalBtn.addEventListener('click', closeSpecificModal);
 }
+
 if (specificModalBackdrop) {
   specificModalBackdrop.addEventListener('click', closeSpecificModal);
+}
+
+async function qualifiesForRecord(score, mode) {
+  if (score <= 0) return false;
+  try {
+    const snapshot = await db.collection('records')
+      .where('mode', '==', mode)
+      .orderBy('score', 'desc')
+      .limit(10)
+      .get();
+    if (snapshot.size < 10) return true;
+    let minScore = Infinity;
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.score < minScore) minScore = data.score;
+    });
+    return score > minScore;
+  } catch (error) {
+    console.error('Error checking record:', error);
+    return false;
+  }
 }
 
 // ----- Name Entry Modal -----
