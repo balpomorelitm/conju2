@@ -2,6 +2,7 @@ let typeInterval; // Variable global para controlar el intervalo de la animació
 
 const soundCorrect = new Audio('sounds/correct.mp3');
 const soundWrong = new Audio('sounds/wrong.mp3');
+const soundWrongStudy = new Audio('sounds/wongstudy.mp3');
 const soundClick = new Audio('sounds/click.mp3');
 const soundStart = new Audio('sounds/start-verb.mp3');
 const soundSkip = new Audio('sounds/skip.mp3');
@@ -2311,7 +2312,11 @@ function checkAnswer() {
 	
     return;   
   } else {
-    soundWrong.play();
+    if (isStudyMode) {
+      soundWrongStudy.play();
+    } else {
+      soundWrong.play();
+    }
     chuacheSpeaks('wrong');
     streak = 0;
     multiplier = 1.0;
@@ -2808,9 +2813,15 @@ finalStartGameButton.addEventListener('click', async () => {
             if (currentMusic !== gameMusic) {
                 currentMusic = gameMusic;
             }
-            if (gameMusic.paused && musicPlaying) {
+            if (selectedGameMode !== 'study' && gameMusic.paused && musicPlaying) {
                 gameMusic.volume = targetVolume;
                 gameMusic.play();
+            } else {
+                gameMusic.pause();
+                if (musicIcon) {
+                    musicIcon.src = 'images/musicoff.webp';
+                    musicIcon.alt = 'Music off';
+                }
             }
             musicToggle.style.display = 'block';
             volumeSlider.style.display = 'block';
