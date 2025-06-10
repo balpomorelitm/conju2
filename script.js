@@ -2615,6 +2615,7 @@ function updateStreakForLifeDisplay() {
 function quitToSettings() {
   document.getElementById('timer-container').style.display = 'none';
   clearInterval(countdownTimer);
+  stopBubbles();
   gameMusic.pause();
   gameMusic.currentTime = 0;
   currentMusic = menuMusic;
@@ -2736,6 +2737,7 @@ finalStartGameButton.addEventListener('click', async () => {
     gameScreen.style.display = 'block';
     ensureChuachePosition();
     animateChuacheToGame();
+    if (window.innerWidth > 1200) startBubbles();
     // El resto de tu lógica de inicio de juego (setupScreen.style.display = 'none'; gameScreen.style.display = 'block'; etc.)
     // ...
     feedback.innerHTML = '';
@@ -3377,7 +3379,6 @@ window.addEventListener('resize', () => {
     startBubbles();
   }
 });
-if (window.innerWidth > 1200) startBubbles(); 
 
   if (specificModal) specificModal.style.display = 'none';
   if (specificModalBackdrop) specificModalBackdrop.style.display = 'none';
