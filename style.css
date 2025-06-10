@@ -66,6 +66,12 @@ body::before {
   z-index: 3;
 }
 
+@media (max-width: 600px) {
+  body::before {
+    box-shadow: none;
+  }
+}
+
 
 
 body::after {
