@@ -3196,6 +3196,7 @@ td.irregular-highlight {
 }
 
 #chuache-image {
+  display: block;
   width: 100%;
   image-rendering: pixelated;
 }
