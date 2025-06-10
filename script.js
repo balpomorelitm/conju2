@@ -2368,9 +2368,9 @@ function checkAnswer() {
 	} else if (currentOptions.mode === 'productive' || currentOptions.mode === 'productive_easy') {
 		// Existing hint logic for productive modes (should be in English already based on your original code)
 		if (currentQuestion.hintLevel === 0) {
+                        // Provide Clue 1 with proper spacing
                         feedback.innerHTML =
-                          `❌ <em>Clue 1:</em> infinitive is ` +
-                          `<strong>${currentQuestion.verb.infinitive_es}</strong>.`; // This refers to Spanish infinitive, which is contextually correct for this mode
+                          `❌ <em>Clue 1:</em> infinitive is <strong>${currentQuestion.verb.infinitive_es}</strong>.`; // This refers to Spanish infinitive, which is contextually correct for this mode
                         playFromStart(soundElectricShock);
                         currentQuestion.hintLevel = 1;
                         updateClueButton();
