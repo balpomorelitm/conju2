@@ -2170,12 +2170,6 @@ function checkAnswer() {
 }
 
   if (correct) {
-    if (isStudyMode) {
-      soundCorrect.play();
-      feedback.innerHTML = `✅ Correct!`;
-      setTimeout(prepareNextQuestion, 200);
-      return;
-    }
     // Manejo del sonido
     if (soundCorrect) {
       soundCorrect.pause();
@@ -2309,12 +2303,6 @@ function checkAnswer() {
 	
     return;   
   } else {
-    if (isStudyMode) {
-      soundWrong.play();
-      feedback.innerHTML = `❌ Incorrect. The correct answer was <strong>"${currentQuestion.answer}"</strong>.`;
-      setTimeout(prepareNextQuestion, 1500);
-      return;
-    }
     soundWrong.play();
     chuacheSpeaks('wrong');
     streak = 0;
