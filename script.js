@@ -1744,9 +1744,14 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     updateGroupButtons();
 }
   function updateRanking() {
-    rankingBox.innerHTML = '<h3>🏆 Top 5</h3>';
     const mode = selectedGameMode || window.selectedGameMode;
     if (!mode) return;
+    if (mode === 'study') {
+      rankingBox.innerHTML = '';
+      return;
+    }
+
+    rankingBox.innerHTML = '<h3>🏆 Top 5</h3>';
 
     db.collection("records")
       .where("mode", "==", mode)
