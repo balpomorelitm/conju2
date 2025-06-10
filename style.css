@@ -3235,20 +3235,47 @@ td.irregular-highlight {
   }
 }
 
+/* 1. Cuerpo principal del Bocadillo */
 .speech-bubble {
   background: #001f00;
   border: 2px solid #00ff88;
   color: #00ff88;
   font-family: var(--font-pixel);
   font-size: 1em;
-  padding: 8px 10px;
-  border-radius: 0;
+  padding: 12px 15px; /* Un poco más de padding para respire el texto */
+  border-radius: 8px; 
   animation: popIn 0.3s ease;
   white-space: normal;
   display: inline-block;
-  position: absolute;
-  bottom: calc(100% + 10px);
+  position: relative; 
+  bottom: 5px; 
   left: -20px;
+}
+
+/* 2. Triángulo EXTERIOR (actúa como el borde del delta) */
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: -14px; /* Lo posicionamos justo debajo del bocadillo */
+  left: 30px;    /* Ajusta este valor para centrar el triángulo bajo el texto */
+  border-style: solid;
+  border-width: 14px 14px 0 0; /* Crea un triángulo isósceles */
+  border-color: #00ff88 transparent transparent transparent;
+}
+
+/* 3. Triángulo INTERIOR (actúa como el relleno del delta) */
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  bottom: -10px; /* Un poco más arriba que el borde para que quede dentro */
+  left: 32px;    /* Un poco más a la derecha para que quede dentro */
+  border-style: solid;
+  border-width: 10px 10px 0 0;
+  border-color: #001f00 transparent transparent transparent;
 }
 
 .speech-bubble.error {
