@@ -3266,79 +3266,93 @@ td.irregular-highlight {
   }
 }
 
-/* 1. Contenedor del Personaje (Ahora es el ancla de posicionamiento) */
+/* ==========================================================================
+   ====== DEFINITIVE STYLES FOR CHUACHE AND SPEECH BUBBLE ======
+   ========================================================================== */
+
+/* 1. The Character's Main Container (The Positioning Anchor) */
 #chuache-container {
-  position: relative; /* ¡CRÍTICO! Esto hace que el bocadillo se posicione respecto a este contenedor. */
-  width: 100%;
+  position: relative; /* This is the anchor for the absolute-positioned bubble. */
   display: flex;
-  justify-content: center; /* Mantenemos la imagen centrada dentro */
+  justify-content: center;
 }
 
-/* 2. Cuerpo principal del Bocadillo (Ahora flota por encima) */
+/* 2. The Speech Bubble's Main Body */
 .speech-bubble {
-  /* ¡CRÍTICO! Cambiamos a 'absolute' para que no afecte la posición de la imagen. */
+  /* This makes the bubble float on top, preventing any layout shift. */
   position: absolute; 
-  /* Lo posicionamos arriba del todo del contenedor de Chuache, con un pequeño margen. */
-  top: -10px; 
-  transform: translateY(-100%); /* Lo subimos su propia altura para que quede justo encima */
-  
-  /* Centrado horizontal y con un ancho máximo */
+  /* Positions the bubble above the container. Adjust 'bottom' if needed. */
+  bottom: 95%; 
+  /* This combination centers the bubble horizontally above the image. */
   left: 50%;
-  transform: translateX(-50%) translateY(-100%);
+  transform: translateX(-50%);
+  
   width: 90%;
-  max-width: 180px; /* Ancho máximo para el bocadillo */
-
-  /* Estilos visuales que ya teníamos */
+  max-width: 190px;
   background: #001f00;
   border: 2px solid #00ff88;
   color: #00ff88;
+  padding: 12px;
+  border-radius: 8px;
+  z-index: 10;
+  
+  /* Inherited properties from before */
   font-family: var(--font-pixel);
-  padding: 12px 15px;
-  border-radius: 8px; 
   animation: popIn 0.3s ease;
-  z-index: 10; /* Nos aseguramos de que esté por encima de la imagen */
+  text-align: center;
 }
 
-/* 3. Triángulo EXTERIOR (Borde, ahora apuntando hacia la derecha) */
-.speech-bubble::before {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  
-  /* Posicionamiento del borde del triángulo */
-  bottom: -14px; /* Justo debajo del bocadillo */
-  right: 25px;   /* ¡CAMBIADO! Lo movemos a la derecha. */
-  left: auto;    /* Anulamos la posición izquierda. */
-  
-  /* Borde invertido para que apunte hacia abajo y a la derecha */
-  border-style: solid;
-  border-width: 0 0 14px 14px;
-  border-color: transparent transparent #00ff88 transparent; 
-}
-
-/* 4. Triángulo INTERIOR (Relleno, ahora apuntando hacia la derecha) */
+/* 3. The Speech Bubble's Tail (Fill) */
 .speech-bubble::after {
   content: "";
   position: absolute;
+  top: 100%; /* Positioned right at the bottom edge of the bubble */
+  left: 30px;  /* Positioned on the left side of the bubble */
+  
+  /* Creates the triangle shape */
   width: 0;
   height: 0;
-  
-  /* Posicionamiento del relleno del triángulo */
-  bottom: -10px; 
-  right: 27px;   /* ¡CAMBIADO! Lo movemos a la derecha. */
-  left: auto;    /* Anulamos la posición izquierda. */
-
-  /* Borde invertido para que apunte hacia abajo y a la derecha */
-  border-style: solid;
-  border-width: 0 0 10px 10px;
-  border-color: transparent transparent #001f00 transparent;
+  border-top: 10px solid #001f00; /* Points down, uses bubble's background color */
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
 }
 
+/* 4. The Speech Bubble's Tail (Border) */
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  top: 100%; /* Positioned right at the bottom edge */
+  left: 28px;  /* Positioned slightly outside the fill to create a border effect */
+
+  /* Creates a slightly larger triangle for the border */
+  width: 0;
+  height: 0;
+  border-top: 12px solid #00ff88; /* Points down, uses bubble's border color */
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  
+  /* This ensures the border triangle is rendered behind the fill triangle */
+  z-index: -1; 
+}
+
+
+/* --- 5. DYNAMIC COLOR CHANGE FOR ERROR STATE --- */
+
+/* Changes the bubble's border and background when the .error class is added */
 .speech-bubble.error {
   background: #330000;
   border-color: #ff5555;
   color: #ff5555;
+}
+
+/* Changes the TAIL'S BORDER to red during an error */
+.speech-bubble.error::before {
+  border-top-color: #ff5555;
+}
+
+/* Changes the TAIL'S FILL to dark red during an error */
+.speech-bubble.error::after {
+  border-top-color: #330000;
 }
 
 .speech-bubble.hidden {
@@ -3615,9 +3629,6 @@ td.irregular-highlight {
     /* Adjust borders for the new position */
     border-top: none;
     border-left: 2px dashed var(--border-color); /* Add a separator on its left */
-  }
-  #chuache-container {
-    width: 100%;
   }
 
   /* Aseguramos que el contenedor de la imagen esté centrado dentro de su nueva posición */
