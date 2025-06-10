@@ -518,11 +518,13 @@ button:active {
   background-color: var(--input-bg);
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   line-height: 1.4; /* Improve line spacing for multiline messages */
   margin-top: 10px;
 }
+#feedback-fixed { margin-bottom: 4px; }
 #feedback-area:empty { /* Ocultar borde si está vacío */
     border: none;
     padding: 0;
