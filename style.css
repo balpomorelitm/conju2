@@ -803,7 +803,7 @@ button:active {
 
 #score-section {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 #question-prompt,
@@ -1992,7 +1992,7 @@ button:active {
 /* Barra superior con mecánicas de juego */
 #game-mechanics-bar {
   width: 100%;
-  margin-bottom: 15px; /* Espacio antes del tablero de juego */
+  margin-bottom: 8px; /* Espacio antes del tablero de juego */
   padding: 10px 0;
   display: flex;
   justify-content: center;
@@ -3373,7 +3373,7 @@ td.irregular-highlight {
   order: 1;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 
   padding-right: 25px;
   box-sizing: border-box;
