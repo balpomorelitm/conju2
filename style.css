@@ -3008,6 +3008,16 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     background-color: #0d6efd !important; /* Azul más claro */
 }
 
+/* Estilo para "Study Mode" cuando está seleccionado provisionalmente */
+.config-flow-button[data-infokey="studyMode"].provisional-selection {
+    background-color: #ffffff !important; /* Blanco */
+    border-color: #cccccc !important;
+    color: #000000 !important; /* Texto negro */
+}
+.config-flow-button[data-infokey="studyMode"].provisional-selection:hover {
+    background-color: #f2f2f2 !important; /* Blanco ligeramente oscuro */
+}
+
 /* --- Botones de DIFICULTAD en estado provisional --- */
 .config-flow-button[data-infokey="receptiveConfig"].provisional-selection { /* Recall */
     background-color: #dc3545 !important; /* Rojo */
@@ -3098,6 +3108,11 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
     opacity: 1 !important;
     /* pointer-events: none;  // Considera quitar esto si quieres que sea clickeable para volver */
     display: block !important; /* Asegurar que sea visible */
+}
+.config-flow-button[data-infokey="studyMode"].confirmed-selection {
+    background-color: #ffffff !important; /* Blanco */
+    color: #000000 !important; /* Texto negro */
+    border: 2px solid #000000 !important;
 }
 .config-step.step-section-completed .config-flow-button:not(.confirmed-selection) {
     display: none !important; /* Oculta los otros botones */
