@@ -1770,6 +1770,8 @@ function applyIrregularityAndTenseFiltersToVerbList() {
   }
 
   function updateScore() {
+    if (selectedGameMode === 'study') return;
+
     scoreDisplay.innerHTML =
       `<strong>🎯 Score:</strong> ${score}`
       + `  <strong>🔥 Streak:</strong> ${streak}`
@@ -2177,7 +2179,13 @@ function checkAnswer() {
       soundCorrect.play().catch(()=>{/* ignora errores por autoplay */});
     }
     chuacheSpeaks('correct');
-	
+
+    if (isStudyMode) {
+      feedback.textContent = 'Correct!';
+      setTimeout(prepareNextQuestion, 200);
+      return;
+    }
+
     // El resto de la lógica para una respuesta correcta DEBE ESTAR AQUÍ DENTRO
     streak++;
     if (streak > bestStreak) bestStreak = streak;
