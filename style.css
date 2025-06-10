@@ -3479,3 +3479,77 @@ td.irregular-highlight {
     text-shadow: 0 0 5px #fff, 0 0 10px #ff5252, 0 0 15px #ff5252;
   }
 }
+
+/* ==========================================================================
+   ====== REGLAS EXCLUSIVAS PARA LA DISPOSICIÓN EN MÓVIL (FLUJO VERTICAL) ======
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  /* --- 1. PREPARACIÓN DE CONTENEDORES --- */
+
+  /* Hacemos que la pantalla principal del juego sea un contenedor flexible vertical.
+     Esto nos permite usar la propiedad 'order' en sus hijos directos. */
+  #game-screen {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ¡TRUCO ESENCIAL! Con 'display: contents', hacemos que los contenedores del 
+     layout de escritorio (#game-layout y #game-main) "desaparezcan" visualmente,
+     permitiéndonos reordenar a sus hijos como si fueran directos de #game-screen. */
+  #game-layout, #game-main {
+    display: contents;
+  }
+
+
+  /* --- 2. REORDENAMIENTO VISUAL CON LA PROPIEDAD 'ORDER' --- */
+
+  /* Asignamos un número de orden a cada componente principal. 
+     Se mostrarán en pantalla de menor a mayor, creando el flujo vertical deseado. */
+  
+  #game-title { order: 1; }          /* Primero: Título (Modo y Tenses) */
+  #game-mechanics-bar { order: 2; }   /* Segundo: Barra de Vidas o Reloj */
+  #question-area { order: 3; }        /* Tercero: La pregunta del juego */
+  #input-panel { order: 4; }          /* Cuarto: El panel para que el jugador escriba */
+  
+  /* Quinto: El panel de feedback, colocado ANTES que los botones de acción. */
+  #feedback-area { 
+    order: 5;
+    margin-top: 15px; /* Le damos un margen para separarlo del input */
+  } 
+  
+  #interaction-panel { order: 6; }    /* Sexto: Los botones (Get Clue, Skip, End Game) */
+  #score-section { order: 7; }        /* Séptimo: La barra de puntuación */
+  #chuache-box { order: 8; }          /* Octavo: El personaje Chuache, ahora en la parte inferior */
+  #ranking-box { order: 9; }          /* Noveno: El ranking Top 5 */
+  .game-footer { order: 10; }         /* Décimo: El pie de página final */
+
+
+  /* --- 3. AJUSTES DE ESTILO PARA LOS COMPONENTES EN MODO MÓVIL --- */
+  
+  /* Estilo para el panel de Chuache en la parte inferior */
+  #chuache-box {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 25px;
+    padding: 15px 0;
+    order: 8; /* Nos aseguramos de que mantenga su orden */
+    border-left: none; /* Quitar el borde lateral que tenía en escritorio */
+    border-top: 2px dashed var(--border-color); /* Añadir un separador superior */
+  }
+
+  /* Aseguramos que el contenedor de la imagen esté centrado dentro de su nueva posición */
+  #chuache-container {
+    margin: 0 auto;
+  }
+
+  /* Nos aseguramos de que los demás paneles ocupen el ancho y tengan un margen adecuado */
+  #input-panel, 
+  #interaction-panel, 
+  #score-section,
+  #feedback-area {
+    width: 100%;
+    margin-top: 15px;
+  }
+}
