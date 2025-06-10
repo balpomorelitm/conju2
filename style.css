@@ -3213,9 +3213,11 @@ td.irregular-highlight {
 
 @media (max-width: 600px) {
   #chuache-box {
-    flex-basis: 100%;
-    max-width: 100%;
-    width: 100%;
+    flex-basis: 30%;
+    max-width: 30%;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
   }
   #answer-area {
     flex-basis: 100%;
@@ -3411,8 +3413,10 @@ td.irregular-highlight {
 
   #chuache-box {
     order: 2;
-    max-width: 100%;
-    width: 100%;
+    max-width: 30%;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 15px;
     border-left: none;
     border-top: 2px solid var(--border-color);
@@ -3559,13 +3563,15 @@ td.irregular-highlight {
   
   /* Estilo para el panel de Chuache en la parte inferior */
   #chuache-box {
-    width: 100%;
-    max-width: 100%;
+    width: 30%;
+    max-width: 30%;
     margin-top: 25px;
     padding: 15px 0;
     order: 8; /* Nos aseguramos de que mantenga su orden */
     border-left: none; /* Quitar el borde lateral que tenía en escritorio */
     border-top: 2px dashed var(--border-color); /* Añadir un separador superior */
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Aseguramos que el contenedor de la imagen esté centrado dentro de su nueva posición */
