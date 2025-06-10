@@ -3314,7 +3314,6 @@ td.irregular-highlight {
 }
 
 #bottom-panel #action-buttons,
-#bottom-panel #feedback-area,
 #bottom-panel #score-section {
     width: 100%;
 }
@@ -3427,18 +3426,12 @@ td.irregular-highlight {
 
 /* --- Hijos del Panel Inferior --- */
 #bottom-panel #action-buttons,
-#bottom-panel #feedback-area,
 #bottom-panel #score-section {
     width: 100%;
     max-width: 500px; /* Un ancho máximo para que no se vea demasiado estirado en pantallas grandes */
     text-align: center; /* Centra el contenido de texto y los botones inline */
 }
 
-#bottom-panel #feedback-area {
-    /* Permite mostrar fácilmente dos líneas de texto */
-    min-height: 70px;
-    line-height: 1.4;
-}
 
 #bottom-panel #score-section {
     width: 100%;
