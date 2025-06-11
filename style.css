@@ -3437,6 +3437,12 @@ td.irregular-highlight {
   width: auto;
 }
 
+#answer-input-es::placeholder,
+#answer-input-en::placeholder {
+  color: #999999;
+  opacity: 1;
+}
+
 /* Estilo destacado para la puntuación */
 #score-container #score-display {
   /* Tamaño de fuente mayor para destacar la puntuación */
