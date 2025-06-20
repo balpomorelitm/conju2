@@ -18,6 +18,11 @@ const chuacheSound = new Audio('sounds/talks.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+// Supabase initialization
+const SUPABASE_URL = 'https://dmaztdtlixwcnwcgwsnp.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtYXp0ZHRsaXh3Y253Y2d3c25wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzOTE3OTEsImV4cCI6MjA2NTk2Nzc5MX0.F-jBVWM9usSxXQPd-5JDeZUPg6JcOh-FY8tbFXSgGDo';
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // Track last index used for each type of reaction
 const lastChuacheIndex = {
   correct: -1,
@@ -151,14 +156,6 @@ function animateChuacheToGame() {
   }, { once: true });
 }
 
-// Ensure a Firestore instance is available when this script runs
-if (typeof window !== 'undefined') {
-  if (typeof window.db === 'undefined' &&
-      typeof firebase !== 'undefined' &&
-      typeof firebase.firestore === 'function') {
-    window.db = firebase.firestore();
-  }
-}
 
 /**
  * Simulates a typewriter effect on an HTML element.
@@ -1533,55 +1530,49 @@ function initConfirmButtonNavigation(confirmBtn, container) {
         }
     });
 }
-function renderSetupRecords() {
+async function renderSetupRecords() {
   const container = document.getElementById('setup-records');
   if (!container) return;
 
-  container.querySelectorAll('.mode-records').forEach(div => {
+  container.querySelectorAll('.mode-records').forEach(async (div) => {
     const mode = div.dataset.mode;
     const ul = div.querySelector('.record-list');
-    ul.innerHTML = '';
+    ul.innerHTML = '<li>Loading...</li>';
 
-    db.collection('records')
-      .where('mode', '==', mode)
-      .orderBy('score', 'desc')
-      .limit(10)
-      .get()
-      .then(snapshot => {
-        if (snapshot.empty) {
-          ul.innerHTML = '<li>No hay récords aún</li>';
-          return;
-        }
-        snapshot.forEach((doc, i) => {
-          const { name, score, timestamp, streak } = doc.data();
-          const date = timestamp?.toDate();
-          // Solo la fecha, sin la parte de la hora:
-          const dateStr = date
-            ? date.toLocaleDateString()
-            : '–';
+    try {
+      const { data, error } = await supabase
+        .from('records')
+        .select('name, score, created_at, streak')
+        .eq('mode', mode)
+        .order('score', { ascending: false })
+        .limit(10);
 
-          const medal = i === 0 ? '🥇'
-                      : i === 1 ? '🥈'
-                      : i === 2 ? '🥉'
-                      : '';
-          const li = document.createElement('li');
-          li.innerHTML = `
-            <div class="record-item">
-              <span class="medal">${medal}</span>
-              <strong>${name}:</strong> ${score} pts
-              ${streak
-                ? `<span class="record-streak">🔥${streak}</span>`
-                : ''}
-              <span class="record-date">${dateStr}</span>
-            </div>
-          `;
-          ul.appendChild(li);
-        });
-      })
-      .catch(error => {
-        console.error('Error al cargar récords:', error);
-        ul.innerHTML = '<li>Error cargando récords</li>';
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        ul.innerHTML = '<li>No records yet</li>';
+        return;
+      }
+
+      ul.innerHTML = '';
+      data.forEach((record, i) => {
+        const date = record.created_at ? new Date(record.created_at) : null;
+        const dateStr = date ? date.toLocaleDateString() : '–';
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="record-item">
+            <span class="medal">${medal}</span>
+            <strong>${record.name}:</strong> ${record.score} pts
+            ${record.streak ? `<span class="record-streak">🔥${record.streak}</span>` : ''}
+            <span class="record-date">${dateStr}</span>
+          </div>`;
+        ul.appendChild(li);
       });
+    } catch (error) {
+      console.error('Error loading records:', error.message);
+      ul.innerHTML = '<li>Error loading records</li>';
+    }
   });
 }
 
@@ -1753,30 +1744,31 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     updateDeselectAllButton();
     updateGroupButtons();
 }
-  function updateRanking() {
+  async function updateRanking() {
     const mode = selectedGameMode || window.selectedGameMode;
-    if (!mode) return;
-    if (mode === 'study') {
-      rankingBox.innerHTML = '';
-      return;
+    if (!mode || mode === 'study') {
+        rankingBox.innerHTML = '';
+        return;
     }
 
     rankingBox.innerHTML = '<h3>🏆 Top 5</h3>';
 
-    db.collection("records")
-      .where("mode", "==", mode)
-      .orderBy("score", "desc")
-      .limit(5)
-      .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          const entry = doc.data();
-          rankingBox.innerHTML += `<div>${entry.name}: ${entry.score}</div>`;
+    try {
+        const { data, error } = await supabase
+            .from('records')
+            .select('name, score')
+            .eq('mode', mode)
+            .order('score', { ascending: false })
+            .limit(5);
+
+        if (error) throw error;
+
+        data.forEach(entry => {
+            rankingBox.innerHTML += `<div>${entry.name}: ${entry.score}</div>`;
         });
-    })
-    .catch((error) => {
-      console.error("Error loading rankings:", error);
-    });
+    } catch (error) {
+        console.error("Error loading rankings:", error.message);
+    }
   }
 
   function updateScore() {
@@ -2369,21 +2361,24 @@ function checkAnswer() {
 		ansES.disabled = true;
 
         if (name) {
-		db.collection("records").add({
+                const recordData = {
         name: name,
         score: score,
         mode: selectedGameMode,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-		tense: currentOptions.tenses,
-		verb: currentQuestion.verb.infinitive_es,
-		streak: bestStreak
-      })
-      .then(() => {
+        streak: bestStreak
+      };
+      (async () => {
+        try {
+                const { error } = await supabase.from('records').insert([recordData]);
+                if (error) throw error;
                 renderSetupRecords();
-      })
-      .catch(error => console.error("Error saving record:", error))
-      .then(() => fadeOutToMenu(quitToSettings));
-	}
+        } catch (error) {
+                console.error("Error saving record:", error.message);
+        } finally {
+                fadeOutToMenu(quitToSettings);
+        }
+      })();
+        }
 	   return; 
 
         }
@@ -2511,20 +2506,24 @@ function startTimerMode() {
           }
           openNameModal('⏱️ Time is up! Your name?', function(name) {
             if (name) {
-              db.collection("records").add({
+              const recordData = {
                 name: name,
                 score: score,
                 mode: selectedGameMode,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                tense: currentOptions.tenses,
-                verb: currentQuestion.verb.infinitive_es,
                 streak: bestStreak
-              })
-              .then(() => {
-                renderSetupRecords();
-              })
-              .catch(error => console.error("Error saving record:", error))
-              .then(() => fadeOutToMenu(quitToSettings));
+              };
+
+              (async () => {
+                try {
+                  const { error } = await supabase.from('records').insert([recordData]);
+                  if (error) throw error;
+                  renderSetupRecords();
+                } catch (error) {
+                  console.error("Error saving record:", error.message);
+                } finally {
+                  fadeOutToMenu(quitToSettings);
+                }
+              })();
             } else {
               fadeOutToMenu(quitToSettings);
             }
@@ -2638,19 +2637,24 @@ function skipQuestion() {
 		  ansEN.disabled          = true;
 		  ansES.disabled          = true;
 
-		  if (name) {
-			db.collection("records").add({
-			  name: name,
-			  score: score,
-			  mode: selectedGameMode,
-			  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-			  tense: currentOptions.tenses,
-			  verb: currentQuestion.verb.infinitive_es,
-			  streak: bestStreak
-			})
-			.then(() => { renderSetupRecords(); quitToSettings(); })
-			.catch(console.error);
-		  }
+                  if (name) {
+                        const recordData = {
+                          name: name,
+                          score: score,
+                          mode: selectedGameMode,
+                          streak: bestStreak
+                        };
+                        (async () => {
+                          try {
+                            const { error } = await supabase.from('records').insert([recordData]);
+                            if (error) throw error;
+                            renderSetupRecords();
+                            quitToSettings();
+                          } catch (error) {
+                            console.error(error.message);
+                          }
+                        })();
+                  }
                   return;  // NO llamamos a prepareNextQuestion
                 }
           }
@@ -2913,22 +2917,22 @@ function checkFinalStartButtonState() {
                             const recordData = {
                                 name: name,
                                 score: score,
-
                                 mode: selectedGameMode,
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                                tense: currentOptions.tenses,
-                                verb: currentQuestion.verb.infinitive_es,
                                 streak: bestStreak
                             };
-                            db.collection("records").add(recordData)
-                              .then(() => {
-                                renderSetupRecords();
-                                updateRanking();
-                              })
-                              .catch(error => {
-                                console.error("Error saving record (endButton):", error);
-                              })
-                              .then(() => fadeOutToMenu(quitToSettings));
+
+                            (async () => {
+                                try {
+                                    const { error } = await supabase.from('records').insert([recordData]);
+                                    if (error) throw error;
+                                    renderSetupRecords();
+                                    updateRanking();
+                                } catch (error) {
+                                    console.error("Error saving record (endButton):", error.message);
+                                } finally {
+                                    fadeOutToMenu(quitToSettings);
+                                }
+                            })();
                         } else {
                             fadeOutToMenu(quitToSettings);
                         }
@@ -3060,24 +3064,26 @@ if (specificModalBackdrop) {
 }
 
 async function qualifiesForRecord(score, mode) {
-  if (score <= 0) return false;
-  try {
-    const snapshot = await db.collection('records')
-      .where('mode', '==', mode)
-      .orderBy('score', 'desc')
-      .limit(10)
-      .get();
-    if (snapshot.size < 10) return true;
-    let minScore = Infinity;
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.score < minScore) minScore = data.score;
-    });
-    return score > minScore;
-  } catch (error) {
-    console.error('Error checking record:', error);
-    return false;
-  }
+    if (score <= 0) return false;
+    try {
+        const { data, error, count } = await supabase
+            .from('records')
+            .select('score', { count: 'exact' })
+            .eq('mode', mode)
+            .order('score', { ascending: false })
+            .limit(10);
+
+        if (error) throw error;
+
+        if (count < 10) return true;
+
+        const minScore = data[data.length - 1]?.score || 0;
+        return score > minScore;
+
+    } catch (error) {
+        console.error('Error checking record qualification:', error.message);
+        return false;
+    }
 }
 
 // ----- Name Entry Modal -----
