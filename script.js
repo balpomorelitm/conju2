@@ -19,14 +19,25 @@ menuMusic.loop = true;
 gameMusic.loop = true;
 
 // Supabase initialization
-const SUPABASE_URL = 'https://dmaztdtlixwcnwcgwsnp.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtYXp0ZHRsaXh3Y253Y2d3c25wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzOTE3OTEsImV4cCI6MjA2NTk2Nzc5MX0.F-jBVWM9usSxXQPd-5JDeZUPg6JcOh-FY8tbFXSgGDo';
-// Initialize Supabase client. Use window.supabase to avoid referencing the
-// variable being declared in this scope which would cause a ReferenceError.
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+let supabaseClient;
+
+// `config.js` should define SUPABASE_URL and SUPABASE_ANON_KEY.
+// Ensure the file is loaded before this script.
+if (
+  typeof SUPABASE_URL !== 'undefined' &&
+  typeof SUPABASE_ANON_KEY !== 'undefined'
+) {
+  // Initialize Supabase client. Use window.supabase to avoid referencing the
+  // variable being declared in this scope which would cause a ReferenceError.
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+} else {
+  console.error(
+    'Supabase config not found. Ensure config.js is loaded before script.js.'
+  );
+}
 
 // Track last index used for each type of reaction
 const lastChuacheIndex = {
