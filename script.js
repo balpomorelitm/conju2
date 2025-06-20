@@ -19,7 +19,9 @@ menuMusic.loop = true;
 gameMusic.loop = true;
 
 // Supabase initialization
+
 let supabase;
+
 
 // `config.js` should define SUPABASE_URL and SUPABASE_ANON_KEY.
 // Ensure the file is loaded before this script.
@@ -27,6 +29,7 @@ if (
   typeof SUPABASE_URL !== 'undefined' &&
   typeof SUPABASE_ANON_KEY !== 'undefined'
 ) {
+
   // Initialize Supabase client. Use the global library from window
   supabase = window.supabase.createClient(
     SUPABASE_URL,
@@ -34,6 +37,7 @@ if (
   );
 } else {
   console.error(
+
     'Supabase config variables not found. Ensure config.js is loaded before script.js.'
   );
   const rankingBox = document.getElementById('ranking-box');
