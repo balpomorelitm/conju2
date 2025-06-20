@@ -1073,7 +1073,10 @@ button:active {
   }
 
   #name-entry-modal {
+    width: 90vw;
     max-height: 42.5vh;
+    padding: 10px;
+    padding-bottom: 30px;
     font-size: 0.6em;
   }
 
@@ -2800,9 +2803,17 @@ body,
   text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
 #name-entry-modal {
-  height: 37.5vh;
-  max-height: 300px;
+  width: 60vw;
+  max-width: 320px;
+  height: 30vh;
+  max-height: 230px;
+  padding: 15px;
+  padding-bottom: 40px;
   font-size: 0.6em;
+}
+
+#name-entry-message {
+  font-size: 1.4em;
 }
 
 .specific-modal-close-btn:hover {
