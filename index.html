@@ -205,53 +205,55 @@
   </div>
 
   <div id="game-screen" class="screen" style="display: none;">
-    <h2 id="game-title"></h2>
-    <div id="game-mechanics-bar">
-      <div id="lives-mechanics-display" style="display: none; text-align: center; margin-bottom: 15px;">
-        <span id="total-correct-for-life-display" style="margin-right: 20px;"></span>
-        <span id="streak-for-life-display"></span>
-        <span id="lives-count-wrapper" class="lives-display"></span>
-      </div>
+    <div id="game-header-panel">
+      <h2 id="game-title"></h2>
+      <div id="game-mechanics-bar">
+        <div id="lives-mechanics-display" style="display: none; text-align: center; margin-bottom: 15px;">
+          <span id="total-correct-for-life-display" style="margin-right: 20px;"></span>
+          <span id="streak-for-life-display"></span>
+          <span id="lives-count-wrapper" class="lives-display"></span>
+        </div>
 
         <div id="timer-container" class="timer-container" style="display:none;">
           <div id="timer-clock" class="timer-item">⏳ 4:00</div>
           <div id="time-change" class="timer-item"></div>
           <div id="total-time" class="timer-item">🏁 0:00</div>
         </div>
-        </div>
-        <div id="game-layout">
-          <div id="game-main">
-            <canvas id="life-confetti-canvas"></canvas>
-            <div id="question-area">
-              <div id="tense-label" class="tense-label"></div>
-              <div id="question-prompt">Loading…</div>
-            </div>
+      </div>
+    </div>
 
-            <div id="answer-row">
-            <div id="answer-area">
-              <div id="input-es-container">
-                <input type="text" id="answer-input-es" placeholder="Conjugate in Spanish" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
-              </div>
-              <div id="input-en-container" style="display:none;">
-                <input type="text" id="answer-input-en" placeholder="e.g. You all ate" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
-                <div id="pronoun-hints" style="margin-top:8px;">
-                  <span class="pronoun-button">I</span>
-                  <span class="pronoun-button">you</span>
-                  <span class="pronoun-button">he</span>
-                  <span class="pronoun-button">she</span>
-                  <span class="pronoun-button">we</span>
-                  <span class="pronoun-button">you all</span>
-                  <span class="pronoun-button">they</span>
-                </div>
+    <div id="game-layout">
+      <div id="game-main-panel">
+        <canvas id="life-confetti-canvas"></canvas>
+        <div id="question-area">
+          <div id="tense-label" class="tense-label"></div>
+          <div id="question-prompt">Loading…</div>
+        </div>
+
+        <div id="answer-row">
+          <div id="answer-area">
+            <div id="input-es-container">
+              <input type="text" id="answer-input-es" placeholder="Conjugate in Spanish" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+            </div>
+            <div id="input-en-container" style="display:none;">
+              <input type="text" id="answer-input-en" placeholder="e.g. You all ate" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+              <div id="pronoun-hints" style="margin-top:8px;">
+                <span class="pronoun-button">I</span>
+                <span class="pronoun-button">you</span>
+                <span class="pronoun-button">he</span>
+                <span class="pronoun-button">she</span>
+                <span class="pronoun-button">we</span>
+                <span class="pronoun-button">you all</span>
+                <span class="pronoun-button">they</span>
               </div>
             </div>
           </div>
-          <div id="feedback-area">
-            <div id="feedback-fixed">[FEEDBACK / CLUE BOX]</div>
-            <div id="feedback-message"></div>
-          </div>
-
         </div>
+        <div id="feedback-area">
+          <div id="feedback-fixed">[FEEDBACK / CLUE BOX]</div>
+          <div id="feedback-message"></div>
+        </div>
+      </div>
 
       <div id="chuache-box">
         <div id="chuache-container">
@@ -259,7 +261,7 @@
           <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
         </div>
       </div>
-      </div>
+    </div>
 
       <div id="bottom-panel">
         <div id="action-buttons">
@@ -278,8 +280,6 @@
       </div>
 
     <div id="ranking-box"></div>
-
-      <div id="ranking-box"></div>
       <div class="game-footer">
       <span>© 2025 Pablo Torrado, University of Hong Kong. All rights reserved.</span>
       <a class="feedback-link" href="https://forms.office.com/Pages/ResponsePage.aspx?id=TrX5QnckukG_CXoNKoP_CT6b4ULfjEZOgT4FEg4y3yxUM0g1SkVBUDgyN0E0OFVLTU1MOVk1R004Ry4u" target="_blank" rel="noopener">FEEDBACK! (Bugs and features)</a>
