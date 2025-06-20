@@ -67,6 +67,7 @@ const chuacheReactions = {
 };
 
 function chuacheSpeaks(type) {
+  if (window.selectedGameMode === 'study') return;
   const image = document.getElementById("chuache-image");
   const bubble = document.getElementById("speech-bubble");
   if (!image || !bubble) return;
