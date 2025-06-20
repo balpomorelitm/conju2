@@ -19,7 +19,7 @@
   </style>
 
 <link  rel="stylesheet" href="style.css">
-<script src="https://www.google.com/recaptcha/enterprise.js?render=6LfwDVErAAAAAJSaqfJCAJXQBO9Ivm7zH6NC8bJZ"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="is-loading">
   <div id="specific-modal-backdrop" class="specific-modal-backdrop" style="display:none;"></div>
@@ -289,35 +289,7 @@
   <div id="left-bubbles"></div>
   <div id="right-bubbles"></div>
   
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-check-compat.js"></script> 
-  <script>
-    //self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
-  </script>
-  <script>
-    const firebaseConfig = {
-	  apiKey: "AIzaSyBBMKtz9xX6HZ0qBJPW0zNaYjHsP0t1poE",
-	  authDomain: "el-conjugador.firebaseapp.com",
-	  projectId: "el-conjugador",
-	  storageBucket: "el-conjugador.firebasestorage.app",
-	  messagingSenderId: "1042408130577",
-	  appId: "1:1042408130577:web:ecfdf6121cf191282689b0",
-	  measurementId: "G-GCCQW0PMH9"
-    };
-    firebase.initializeApp(firebaseConfig);
 
-    const appCheck = firebase.appCheck();
-    appCheck.activate(
-        new firebase.appCheck.ReCaptchaEnterpriseProvider(
-          '6LfwDVErAAAAAJSaqfJCAJXQBO9Ivm7zH6NC8bJZ' 
-        ),
-        true  
-      );
-
-    const db = firebase.firestore();
-  </script>
   <script src="tooltips.js" defer></script>
   <script src="script.js" defer></script>
   <script>
