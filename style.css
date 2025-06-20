@@ -3580,6 +3580,9 @@ td.irregular-highlight {
   #game-screen {
     display: flex;
     flex-direction: column;
+    position: relative;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 
   /* ¡TRUCO ESENCIAL! Con 'display: contents', hacemos que los contenedores del 
@@ -3742,11 +3745,52 @@ td.irregular-highlight {
         box-sizing: border-box;
     }
 
+    /* --- Mobile Game Screen Layout Overhaul --- */
+
+    #game-header-panel {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        min-height: 80px;
+    }
+
+    #game-mechanics-bar {
+        padding: 0;
+        margin: 0;
+        justify-content: flex-start;
+    }
+
+    #game-title {
+        text-align: left;
+    }
+
     #chuache-box {
-        width: 50%;
-        max-width: 150px;
-        align-self: flex-end;
-        margin-top: -20px;
+        position: absolute;
+        top: 45px;
+        right: 10px;
+        width: 100px;
+        z-index: 5;
         border: none;
+        margin: 0;
+        padding: 0;
+        background: none;
+    }
+
+    #game-main-panel {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        padding: 5px;
+    }
+
+    #question-area { order: 1; }
+    #answer-row { order: 2; margin-top: 10px; }
+    #feedback-area { order: 3; margin-top: 15px; }
+
+    #bottom-panel {
+        margin-top: 15px;
+        padding-top: 10px;
     }
 }
