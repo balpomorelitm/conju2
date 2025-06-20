@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preload" href="fonts/Schwarzenegger.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/PixelSerif_16px_v02.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="verbos.json" as="fetch" crossorigin>
+   <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    .screen { border: 1px solid #ccc; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+    #game-screen { display: none; }
+    .pronoun-button { margin: 5px; padding: 5px 10px; cursor: pointer; }
+    .pronoun-button.selected { background-color: #007bff; color: white; }
+    #question-prompt { font-size: 1.2em; margin-bottom: 20px; }
+    button { margin: 5px; padding: 5px 10px; }
+    input[type="text"] { padding: 5px; width: 200px; }
+  </style>
+
+<link  rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="is-loading">
+  <div id="specific-modal-backdrop" class="specific-modal-backdrop" style="display:none;"></div>
+  <div id="specific-info-modal" class="specific-modal" style="display:none;">
+    <div class="specific-modal-content">
+    </div>
+    <button id="close-specific-modal-btn" class="specific-modal-close-btn">&times;</button>
+  </div>
+  <div id="name-modal-backdrop" class="specific-modal-backdrop" style="display:none;"></div>
+  <div id="name-entry-modal" class="specific-modal" style="display:none;">
+    <div class="specific-modal-content">
+      <h2 id="name-modal-title">🏆 New Record! 🏆</h2>
+      <p id="name-entry-message">Enter your name:</p>
+      <input type="text" id="player-name-input" maxlength="20" autocomplete="off" />
+      <button id="name-submit-button" class="start-button name-submit">Submit</button>
+    </div>
+    <button id="close-name-modal-btn" class="specific-modal-close-btn">&times;</button>
+  </div>
+  <div class="modal-backdrop"></div>
+  <div id="tooltip" class="tooltip-popup"></div>
+
+  <header class="main-header">
+          <img loading="lazy" src="images/conjucityhk.webp" class="header-city" alt="city"/>
+          <img loading="lazy" src="images/conjuchuache.webp" class="header-char" alt="char"/>
+          <h1 class="glitch-title">
+                <span class="big-letter">T</span>HE
+                <span class="big-letter">C</span>ONJUGATOR
+          </h1>
+        </header>
+
+  <div class="music-controls">
+    <button id="music-toggle" class="music-button" title="Toggle music">
+      <img id="music-icon" src="images/musicon.webp" alt="Music on">
+    </button>
+    <input type="range" id="volume-slider"
+        min="0" max="1" step="0.05" value="0.6"
+        style="position:fixed; bottom:20px; right:130px; width:120px;
+              cursor:pointer; display:none;">
+  </div>
+
+  <div id="config-flow-screen" class="screen" style="display: flex;"> 
+    <div class="config-main-panel"> 
+                <div id="splash-step" class="config-step active-step">
+                        <button id="initial-start-button">Start Game</button>
+                    <div style="text-align: center; margin-top: 20px;">
+                          <button id="help-button" type="button">Game Summary</button>
+                    </div>
+                </div>
+
+      <div id="mode-step" class="config-step">
+        <h3>Select Game Mode:</h3>
+        <div id="game-modes-container">
+          <button class="mode-button config-flow-button" data-mode="infinite" data-infokey="infiniteMode">
+            ♾️Infinite♾️
+            <span class="context-info-icon" data-info-key="infiniteMode"></span>
+          </button>
+          <button class="mode-button config-flow-button provisional-selection" data-mode="timer" data-infokey="timerMode">
+            Timer 4m⏱️
+            <span class="context-info-icon" data-info-key="timerMode"></span>
+          </button>
+          <button class="mode-button config-flow-button" data-mode="lives" data-infokey="livesMode">
+            5x💖
+            <span class="context-info-icon" data-info-key="livesMode"></span>
+          </button>
+          <button class="mode-button config-flow-button" data-mode="study" data-infokey="studyMode">
+            📚 Study Mode
+            <span class="context-info-icon" data-info-key="studyMode"></span>
+          </button>
+        </div>
+        <button id="confirm-mode-button" class="confirm-button" style="display: none;">Confirm Mode</button>
+      </div>
+
+      <div id="difficulty-step" class="config-step">
+        <h3>Select Difficulty:</h3>
+        <div id="difficulty-buttons-container">
+          <button class="mode-button config-flow-button" data-mode="receptive" data-infokey="receptiveConfig">
+            💭ReCall💭
+            <span class="context-info-icon" data-info-key="receptiveConfig"></span>
+          </button>
+          <button class="mode-button config-flow-button provisional-selection" data-mode="productive_easy" data-infokey="productiveEasyConfig">
+            ⚙️conjugATE⚙️
+            <span class="context-info-icon" data-info-key="productiveEasyConfig"></span>
+          </button>
+          <button class="mode-button config-flow-button" data-mode="productive" data-infokey="productiveConfig">
+            ⌨️Pr0duc€⌨️
+            <span class="context-info-icon" data-info-key="productiveConfig"></span>
+          </button>
+        </div>
+        <button id="confirm-difficulty-button" class="confirm-button" style="display: none;">Confirm Difficulty</button>
+      </div>
+
+      <div id="details-step" class="config-step">
+        <button id="final-start-game-button" class="start-button" data-text="Start Game">Start Game</button>
+        <button id="back-button" style="display: none;">Back</button>
+        <h3>Customize Your Game:</h3>
+        <div id="filter-bar-container">
+          <div class="filter-bar">
+            <div id="tense-dropdown" class="dropdown">
+              <button type="button" id="tense-dropdown-button" class="dropdown-toggle">
+                Tenses <span id="tense-dropdown-count"></span> ▾ </button>
+              <div id="tense-dropdown-menu" class="dropdown-menu hidden">
+                <div class="dropdown-header">
+                  <button type="button" id="select-all-tenses" class="select-all-button">
+                    All of them!
+                  </button>
+                </div>
+                <div id="tense-buttons" class="verb-type-selector"></div>
+              </div>
+            </div>
+            <div id="verb-dropdown-container" class="dropdown-stack">
+              <div id="verb-dropdown" class="dropdown">
+                <button type="button" id="verb-dropdown-button" class="dropdown-toggle">
+                  Verbs <span id="verb-dropdown-count"></span> ▾
+                </button>
+              <div id="verb-dropdown-menu" class="dropdown-menu hidden">
+                <div class="dropdown-header">
+                  <button type="button" id="deselect-all-verbs" class="select-all-button"> 
+                    None!
+                  </button>
+                  <button type="button" id="verb-groups-button" class="select-groups-button">
+                    Verb Groups ▾
+                  </button>
+                </div>
+                <div id="verb-groups-panel" class="groups-panel hidden">
+                  <button type="button" data-group="ar" class="group-button">-ar</button>
+                  <button type="button" data-group="er" class="group-button">-er</button>
+                  <button type="button" data-group="ir" class="group-button">-ir</button>
+                </div>
+                <div class="search-container">
+                  <input type="text" id="verb-search" placeholder="🔎Search verbs..." />
+                </div>
+                <div id="verb-search-no-results" class="search-no-results hidden">
+                  No verbs found.🙇🏻‍♂️
+                </div>
+                <div id="verb-buttons" class="verb-buttons-list"></div>
+              </div>
+              </div>
+            </div>
+            <div id="pronoun-dropdown" class="dropdown">
+              <button type="button" id="pronoun-dropdown-button" class="dropdown-toggle">
+                Pronouns <span id="pronoun-dropdown-count"></span> ▾
+              </button>
+              <div id="pronoun-dropdown-menu" class="dropdown-menu hidden">
+                <div class="dropdown-header">
+                  <button type="button" id="select-all-pronouns" class="select-all-button">
+                    All of them!
+                  </button>
+                </div>
+                <div id="pronoun-buttons" class="verb-type-selector"></div>
+              </div>
+            </div>
+            <button type="button" id="toggle-ignore-accents" class="toggle-button selected" data-infokey="accentHelp">
+              <span class="tick"></span>
+              Ignore Accents
+              <span class="context-info-icon" data-info-key="accentHelp"></span>
+            </button>
+          </div>
+          <button type="button" id="toggle-reflexive" class="toggle-button">Reflexive Verbs <span class="context-info-icon" data-info-key="reflexiveInfo"></span></button>
+        </div>
+        <div id="verb-irregularities-container">
+          <p><strong>☠️Verb Irregularities☠️</strong></p>
+          <div id="verb-type-buttons" class="verb-type-selector"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="setup-records" style="margin-top:20px; display:none;">
+    <h3>🏆 Los mejores de los mejores / Best of the Best 🏆</h3>
+    <div class="mode-records" data-mode="infinite">
+      <h4>♾️InFiNiTeRs♾️</h4>
+      <ul class="record-list"></ul>
+    </div>
+    <div class="mode-records" data-mode="timer">
+      <h4>⏱DesPaCiToS⏱️</h4>
+      <ul class="record-list"></ul>
+    </div>
+    <div class="mode-records" data-mode="lives">
+      <h4>💖SuRvIvOrS💖</h4>
+      <ul class="record-list"></ul>
+    </div>
+  </div>
+
+  <div id="game-screen" class="screen" style="display: none;">
+    <div id="game-header-panel">
+      <h2 id="game-title"></h2>
+      <div id="game-mechanics-bar">
+        <div id="lives-mechanics-display" style="display: none; text-align: center; margin-bottom: 15px;">
+          <span id="total-correct-for-life-display" style="margin-right: 20px;"></span>
+          <span id="streak-for-life-display"></span>
+          <span id="lives-count-wrapper" class="lives-display"></span>
+        </div>
+
+        <div id="timer-container" class="timer-container" style="display:none;">
+          <div id="timer-clock" class="timer-item">⏳ 4:00</div>
+          <div id="time-change" class="timer-item"></div>
+          <div id="total-time" class="timer-item">🏁 0:00</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-layout">
+      <div id="game-main-panel">
+        <canvas id="life-confetti-canvas"></canvas>
+        <div id="question-area">
+          <div id="tense-label" class="tense-label"></div>
+          <div id="question-prompt">Loading…</div>
+        </div>
+
+        <div id="answer-row">
+          <div id="answer-area">
+            <div id="input-es-container">
+              <input type="text" id="answer-input-es" placeholder="Conjugate in Spanish" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+            </div>
+            <div id="input-en-container" style="display:none;">
+              <input type="text" id="answer-input-en" placeholder="e.g. You all ate" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+              <div id="pronoun-hints" style="margin-top:8px;">
+                <span class="pronoun-button">I</span>
+                <span class="pronoun-button">you</span>
+                <span class="pronoun-button">he</span>
+                <span class="pronoun-button">she</span>
+                <span class="pronoun-button">we</span>
+                <span class="pronoun-button">you all</span>
+                <span class="pronoun-button">they</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="feedback-area">
+          <div id="feedback-fixed">[FEEDBACK / CLUE BOX]</div>
+          <div id="feedback-message"></div>
+        </div>
+      </div>
+
+      <div id="chuache-box">
+        <div id="chuache-container">
+          <div id="speech-bubble" class="speech-bubble hidden">You just got lucky.</div>
+          <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
+        </div>
+      </div>
+    </div>
+
+      <div id="bottom-panel">
+        <div id="action-buttons">
+          <button id="check-button">Get Clue / Check Answer</button>
+          <button id="skip-button">Skip</button>
+          <button id="end-button">END GAME</button>
+        </div>
+
+        <div id="score-section">
+          <div id="score-container">
+            <div id="score-display"></div>
+            <div id="streak-display"></div>
+            <div id="flames"></div>
+          </div>
+        </div>
+      </div>
+
+    <div id="ranking-box"></div>
+      <div class="game-footer">
+      <span>© 2025 Pablo Torrado, University of Hong Kong. All rights reserved.</span>
+      <a class="feedback-link" href="https://forms.office.com/Pages/ResponsePage.aspx?id=TrX5QnckukG_CXoNKoP_CT6b4ULfjEZOgT4FEg4y3yxUM0g1SkVBUDgyN0E0OFVLTU1MOVk1R004Ry4u" target="_blank" rel="noopener">FEEDBACK! (Bugs and features)</a>
+      <a class="coffee-link" id="coffee-link" href="https://buymeacoffee.com/theconjugator" target="_blank" rel="noopener">Support the Game!</a>
+
+  </div>
+  <div id="left-bubbles"></div>
+  <div id="right-bubbles"></div>
+  
+
+  <script src="config.js"></script>
+  <script src="tooltips.js" defer></script>
+  <script src="script.js" defer></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js");
+      });
+    }
+  </script>
+</body>
+</html>
+
