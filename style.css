@@ -3578,18 +3578,56 @@ td.irregular-highlight {
   /* Hacemos que la pantalla principal del juego sea un contenedor flexible vertical.
      Esto nos permite usar la propiedad 'order' en sus hijos directos. */
   #game-screen {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "title     title"
+        "mechanics character"
+        "main      main"
+        "bottom    bottom"
+        "ranking   ranking"
+        "footer    footer";
+    gap: 10px;
     position: relative;
     padding-top: 15px;
     padding-bottom: 15px;
   }
 
-  /* ¡TRUCO ESENCIAL! Con 'display: contents', hacemos que los contenedores del 
+  /* ¡TRUCO ESENCIAL! Con 'display: contents', hacemos que los contenedores del
      layout de escritorio (#game-layout y #game-main) "desaparezcan" visualmente,
      permitiéndonos reordenar a sus hijos como si fueran directos de #game-screen. */
-  #game-layout, #game-main {
+  #game-header-panel, #game-layout {
     display: contents;
+  }
+
+  #game-title { grid-area: title; }
+  #game-mechanics-bar { grid-area: mechanics; }
+  #chuache-box { grid-area: character; }
+  #game-main-panel { grid-area: main; }
+  #bottom-panel { grid-area: bottom; }
+  #ranking-box { grid-area: ranking; }
+  .game-footer { grid-area: footer; }
+
+  #game-mechanics-bar {
+    justify-self: start;
+    align-self: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  #chuache-box {
+    justify-self: end;
+    align-self: start;
+    width: 120px;
+    border: none;
+    background: none;
+    padding: 0;
+    margin-top: 0;
+  }
+
+  #game-main-panel, #bottom-panel, #ranking-box, .game-footer {
+     width: 100%;
+     max-width: 100%;
   }
 
 
@@ -3618,22 +3656,6 @@ td.irregular-highlight {
 
   /* --- 3. AJUSTES DE ESTILO PARA LOS COMPONENTES EN MODO MÓVIL --- */
   
-  /* Estilo para el panel de Chuache en la parte inferior */
-  #chuache-box {
-    order: 8; /* This keeps its position in the vertical flow */
-
-    /* --- NEW AND MODIFIED RULES FOR RESIZING/POSITIONING --- */
-    width: 40%; /* Reduce container width to 40% of the screen */
-    max-width: 140px; /* Set a maximum pixel width to prevent it from getting too large */
-    align-self: flex-end; /* This aligns the box itself to the right edge of the screen */
-    margin-top: 20px;
-    margin-right: 10px; /* Add a small margin so it doesn't touch the very edge */
-    padding: 5px; /* Reduce internal padding */
-
-    /* Adjust borders for the new position */
-    border-top: none;
-    border-left: 2px dashed var(--border-color); /* Add a separator on its left */
-  }
 
   /* Aseguramos que el contenedor de la imagen esté centrado dentro de su nueva posición */
 
@@ -3748,11 +3770,7 @@ td.irregular-highlight {
     /* --- Mobile Game Screen Layout Overhaul --- */
 
     #game-header-panel {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 10px;
-        min-height: 80px;
+        display: contents;
     }
 
     #game-mechanics-bar {
@@ -3765,17 +3783,6 @@ td.irregular-highlight {
         text-align: left;
     }
 
-    #chuache-box {
-        position: absolute;
-        top: 45px;
-        right: 10px;
-        width: 100px;
-        z-index: 5;
-        border: none;
-        margin: 0;
-        padding: 0;
-        background: none;
-    }
 
     #game-main-panel {
         display: flex;
