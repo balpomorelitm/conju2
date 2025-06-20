@@ -1861,6 +1861,8 @@ let usedVerbs = [];
 function prepareNextQuestion() {
   const oldNote = document.getElementById('prize-note');
   if (oldNote) oldNote.remove();
+  feedback.innerHTML = '';
+  feedback.classList.remove('vibrate');
   if (!allVerbData || allVerbData.length === 0) {
     console.error("No valid verb data.");
     feedback.textContent = "Error: Could not load verb data.";
@@ -2615,10 +2617,10 @@ function skipQuestion() {
 		const correctAnswer = currentQuestion.answer;
 		feedbackMessage = `⏭ Skipped. The right conjugation was <strong>"${correctAnswer}"</strong>.`;
 	}
-	if (selectedGameMode === 'lives') {
-		// 1) Reset de racha
-		currentStreakForLife = 0;
-		updateStreakForLifeDisplay();
+        if (selectedGameMode === 'lives') {
+                // 1) Reset de racha
+                currentStreakForLife = 0;
+                updateStreakForLifeDisplay();
 
 		// 2) Quitar 1 vida
 		remainingLives--;
@@ -2648,13 +2650,16 @@ function skipQuestion() {
 			.then(() => { renderSetupRecords(); quitToSettings(); })
 			.catch(console.error);
 		  }
-		  return;  // NO llamamos a prepareNextQuestion
-		}
-	  }
+                  return;  // NO llamamos a prepareNextQuestion
+                }
+          }
 
-	  // Si no es game-over, preparamos la siguiente pregunta
-	  setTimeout(prepareNextQuestion, 1500);
-	}
+          feedback.innerHTML = feedbackMessage;
+          feedback.classList.remove('vibrate');
+
+          // Si no es game-over, preparamos la siguiente pregunta
+          setTimeout(prepareNextQuestion, 1500);
+        }
 
 function updateStreakForLifeDisplay() {
   const el = document.getElementById('streak-for-life-display');
