@@ -582,12 +582,13 @@ backButton.addEventListener('click', () => {
     }
  
 
-  const pronouns = ['yo','tú','él','nosotros','vosotros','ellos'];
+  const pronouns = ['yo','tú','vos','él','nosotros','vosotros','ellos'];
   const pronounMap = {
     yo: ['I'],
     tú: ['you'],
     él: ['he', 'she'],
-	usted: ['he', 'she'],
+        usted: ['he', 'she'],
+    vos: ['you'],
     nosotros: ['we'],
     vosotros: ['you'],
     ellos: ['they'],
@@ -610,6 +611,7 @@ window.addEventListener("load", () => {
 const pronounGroups = [
   { label: 'yo',                   values: ['yo'] },
   { label: 'tú',                   values: ['tú'] },
+  { label: 'vos',                  values: ['vos'] },
   { label: 'él / ella / usted',    values: ['él'] },
   { label: 'nosotros / nosotras',  values: ['nosotros'] },
   { label: 'vosotros / vosotras',  values: ['vosotros'] },
@@ -1332,7 +1334,9 @@ function renderVerbButtons() {
 		btn.classList.add('pronoun-group-button');
 		btn.dataset.values    = JSON.stringify(group.values);
 		btn.textContent       = group.label;
-		btn.classList.add('selected');  // todos activos por defecto
+                if (group.label !== 'vos') {
+                    btn.classList.add('selected');  // todos activos por defecto
+                }
 		container.appendChild(btn);
 	  });
 	}
@@ -1892,7 +1896,7 @@ function prepareNextQuestion() {
    // Paso 2: construye pronList con fallback a la lista global
    const pronList = allowedPronouns.length > 0
      ? allowedPronouns
-     : pronouns;   // ['yo','tú','él','nosotros','vosotros','ellos']
+    : pronouns;   // ['yo','tú','vos','él','nosotros','vosotros','ellos']
  
    // Paso 3: elige el pronombre interno de pronList
    const originalPronoun = pronList[
@@ -2710,7 +2714,7 @@ function quitToSettings() {
     initTenseDropdown(); // Reinicializar listeners de dropdown si es necesario
     renderVerbButtons(); // Debería seleccionar los regulares no reflexivos por defecto
     initVerbDropdown();
-    renderPronounButtons(); // Debería seleccionar todos por defecto
+    renderPronounButtons(); // "vos" desactivado por defecto
     initPronounDropdown();
     renderVerbTypeButtons(); // Debería seleccionar "regular" por defecto
     filterVerbTypes(); // Aplicar filtros basados en los tiempos por defecto
@@ -3441,7 +3445,8 @@ function createBubble(side) {
 
   const availableTenseValues = tenses.map(t => t.value);
   const tense = availableTenseValues[Math.floor(Math.random() * availableTenseValues.length)];
-  const pronoun = Object.keys(verb.conjugations[tense] || {})[Math.floor(Math.random() * 6)];
+  const pronounKeys = Object.keys(verb.conjugations[tense] || {});
+  const pronoun = pronounKeys[Math.floor(Math.random() * pronounKeys.length)];
   const conjugation = verb.conjugations[tense]?.[pronoun];
 
   bubble.textContent = conjugation || verb.infinitive_es;
