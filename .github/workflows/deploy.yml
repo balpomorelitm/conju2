@@ -12,6 +12,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout 🔔
+
         uses: actions/checkout@v3
 
       - name: Create Supabase Config File ⚙️
@@ -24,3 +25,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
+

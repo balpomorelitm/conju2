@@ -19,7 +19,9 @@ menuMusic.loop = true;
 gameMusic.loop = true;
 
 // Supabase initialization
-let supabaseClient;
+
+let supabase;
+
 
 // `config.js` should define SUPABASE_URL and SUPABASE_ANON_KEY.
 // Ensure the file is loaded before this script.
@@ -27,16 +29,21 @@ if (
   typeof SUPABASE_URL !== 'undefined' &&
   typeof SUPABASE_ANON_KEY !== 'undefined'
 ) {
-  // Initialize Supabase client. Use window.supabase to avoid referencing the
-  // variable being declared in this scope which would cause a ReferenceError.
-  supabaseClient = window.supabase.createClient(
+
+  // Initialize Supabase client. Use the global library from window
+  supabase = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
 } else {
   console.error(
-    'Supabase config not found. Ensure config.js is loaded before script.js.'
+
+    'Supabase config variables not found. Ensure config.js is loaded before script.js.'
   );
+  const rankingBox = document.getElementById('ranking-box');
+  if (rankingBox) {
+    rankingBox.innerHTML = '<p>Records are currently unavailable.</p>';
+  }
 }
 
 // Track last index used for each type of reaction
@@ -1556,7 +1563,7 @@ async function renderSetupRecords() {
     ul.innerHTML = '<li>Loading...</li>';
 
     try {
-      const { data, error } = await supabaseClient
+      const { data, error } = await supabase
         .from('records')
         .select('name, score, created_at, streak')
         .eq('mode', mode)
@@ -1770,7 +1777,7 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     rankingBox.innerHTML = '<h3>🏆 Top 5</h3>';
 
     try {
-        const { data, error } = await supabaseClient
+        const { data, error } = await supabase
             .from('records')
             .select('name, score')
             .eq('mode', mode)
@@ -2385,7 +2392,7 @@ function checkAnswer() {
       };
       (async () => {
         try {
-                const { error } = await supabaseClient.from('records').insert([recordData]);
+                const { error } = await supabase.from('records').insert([recordData]);
                 if (error) throw error;
                 renderSetupRecords();
         } catch (error) {
@@ -2531,7 +2538,7 @@ function startTimerMode() {
 
               (async () => {
                 try {
-                  const { error } = await supabaseClient.from('records').insert([recordData]);
+                  const { error } = await supabase.from('records').insert([recordData]);
                   if (error) throw error;
                   renderSetupRecords();
                 } catch (error) {
@@ -2662,7 +2669,7 @@ function skipQuestion() {
                         };
                         (async () => {
                           try {
-                            const { error } = await supabaseClient.from('records').insert([recordData]);
+                            const { error } = await supabase.from('records').insert([recordData]);
                             if (error) throw error;
                             renderSetupRecords();
                             quitToSettings();
@@ -2939,7 +2946,7 @@ function checkFinalStartButtonState() {
 
                             (async () => {
                                 try {
-                                    const { error } = await supabaseClient.from('records').insert([recordData]);
+                                    const { error } = await supabase.from('records').insert([recordData]);
                                     if (error) throw error;
                                     renderSetupRecords();
                                     updateRanking();
@@ -3082,7 +3089,7 @@ if (specificModalBackdrop) {
 async function qualifiesForRecord(score, mode) {
     if (score <= 0) return false;
     try {
-        const { data, error, count } = await supabaseClient
+        const { data, error, count } = await supabase
             .from('records')
             .select('score', { count: 'exact' })
             .eq('mode', mode)
