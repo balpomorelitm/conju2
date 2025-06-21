@@ -18,19 +18,35 @@ const chuacheSound = new Audio('sounds/talks.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+// Begin fetching verb data as early as possible to utilize the preload
+const verbosJsonPromise = fetch('verbos.json')
+  .then(resp => {
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    return resp.json();
+  })
+  .catch(err => {
+    console.error('Could not fetch verbos.json:', err);
+    alert('Error cargando datos de los verbos.');
+    return [];
+  });
+
 // Supabase initialization
 
 let supabase;
 
 
-// `config.js` should define SUPABASE_URL and SUPABASE_ANON_KEY.
-// Ensure the file is loaded before this script.
+// `config.js` or inline script in index.html should define SUPABASE_URL and
+// SUPABASE_ANON_KEY. These may be injected during the build process. Ensure the
+// variables contain real values before initializing the client.
 if (
   typeof SUPABASE_URL !== 'undefined' &&
-  typeof SUPABASE_ANON_KEY !== 'undefined'
+  typeof SUPABASE_ANON_KEY !== 'undefined' &&
+  SUPABASE_URL &&
+  SUPABASE_ANON_KEY &&
+  !String(SUPABASE_URL).includes('%%') &&
+  !String(SUPABASE_ANON_KEY).includes('%%')
 ) {
-
-  // Initialize Supabase client. Use the global library from window
+  // Initialize Supabase client only when valid credentials are present
   supabase = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
@@ -593,10 +609,8 @@ backButton.addEventListener('click', () => {
         }
     let loaded = false;
     try {
-      const resp = await fetch('verbos.json');
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      initialRawVerbData = await resp.json();
-      loaded = true;
+      initialRawVerbData = await verbosJsonPromise;
+      loaded = Array.isArray(initialRawVerbData) && initialRawVerbData.length > 0;
     } catch (err) {
       console.error('Could not fetch verbos.json:', err);
       alert('Error cargando datos de los verbos.');
@@ -1657,9 +1671,7 @@ async function renderSetupRecords() {
 async function loadVerbs() {
   if (!initialRawVerbData || initialRawVerbData.length === 0) {
     try {
-      const resp = await fetch('verbos.json');
-      if (!resp.ok) throw new Error('Network response was not ok');
-      initialRawVerbData = await resp.json();
+      initialRawVerbData = await verbosJsonPromise;
     } catch (error) {
       console.error("Error fetching raw verb data:", error);
       alert("Could not load verb data file.");
