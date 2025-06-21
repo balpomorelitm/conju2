@@ -41,6 +41,40 @@
   <div class="modal-backdrop"></div>
   <div id="tooltip" class="tooltip-popup"></div>
 
+  <div id="settings-modal-backdrop" class="specific-modal-backdrop" style="display:none;"></div>
+  <div id="settings-modal" class="specific-modal" style="display:none;">
+    <div class="specific-modal-content">
+      <h2>Options</h2>
+
+      <fieldset>
+        <legend>Audio</legend>
+        <label for="music-volume-slider">Music Volume:</label>
+        <input type="range" id="music-volume-slider" min="0" max="1" step="0.1" value="0.2">
+        <label for="sfx-volume-slider">SFX Volume:</label>
+        <input type="range" id="sfx-volume-slider" min="0" max="1" step="0.1" value="1.0">
+        <button id="mute-all-button">Mute All</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Visuals</legend>
+        <label><input type="checkbox" id="toggle-animations-setting"> Enable Animations</label>
+        <label><input type="checkbox" id="toggle-chuache-reactions-setting"> Enable Character Reactions</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Gameplay Defaults</legend>
+        <label><input type="checkbox" id="default-enable-vos-setting"> Enable 'vos' Pronoun by Default</label>
+      </fieldset>
+
+      <fieldset>
+          <legend>Miscellaneous</legend>
+          <button id="reset-settings-button">Reset All Settings</button>
+      </fieldset>
+
+    </div>
+    <button id="close-settings-modal-btn" class="specific-modal-close-btn">&times;</button>
+  </div>
+
   <header class="main-header">
           <img loading="lazy" src="images/conjucityhk.webp" class="header-city" alt="city"/>
           <img loading="lazy" src="images/conjuchuache.webp" class="header-char" alt="char"/>
@@ -65,7 +99,7 @@
                 <div id="splash-step" class="config-step active-step">
                         <button id="initial-start-button">Start Game</button>
                     <div style="text-align: center; margin-top: 20px;">
-                          <button id="help-button" type="button">Game Summary</button>
+                          <button id="settings-button" type="button">Options</button>
                     </div>
                 </div>
 
