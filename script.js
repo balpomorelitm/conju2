@@ -1213,13 +1213,46 @@ function renderVerbButtons() {
 		? 'No verbs'
 		: 'All verbs';
 	}
-	function initVerbDropdown() {
-	  const ddBtn          = document.getElementById('verb-dropdown-button');
-	  const menu           = document.getElementById('verb-dropdown-menu');
-	  const deselectAllBtn = document.getElementById('deselect-all-verbs');
-	  const groupsBtn      = document.getElementById('verb-groups-button');
-	  const groupsPanel    = document.getElementById('verb-groups-panel');
-	  const searchInput    = document.getElementById('verb-search');
+        function initVerbDropdown() {
+          let ddBtn          = document.getElementById('verb-dropdown-button');
+          const menu         = document.getElementById('verb-dropdown-menu');
+          let deselectAllBtn = document.getElementById('deselect-all-verbs');
+          let groupsBtn      = document.getElementById('verb-groups-button');
+          let groupsPanel    = document.getElementById('verb-groups-panel');
+          let searchInput    = document.getElementById('verb-search');
+          let container      = document.getElementById('verb-buttons');
+
+          // Replace elements with clones to remove old listeners
+          if (ddBtn) {
+            const newEl = ddBtn.cloneNode(true);
+            ddBtn.parentNode.replaceChild(newEl, ddBtn);
+            ddBtn = newEl;
+          }
+          if (deselectAllBtn) {
+            const newEl = deselectAllBtn.cloneNode(true);
+            deselectAllBtn.parentNode.replaceChild(newEl, deselectAllBtn);
+            deselectAllBtn = newEl;
+          }
+          if (groupsBtn) {
+            const newEl = groupsBtn.cloneNode(true);
+            groupsBtn.parentNode.replaceChild(newEl, groupsBtn);
+            groupsBtn = newEl;
+          }
+          if (groupsPanel) {
+            const newEl = groupsPanel.cloneNode(true);
+            groupsPanel.parentNode.replaceChild(newEl, groupsPanel);
+            groupsPanel = newEl;
+          }
+          if (searchInput) {
+            const newEl = searchInput.cloneNode(true);
+            searchInput.parentNode.replaceChild(newEl, searchInput);
+            searchInput = newEl;
+          }
+          if (container) {
+            const newEl = container.cloneNode(true);
+            container.parentNode.replaceChild(newEl, container);
+            container = newEl;
+          }
 
 
 	  // 0) Abrir/Cerrar el menú
@@ -1363,9 +1396,26 @@ function renderVerbButtons() {
 	}
 
 function initPronounDropdown() {
-  const ddBtn     = document.getElementById('pronoun-dropdown-button');
-  const ddMenu    = document.getElementById('pronoun-dropdown-menu');
-  const selectAll = document.getElementById('select-all-pronouns'); // Este es el botón "Seleccionar/Deseleccionar Todos los Pronombres"
+  let ddBtn     = document.getElementById('pronoun-dropdown-button');
+  const ddMenu  = document.getElementById('pronoun-dropdown-menu');
+  let selectAll = document.getElementById('select-all-pronouns');
+  let container = document.getElementById('pronoun-buttons');
+
+  if (ddBtn) {
+    const newEl = ddBtn.cloneNode(true);
+    ddBtn.parentNode.replaceChild(newEl, ddBtn);
+    ddBtn = newEl;
+  }
+  if (selectAll) {
+    const newEl = selectAll.cloneNode(true);
+    selectAll.parentNode.replaceChild(newEl, selectAll);
+    selectAll = newEl;
+  }
+  if (container) {
+    const newEl = container.cloneNode(true);
+    container.parentNode.replaceChild(newEl, container);
+    container = newEl;
+  }
   
   // Función auxiliar para obtener todos los botones de grupo de pronombres
   const getAllPronounGroupButtons = () => Array.from(document.querySelectorAll('#pronoun-buttons .pronoun-group-button'));
