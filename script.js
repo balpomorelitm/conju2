@@ -2718,6 +2718,8 @@ function quitToSettings() {
   }
   musicToggle.style.display = 'none';
   volumeSlider.disabled = false;
+  // Ensure no dropdown is marked as open when returning to settings
+  openFilterDropdownMenu = null;
 
   // Restore header character visibility for the next game
   const headerChar = document.querySelector('.header-char');
