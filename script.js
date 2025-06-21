@@ -18,6 +18,64 @@ const chuacheSound = new Audio('sounds/talks.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+// Global settings defaults
+window.animationsEnabled = true;
+window.chuacheReactionsEnabled = true;
+window.defaultVosEnabled = false;
+
+function saveSetting(key, value) {
+  localStorage.setItem(key, value);
+}
+
+function loadSettings() {
+  const musicVol = localStorage.getItem('musicVolume');
+  const sfxVol = localStorage.getItem('sfxVolume');
+  const anim = localStorage.getItem('animationsEnabled');
+  const chuache = localStorage.getItem('chuacheReactionsEnabled');
+  const vos = localStorage.getItem('defaultVosEnabled');
+
+  window.animationsEnabled = anim !== null ? anim === 'true' : true;
+  window.chuacheReactionsEnabled = chuache !== null ? chuache === 'true' : true;
+  window.defaultVosEnabled = vos === 'true';
+
+  if (musicVol !== null) {
+    const vol = parseFloat(musicVol);
+    menuMusic.volume = vol;
+    gameMusic.volume = vol;
+    if (typeof targetVolume !== 'undefined') targetVolume = vol;
+    const slider = document.getElementById('music-volume-slider');
+    if (slider) slider.value = vol;
+  } else {
+    const slider = document.getElementById('music-volume-slider');
+    if (slider) slider.value = 0.2;
+    menuMusic.volume = 0.2;
+    gameMusic.volume = 0.2;
+    if (typeof targetVolume !== 'undefined') targetVolume = 0.2;
+  }
+
+  if (sfxVol !== null) {
+    const vol = parseFloat(sfxVol);
+    [soundCorrect, soundWrong, soundWrongStudy, soundClick, soundStart, soundSkip,
+     soundGameOver, soundbubblepop, soundLifeGained, soundElectricShock, soundTicking,
+     chuacheSound].forEach(a => { a.volume = vol; });
+    const sfxSlider = document.getElementById('sfx-volume-slider');
+    if (sfxSlider) sfxSlider.value = vol;
+  } else {
+    const sfxSlider = document.getElementById('sfx-volume-slider');
+    if (sfxSlider) sfxSlider.value = 1.0;
+    [soundCorrect, soundWrong, soundWrongStudy, soundClick, soundStart, soundSkip,
+     soundGameOver, soundbubblepop, soundLifeGained, soundElectricShock, soundTicking,
+     chuacheSound].forEach(a => { a.volume = 1.0; });
+  }
+
+  const animChk = document.getElementById('toggle-animations-setting');
+  if (animChk) animChk.checked = window.animationsEnabled;
+  const chuacheChk = document.getElementById('toggle-chuache-reactions-setting');
+  if (chuacheChk) chuacheChk.checked = window.chuacheReactionsEnabled;
+  const vosChk = document.getElementById('default-enable-vos-setting');
+  if (vosChk) vosChk.checked = window.defaultVosEnabled;
+}
+
 // Supabase initialization
 
 let supabase;
@@ -95,7 +153,7 @@ const chuacheReactions = {
 };
 
 function chuacheSpeaks(type) {
-  if (window.selectedGameMode === 'study') return;
+  if (window.selectedGameMode === 'study' || !window.chuacheReactionsEnabled) return;
   const image = document.getElementById("chuache-image");
   const bubble = document.getElementById("speech-bubble");
   if (!image || !bubble) return;
@@ -235,6 +293,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let countdownTime = 240;
   let remainingLives = 5;
   let targetVolume=0.2;
+  loadSettings();
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
 
@@ -315,7 +374,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const esContainer  = document.getElementById('input-es-container');
   const enContainer  = document.getElementById('input-en-container');
   const feedback     = document.getElementById('feedback-message');
-  const helpButton = document.getElementById('help-button'); 
+  const settingsButton = document.getElementById('settings-button');
+  const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
+  const settingsModal = document.getElementById('settings-modal');
+  const settingsBackdrop = document.getElementById('settings-modal-backdrop');
+  const musicVolumeSlider = document.getElementById('music-volume-slider');
+  const sfxVolumeSlider = document.getElementById('sfx-volume-slider');
+  const muteAllButton = document.getElementById('mute-all-button');
+  const resetSettingsButton = document.getElementById('reset-settings-button');
   const tooltip = document.getElementById('tooltip');
   const toggleReflexiveBtn = document.getElementById('toggle-reflexive');
   const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
@@ -324,6 +390,85 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   const container = document.getElementById('verb-buttons');
   const allBtns   = () => Array.from(container.querySelectorAll('.verb-button'));
+
+  if (settingsButton && settingsModal && settingsBackdrop) {
+    settingsButton.addEventListener('click', () => {
+      settingsModal.style.display = 'block';
+      settingsBackdrop.style.display = 'block';
+    });
+    const closeFn = () => {
+      settingsModal.style.display = 'none';
+      settingsBackdrop.style.display = 'none';
+    };
+    if (closeSettingsModalBtn) closeSettingsModalBtn.addEventListener('click', closeFn);
+    settingsBackdrop.addEventListener('click', closeFn);
+  }
+
+  if (musicVolumeSlider) {
+    musicVolumeSlider.addEventListener('input', () => {
+      const val = parseFloat(musicVolumeSlider.value);
+      menuMusic.volume = val;
+      gameMusic.volume = val;
+      targetVolume = val;
+      saveSetting('musicVolume', val);
+    });
+  }
+
+  const allSfx = [soundCorrect, soundWrong, soundWrongStudy, soundClick, soundStart,
+                   soundSkip, soundGameOver, soundbubblepop, soundLifeGained,
+                   soundElectricShock, soundTicking, chuacheSound];
+
+  if (sfxVolumeSlider) {
+    sfxVolumeSlider.addEventListener('input', () => {
+      const val = parseFloat(sfxVolumeSlider.value);
+      allSfx.forEach(a => { a.volume = val; });
+      saveSetting('sfxVolume', val);
+    });
+  }
+
+  if (muteAllButton) {
+    muteAllButton.addEventListener('click', () => {
+      if (musicVolumeSlider) musicVolumeSlider.value = 0;
+      if (sfxVolumeSlider) sfxVolumeSlider.value = 0;
+      menuMusic.volume = 0; gameMusic.volume = 0; targetVolume = 0;
+      allSfx.forEach(a => { a.volume = 0; });
+      saveSetting('musicVolume', 0);
+      saveSetting('sfxVolume', 0);
+    });
+  }
+
+  const animChk = document.getElementById('toggle-animations-setting');
+  if (animChk) {
+    animChk.addEventListener('change', () => {
+      window.animationsEnabled = animChk.checked;
+      saveSetting('animationsEnabled', animChk.checked);
+    });
+  }
+  const chChk = document.getElementById('toggle-chuache-reactions-setting');
+  if (chChk) {
+    chChk.addEventListener('change', () => {
+      window.chuacheReactionsEnabled = chChk.checked;
+      saveSetting('chuacheReactionsEnabled', chChk.checked);
+    });
+  }
+  const vosChk = document.getElementById('default-enable-vos-setting');
+  if (vosChk) {
+    vosChk.addEventListener('change', () => {
+      window.defaultVosEnabled = vosChk.checked;
+      saveSetting('defaultVosEnabled', vosChk.checked);
+    });
+  }
+
+  if (resetSettingsButton) {
+    resetSettingsButton.addEventListener('click', () => {
+      localStorage.removeItem('musicVolume');
+      localStorage.removeItem('sfxVolume');
+      localStorage.removeItem('animationsEnabled');
+      localStorage.removeItem('chuacheReactionsEnabled');
+      localStorage.removeItem('defaultVosEnabled');
+      loadSettings();
+    });
+  }
 
   /**
    * Gradually reduces the volume of an audio element and pauses it.
@@ -1890,7 +2035,7 @@ let usedVerbs = [];
                 }
                 navigateToStep('mode');
         }
-        const splashButtons = [initialStartButton, helpButton];
+        const splashButtons = [initialStartButton, settingsButton];
         let currentSplashIndex = 0;
         function focusSplashButton(i) {
                 if (!splashButtons[i]) return;
@@ -2856,6 +3001,17 @@ finalStartGameButton.addEventListener('click', async () => {
     // Sincronizar el modo global por si acaso
     selectedGameMode = window.selectedGameMode || selectedMode;
 
+    if (window.defaultVosEnabled) {
+        const vosBtn = Array.from(document.querySelectorAll('#pronoun-buttons .pronoun-group-button'))
+                          .find(b => JSON.parse(b.dataset.values).includes('vos'));
+        if (vosBtn && !vosBtn.classList.contains('selected')) {
+            vosBtn.classList.add('selected');
+            updatePronounDropdownCount();
+            updateSelectAllPronounsButtonText();
+            updateCurrentPronouns();
+        }
+    }
+
     playFromStart(soundElectricShock);
     finalStartGameButton.classList.add('glitch-effect');
     setTimeout(() => finalStartGameButton.classList.remove('glitch-effect'), 1000);
@@ -3290,111 +3446,7 @@ function typewriterEffect(textElement, text, interval) {
 }
 
 
-	if (helpButton && tooltip) {
-		helpButton.addEventListener('click', function(event) { // Cambiado a 'click' para móviles
-			event.stopPropagation(); // Evita que el clic se propague al listener del documento
-
-                        if (tooltip.style.display === 'block') {
-                                tooltip.style.display = 'none';
-                                document.body.classList.remove('tooltip-open-no-scroll');
-                                if (typeInterval) clearInterval(typeInterval); // Limpiar intervalo si se cierra
-                                helpButton.classList.remove('selected');
-                        } else {
-                                const tooltipContentHTML = `
-                                        <div class="tooltip-content-wrapper">
-						<div class="tooltip-row">
-							<div class="tooltip-box">
-								<h5>♾️ Infinite </h5>
-								<p>Play without time or life limits. Aim for the highest score and longest streak!</p>
-							</div>
-							<div class="tooltip-box">
-								<h5>⏱️ Timer</h5>
-								<p>Score as many points as possible within the 4-minute time limit.</p>
-							</div>
-							<div class="tooltip-box">
-								<h5>💖 Lives</h5>
-								<p>You have 5 lives. Each incorrect answer costs one life. Survive as long as you can!</p>
-							</div>
-						</div>
-						<div class="tooltip-row">
-							<div class="tooltip-box">
-								<h5>💭 Recall</h5>
-                                                                <p>EASY - Given a Spanish tense and conjugation, type the English pronoun and <strong>base verb in present tense</strong>.</p><p><strong>Base points:</strong> +5 (+2 per extra tense)</p>
-								<div class="example-prompt">"SIMPLE PAST: recordé"</div>
-								<div class="typing-animation" id="recall-anim"></div>
-							</div>
-							<div class="tooltip-box">
-								<h5>⚙️ Conjugate</h5>
-                                                                <p>NORMAL - Given a Spanish verb and pronoun, type the correct conjugated form in Spanish.</p><p><strong>Base points:</strong> +10 (+2 per extra tense)</p>
-								<div class="example-prompt">"conjugar – nosotros"</div>
-								<div class="typing-animation" id="easy-anim"></div>
-							</div>
-							<div class="tooltip-box">
-								<h5>⌨️ Produce</h5>
-                                                                <p>HARD - Given the English verb and a Spanish pronoun, type the correct conjugation in Spanish.</p><p><strong>Base points:</strong> +15 (+2 per extra tense)</p>
-								<div class="example-prompt">"Present: to love – yo"</div>
-								<div class="typing-animation" id="produce-anim"></div>
-							</div>
-						</div>
-					</div>
-					<button id="close-tooltip-btn" style="margin-top: 15px; background-color: var(--accent-color-blue); color: #333;">Close Help</button>
-				`;
-                                tooltip.innerHTML = tooltipContentHTML;
-                                tooltip.style.display = 'block';
-                                document.body.classList.add('tooltip-open-no-scroll'); // Prevenir scroll del body
-                                helpButton.classList.add('selected');
-
-				// Iniciar animaciones de typewriter
-				const produceAnimElement = document.getElementById('produce-anim');
-				const recallAnimElement = document.getElementById('recall-anim');
-				const easyAnimElement = document.getElementById('easy-anim');
-
-				if (produceAnimElement) setTimeout(() => typeWriter(produceAnimElement, 'amo', 150), 50);
-				if (recallAnimElement) setTimeout(() => typeWriter(recallAnimElement, 'I remember', 150), 50);
-				if (easyAnimElement) setTimeout(() => typeWriter(easyAnimElement, 'conjugamos', 150), 50);
-
-				// Añadir listener para el botón de cerrar tooltip
-				const closeTooltipBtn = document.getElementById('close-tooltip-btn');
-				if (closeTooltipBtn) {
-					closeTooltipBtn.addEventListener('click', () => {
-						tooltip.style.display = 'none';
-						document.body.classList.remove('tooltip-open-no-scroll');
-						if (typeInterval) clearInterval(typeInterval);
-					});
-				}
-			}
-		});
-
-		// Listener para cerrar el tooltip si se hace clic fuera de él (cuando está abierto)
-		document.addEventListener('click', function(event) {
-			if (tooltip.style.display === 'block' && !tooltip.contains(event.target) && event.target !== helpButton && !helpButton.contains(event.target)) {
-				tooltip.style.display = 'none';
-				document.body.classList.remove('tooltip-open-no-scroll');
-				if (typeInterval) clearInterval(typeInterval);
-			}
-		});
-
-		// Evitar que el scroll dentro del tooltip propague al body (para algunos dispositivos táctiles)
-		tooltip.addEventListener('wheel', function(event) {
-			// Si el tooltip tiene scroll y no está en el límite superior o inferior, previene el scroll del body.
-			if (this.scrollHeight > this.clientHeight) { // Solo si el tooltip es scrolleable
-				 if ((this.scrollTop === 0 && event.deltaY < 0) || (this.scrollTop + this.clientHeight === this.scrollHeight && event.deltaY > 0)) {
-					// No prevenir si está en el borde y el scroll es en la dirección que "escaparía"
-				 } else {
-					event.stopPropagation();
-				 }
-			}
-		});
-		tooltip.addEventListener('touchmove', function(event) {
-			// Similar lógica para touchmove
-			if (this.scrollHeight > this.clientHeight) {
-				event.stopPropagation();
-			}
-		});
-
-	} else {
-		console.error("Help button (?) or tooltip container (#tooltip) not found.");
-	}
+        // old Game Summary tooltip removed
 
 const leftBubbles = document.getElementById('left-bubbles');
 const rightBubbles = document.getElementById('right-bubbles');
@@ -3503,6 +3555,7 @@ function showLifeGainedAnimation() {
   if (generalBackdrop) generalBackdrop.style.display = 'none';
   
 function startBubbles() {
+  if (!window.animationsEnabled) return;
   if (bubblesActive) return;   // ya arrancadas
   bubblesActive = true;
   leftBubbleInterval = setInterval(() => {
