@@ -286,13 +286,16 @@
       <a class="coffee-link" id="coffee-link" href="https://buymeacoffee.com/theconjugator" target="_blank" rel="noopener">Support the Game!</a>
 
   </div>
-  <div id="left-bubbles"></div>
-  <div id="right-bubbles"></div>
-  
+    <div id="left-bubbles"></div>
+    <div id="right-bubbles"></div>
 
-  <script src="config.js"></script>
-  <script src="tooltips.js" defer></script>
-  <script src="script.js" defer></script>
+    <script>
+      // These placeholders will be replaced by the GitHub Actions workflow
+      const SUPABASE_URL = "%%SUPABASE_URL%%";
+      const SUPABASE_ANON_KEY = "%%SUPABASE_ANON_KEY%%";
+    </script>
+    <script src="tooltips.js" defer></script>
+    <script src="script.js" defer></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
