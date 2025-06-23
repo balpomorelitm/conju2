@@ -19,7 +19,7 @@ menuMusic.loop = true;
 gameMusic.loop = true;
 
 // Global settings defaults
-window.animationsEnabled = true;
+window.animationsEnabled = false;
 window.chuacheReactionsEnabled = true;
 window.defaultVosEnabled = false;
 
@@ -34,7 +34,7 @@ function loadSettings() {
   const chuache = localStorage.getItem('chuacheReactionsEnabled');
   const vos = localStorage.getItem('defaultVosEnabled');
 
-  window.animationsEnabled = anim !== null ? anim === 'true' : true;
+  window.animationsEnabled = anim !== null ? anim === 'true' : false;
   window.chuacheReactionsEnabled = chuache !== null ? chuache === 'true' : true;
   window.defaultVosEnabled = vos === 'true';
 
