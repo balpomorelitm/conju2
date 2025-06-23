@@ -404,7 +404,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
   
   const container = document.getElementById('verb-buttons');
-  const allBtns   = () => Array.from(container.querySelectorAll('.verb-button'));
+  // Use a live query so replacing the container element doesn't break references
+  const allBtns   = () => Array.from(document.querySelectorAll('#verb-buttons .verb-button'));
 
   if (settingsButton && settingsModal && settingsBackdrop) {
     settingsButton.addEventListener('click', () => {
