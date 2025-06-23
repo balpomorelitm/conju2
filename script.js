@@ -922,7 +922,14 @@ function navigateToStep(stepName) {
             else configFlowScreenDiv.classList.remove('splash-active');
         }
         if (infoPanel) infoPanel.style.display = stepName === 'splash' ? 'none' : 'block';
-        if (backButton) backButton.style.display = 'none';
+        if (backButton) {
+            if (stepName === 'splash') {
+                backButton.style.display = 'none';
+            } else {
+                backButton.style.display = 'block';
+                if (confirmModeButton) confirmModeButton.insertAdjacentElement('afterend', backButton);
+            }
+        }
 
         if (stepName === 'splash') {
             if (initialStartButton) initialStartButton.disabled = false;
