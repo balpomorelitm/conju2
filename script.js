@@ -315,6 +315,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadSettings();
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
+  const defaultBackgroundColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--bg-color').trim();
+
+  function resetBackgroundColor() {
+    const gameMainPanel = document.getElementById('game-main-panel');
+    const chuacheBox = document.getElementById('chuache-box');
+    document.body.style.backgroundColor = defaultBackgroundColor;
+    if (gameMainPanel) gameMainPanel.style.backgroundColor = defaultBackgroundColor;
+    if (chuacheBox) chuacheBox.style.backgroundColor = defaultBackgroundColor;
+  }
 
   function updateClueButton() {
     const maxClues =
@@ -3124,6 +3134,7 @@ finalStartGameButton.addEventListener('click', async () => {
         tenses: selTenses,
         ignoreAccents: toggleIgnoreAccentsBtn && toggleIgnoreAccentsBtn.classList.contains('selected')
     };
+    resetBackgroundColor();
     // selectedGameMode ya debería estar seteado por el `selectedMode` de este nuevo flujo
     // Asegúrate de que `selectedGameMode` (variable global) se actualice con `selectedMode`
     // cuando se confirma el modo. Ej: selectedGameMode = selectedMode;
