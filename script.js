@@ -28,33 +28,24 @@ window.chuacheReactionsEnabled = true;
 window.defaultVosEnabled = false;
 
 // ---------------- Level Up Visual Effects -----------------
-// Trigger a screen thump and color shockwave when leveling up.
-function triggerLevelUpAnimation(newLevelColor) {
-  const body = document.body;
-  body.style.setProperty('--new-level-color', newLevelColor);
-  body.classList.add('level-up-animation');
+// Trigger a quick screen shake when leveling up.
+function triggerLevelUpShake() {
+  const gameContainer = document.body;
+  gameContainer.classList.remove('level-up-shake');
   setTimeout(() => {
-    body.classList.remove('level-up-animation');
-    body.style.backgroundColor = newLevelColor;
-  }, 1000);
+    gameContainer.classList.add('level-up-shake');
+  }, 10);
 }
 
-// Update the numeric display with a flip animation.
-function updateLevelDisplay(oldNum, newNum) {
-  const container = document.getElementById('level-display');
-  if (!container) return;
-  container.innerHTML = `
-    <div class="flip-card">
-      <div class="top-half-static">${oldNum}</div>
-      <div class="bottom-half-static">${newNum}</div>
-      <div class="top-half-flip">${newNum}</div>
-      <div class="bottom-half-flip">${oldNum}</div>
-    </div>
-  `;
+// Update the level text with a fade transition.
+function updateLevelText(newText) {
+  const levelElement = document.getElementById('level-text');
+  if (!levelElement) return;
+  levelElement.classList.add('is-fading');
   setTimeout(() => {
-    const card = container.querySelector('.flip-card');
-    if (card) card.classList.add('flipped');
-  }, 50);
+    levelElement.innerText = newText;
+    levelElement.classList.remove('is-fading');
+  }, 300);
 }
 
 function saveSetting(key, value) {
@@ -424,11 +415,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     correctAnswersTotal = 0;
     currentLevel = 0;
 
-    const levelIndicator = document.getElementById('level-indicator');
-    if (levelIndicator) {
-      levelIndicator.textContent = 'Level 1';
+    const levelText = document.getElementById('level-text');
+    if (levelText) {
+      levelText.textContent = 'Level 1 (0/10)';
     }
-    updateLevelDisplay(1, 1);
   }
 
   function updateLevelAndVisuals() {
@@ -443,7 +433,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (newLevel > currentLevel) {
-      const oldDisplay = currentLevel + 1;
       currentLevel = newLevel;
 
       // Palette for Levels 2 through 8
@@ -462,8 +451,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const gameMainPanel = document.getElementById('game-main-panel');
       const chuacheBox = document.getElementById('chuache-box');
-      triggerLevelUpAnimation(newColor);
-      updateLevelDisplay(oldDisplay, currentLevel + 1);
+      triggerLevelUpShake();
+      updateLevelText(`Level ${currentLevel + 1} (0/10)`);
+      document.body.style.backgroundColor = newColor;
       if (gameMainPanel) {
         gameMainPanel.style.backgroundColor = newColor;
       }
@@ -474,15 +464,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function updateProgressUI() {
-    const levelIndicator = document.getElementById('level-indicator');
-    if (!levelIndicator) return;
+    const levelText = document.getElementById('level-text');
+    if (!levelText) return;
 
-    const timeMode = selectedGameMode === 'timer';
     const goal = 10;
     const progress = correctAnswersTotal % goal;
 
     const newText = `Level ${currentLevel + 1} (${progress}/${goal})`;
-    levelIndicator.textContent = newText;
+    updateLevelText(newText);
   }
   let totalPlayedSeconds = 0;
   let totalQuestions = 0;           
