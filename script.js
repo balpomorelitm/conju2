@@ -386,13 +386,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const levelIndicator = document.getElementById('level-indicator');
     if (levelIndicator) {
-      levelIndicator.innerText = 'Level 1';
-    }
-
-    const gameContainer = document.getElementById('game-screen');
-    document.body.style.backgroundColor = '#2E7D32';
-    if (gameContainer) {
-      gameContainer.style.backgroundColor = '#66BB6A';
+      levelIndicator.textContent = 'Level 1';
     }
   }
 
@@ -408,25 +402,34 @@ document.addEventListener('DOMContentLoaded', async () => {
       currentLevel = newLevel;
 
       const colorThemes = [
-        { body: '#722F37', container: '#8B4513' },
-        { body: '#191970', container: '#00008B' },
-        { body: '#CC5500', container: '#D2691E' },
-        { body: '#483D8B', container: '#5D3FD3' },
-        { body: '#000000', container: '#1C1C1C' }
+        { body: '#2913CE', mainPanel: '#1F0F9A', chuacheBox: '#1A0D6A' },
+        { body: '#54067C', mainPanel: '#430563', chuacheBox: '#2E0443' },
+        { body: '#5B3704', mainPanel: '#482C03', chuacheBox: '#352102' },
+        { body: '#7C1717', mainPanel: '#611212', chuacheBox: '#450C0C' },
+        { body: '#254747', mainPanel: '#1C3636', chuacheBox: '#132525' },
+        { body: '#5B0723', mainPanel: '#48051B', chuacheBox: '#340414' },
+        { body: '#000000', mainPanel: '#1C1C1C', chuacheBox: '#101010' }
       ];
 
-      const themeIndex = (currentLevel - 1) % colorThemes.length;
-      const selectedTheme = colorThemes[themeIndex];
+      if (currentLevel >= 1) {
+        const themeIndex = Math.min(currentLevel - 1, colorThemes.length - 1);
+        const selectedTheme = colorThemes[themeIndex];
 
-      const gameContainer = document.getElementById('game-screen');
-      document.body.style.backgroundColor = selectedTheme.body;
-      if (gameContainer) {
-        gameContainer.style.backgroundColor = selectedTheme.container;
+        const gameMainPanel = document.getElementById('game-main-panel');
+        const chuacheBox = document.getElementById('chuache-box');
+
+        document.body.style.backgroundColor = selectedTheme.body;
+        if (gameMainPanel) {
+          gameMainPanel.style.backgroundColor = selectedTheme.mainPanel;
+        }
+        if (chuacheBox) {
+          chuacheBox.style.backgroundColor = selectedTheme.chuacheBox;
+        }
       }
 
       const levelIndicator = document.getElementById('level-indicator');
       if (levelIndicator) {
-        levelIndicator.innerText = `Level ${currentLevel + 1}`;
+        levelIndicator.textContent = `Level ${currentLevel + 1}`;
       }
     }
   }
