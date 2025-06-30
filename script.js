@@ -439,7 +439,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (timeMode) {
       newLevel = Math.floor(correctAnswersTotal / 10);
     } else if (livesMode) {
-      newLevel = Math.floor(correctAnswersTotal / 15);
+      newLevel = Math.floor(correctAnswersTotal / 10);
     }
 
     if (newLevel > currentLevel) {
@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!levelIndicator) return;
 
     const timeMode = selectedGameMode === 'timer';
-    const goal = timeMode ? 10 : 15;
+    const goal = 10;
     const progress = correctAnswersTotal % goal;
 
     const newText = `Level ${currentLevel + 1} (${progress}/${goal})`;
