@@ -94,6 +94,7 @@
                         <button id="initial-start-button">Start Game</button>
                     <div style="text-align: center; margin-top: 20px;">
                           <button id="settings-button" type="button">Options</button>
+                          <button id="hall-of-fame-btn" type="button">Hall of Fame</button>
                     </div>
                 </div>
 
@@ -318,6 +319,40 @@
   </div>
     <div id="left-bubbles"></div>
     <div id="right-bubbles"></div>
+
+    <div id="hof-overlay" class="hof-overlay">
+        <div class="hof-tooltip">
+            <button id="hof-close-btn" class="hof-close-btn">&times;</button>
+            
+            <header class="hof-header">
+                <h1>Los mejores de los mejores</h1>
+                <h2>Best of the Best</h2>
+            </header>
+            
+            <div class="hof-records-container">
+                <div class="hof-record-block">
+                    <div class="trophy-icon">🏆</div>
+                    <h3>High Score</h3>
+                    <p class="player-name">PlayerOne</p>
+                    <p class="player-score">999,999</p>
+                </div>
+                
+                <div class="hof-record-block">
+                    <div class="trophy-icon">🏆</div>
+                    <h3>Longest Run</h3>
+                    <p class="player-name">PlayerTwo</p>
+                    <p class="player-score">Level 50</p>
+                </div>
+                
+                <div class="hof-record-block">
+                    <div class="trophy-icon">🏆</div>
+                    <h3>Fastest Victory</h3>
+                    <p class="player-name">PlayerThree</p>
+                    <p class="player-score">01:23:45</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
       const SUPABASE_URL = "https://dmaztdtlixwcnwcgwsnp.supabase.co";
