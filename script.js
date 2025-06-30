@@ -3781,6 +3781,30 @@ window.addEventListener('resize', () => {
     });
   }
 
+  // --- Hall of Fame Modal Logic ---
+  const hallOfFameBtn = document.getElementById('hall-of-fame-btn');
+  const hofOverlay = document.getElementById('hof-overlay');
+  const hofCloseBtn = document.getElementById('hof-close-btn');
+
+  function openHallOfFame() {
+    hofOverlay.classList.add('is-visible');
+  }
+
+  function closeHallOfFame() {
+    hofOverlay.classList.remove('is-visible');
+  }
+
+  if (hallOfFameBtn) hallOfFameBtn.addEventListener('click', openHallOfFame);
+  if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
+
+  if (hofOverlay) {
+    hofOverlay.addEventListener('click', (event) => {
+      if (event.target === hofOverlay) {
+        closeHallOfFame();
+      }
+    });
+  }
+
 });
 
 // © 2025 Pablo Torrado, University of Hong Kong.
