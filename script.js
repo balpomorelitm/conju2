@@ -1839,7 +1839,7 @@ async function renderSetupRecords() {
     try {
       const { data, error } = await supabase
         .from('records')
-        .select('name, score, created_at, streak')
+        .select('name, score, level')
         .eq('mode', mode)
         .order('score', { ascending: false })
         .limit(10);
@@ -1853,16 +1853,13 @@ async function renderSetupRecords() {
 
       ul.innerHTML = '';
       data.forEach((record, i) => {
-        const date = record.created_at ? new Date(record.created_at) : null;
-        const dateStr = date ? date.toLocaleDateString() : '–';
         const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
         const li = document.createElement('li');
+        const levelInfo = (mode === 'timer' || mode === 'lives') && record.level ? ` lv${record.level}` : '';
         li.innerHTML = `
           <div class="record-item">
             <span class="medal">${medal}</span>
-            <strong>${record.name}:</strong> ${record.score} pts
-            ${record.streak ? `<span class="record-streak">🔥${record.streak}</span>` : ''}
-            <span class="record-date">${dateStr}</span>
+            <strong>${record.name}:</strong> ${record.score} pts${levelInfo}
           </div>`;
         ul.appendChild(li);
       });
@@ -2051,7 +2048,7 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     try {
         const { data, error } = await supabase
             .from('records')
-            .select('name, score')
+            .select('name, score, level')
             .eq('mode', mode)
             .order('score', { ascending: false })
             .limit(5);
@@ -2059,7 +2056,8 @@ function applyIrregularityAndTenseFiltersToVerbList() {
         if (error) throw error;
 
         data.forEach(entry => {
-            rankingBox.innerHTML += `<div>${entry.name}: ${entry.score}</div>`;
+            const levelInfo = (mode === 'timer' || mode === 'lives') && entry.level ? ` lv${entry.level}` : '';
+            rankingBox.innerHTML += `<div>${entry.name}: ${entry.score}${levelInfo}</div>`;
         });
     } catch (error) {
         console.error("Error loading rankings:", error.message);
@@ -2673,7 +2671,8 @@ function checkAnswer() {
         name: name,
         score: score,
         mode: selectedGameMode,
-        streak: bestStreak
+        streak: bestStreak,
+        level: (selectedGameMode === 'timer' || selectedGameMode === 'lives') ? currentLevel + 1 : null
       };
       (async () => {
         try {
@@ -2819,7 +2818,8 @@ function startTimerMode() {
                 name: name,
                 score: score,
                 mode: selectedGameMode,
-                streak: bestStreak
+                streak: bestStreak,
+                level: (selectedGameMode === 'timer' || selectedGameMode === 'lives') ? currentLevel + 1 : null
               };
 
               (async () => {
@@ -2951,7 +2951,8 @@ function skipQuestion() {
                           name: name,
                           score: score,
                           mode: selectedGameMode,
-                          streak: bestStreak
+                          streak: bestStreak,
+                          level: (selectedGameMode === 'timer' || selectedGameMode === 'lives') ? currentLevel + 1 : null
                         };
                         (async () => {
                           try {
@@ -3241,7 +3242,8 @@ function checkFinalStartButtonState() {
                                 name: name,
                                 score: score,
                                 mode: selectedGameMode,
-                                streak: bestStreak
+                                streak: bestStreak,
+                                level: (selectedGameMode === 'timer' || selectedGameMode === 'lives') ? currentLevel + 1 : null
                             };
 
                             (async () => {
