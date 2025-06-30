@@ -404,15 +404,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (newLevel > currentLevel) {
       currentLevel = newLevel;
 
-      // NEW unified color palette for Levels 2 through 8
+      // Palette for Levels 2 through 8
       const levelColors = [
-        '#2913CE', // Level 2
-        '#54067C', // Level 3
-        '#5B3704', // Level 4
-        '#7C1717', // Level 5
-        '#254747', // Level 6
-        '#5B0723', // Level 7
-        '#000000'  // Level 8+
+        '#270D22', // Level 2 - dark fucsia
+        '#100D27', // Level 3 - dark blue
+        '#0D2127', // Level 4 - gunmetal
+        '#2C2015', // Level 5 - bistre
+        '#1F152C', // Level 6 - dark purple
+        '#2C1918', // Level 7 - licorice
+        '#000000'  // Level 8+ - black
       ];
 
       const colorIndex = Math.min(currentLevel - 1, levelColors.length - 1);
