@@ -1890,7 +1890,8 @@ async function renderSetupRecords() {
     try {
       const { data, error } = await supabase
         .from('records')
-        .select('name, score, level')
+        // Selecting all columns avoids errors if some do not exist
+        .select('*')
         .eq('mode', mode)
         .order('score', { ascending: false })
         .limit(10);
@@ -2099,7 +2100,8 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     try {
         const { data, error } = await supabase
             .from('records')
-            .select('name, score, level')
+            // Using '*' avoids errors if the 'level' column is missing
+            .select('*')
             .eq('mode', mode)
             .order('score', { ascending: false })
             .limit(5);
