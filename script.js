@@ -27,6 +27,36 @@ window.animationsEnabled = false;
 window.chuacheReactionsEnabled = true;
 window.defaultVosEnabled = false;
 
+// ---------------- Level Up Visual Effects -----------------
+// Trigger a screen thump and color shockwave when leveling up.
+function triggerLevelUpAnimation(newLevelColor) {
+  const body = document.body;
+  body.style.setProperty('--new-level-color', newLevelColor);
+  body.classList.add('level-up-animation');
+  setTimeout(() => {
+    body.classList.remove('level-up-animation');
+    body.style.backgroundColor = newLevelColor;
+  }, 1000);
+}
+
+// Update the numeric display with a flip animation.
+function updateLevelDisplay(oldNum, newNum) {
+  const container = document.getElementById('level-display');
+  if (!container) return;
+  container.innerHTML = `
+    <div class="flip-card">
+      <div class="top-half-static">${oldNum}</div>
+      <div class="bottom-half-static">${newNum}</div>
+      <div class="top-half-flip">${newNum}</div>
+      <div class="bottom-half-flip">${oldNum}</div>
+    </div>
+  `;
+  setTimeout(() => {
+    const card = container.querySelector('.flip-card');
+    if (card) card.classList.add('flipped');
+  }, 50);
+}
+
 function saveSetting(key, value) {
   localStorage.setItem(key, value);
 }
@@ -388,6 +418,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (levelIndicator) {
       levelIndicator.textContent = 'Level 1';
     }
+    updateLevelDisplay(1, 1);
   }
 
   function updateLevelAndVisuals() {
@@ -402,6 +433,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (newLevel > currentLevel) {
+      const oldDisplay = currentLevel + 1;
       currentLevel = newLevel;
 
       // Palette for Levels 2 through 8
@@ -420,8 +452,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const gameMainPanel = document.getElementById('game-main-panel');
       const chuacheBox = document.getElementById('chuache-box');
-
-      document.body.style.backgroundColor = newColor;
+      triggerLevelUpAnimation(newColor);
+      updateLevelDisplay(oldDisplay, currentLevel + 1);
       if (gameMainPanel) {
         gameMainPanel.style.backgroundColor = newColor;
       }
