@@ -18,6 +18,10 @@ const chuacheSound = new Audio('sounds/talks.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+// Level progression state
+let correctAnswersTotal = 0;
+let currentLevel = 0;
+
 // Global settings defaults
 window.animationsEnabled = false;
 window.chuacheReactionsEnabled = true;
@@ -358,7 +362,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
 
-	function showTimeChange(amount) {
+  function showTimeChange(amount) {
 	  const clockEl = document.getElementById('timer-clock');
 	  const el      = document.getElementById('time-change');
 	  if (!clockEl || !el) return;
@@ -374,8 +378,59 @@ document.addEventListener('DOMContentLoaded', async () => {
         el.classList.remove('vibrate');
         void el.offsetWidth;
         el.classList.add('vibrate');
-	}
-  let totalPlayedSeconds = 0;       
+        }
+
+  function resetLevelState() {
+    correctAnswersTotal = 0;
+    currentLevel = 0;
+
+    const levelIndicator = document.getElementById('level-indicator');
+    if (levelIndicator) {
+      levelIndicator.innerText = 'Level 1';
+    }
+
+    const gameContainer = document.getElementById('game-screen');
+    document.body.style.backgroundColor = '#2E7D32';
+    if (gameContainer) {
+      gameContainer.style.backgroundColor = '#66BB6A';
+    }
+  }
+
+  function updateLevelAndVisuals() {
+    let newLevel = 0;
+    if (selectedGameMode === 'timer') {
+      newLevel = Math.floor(correctAnswersTotal / 10);
+    } else if (selectedGameMode === 'lives') {
+      newLevel = Math.floor(correctAnswersTotal / 15);
+    }
+
+    if (newLevel > currentLevel) {
+      currentLevel = newLevel;
+
+      const colorThemes = [
+        { body: '#722F37', container: '#8B4513' },
+        { body: '#191970', container: '#00008B' },
+        { body: '#CC5500', container: '#D2691E' },
+        { body: '#483D8B', container: '#5D3FD3' },
+        { body: '#000000', container: '#1C1C1C' }
+      ];
+
+      const themeIndex = (currentLevel - 1) % colorThemes.length;
+      const selectedTheme = colorThemes[themeIndex];
+
+      const gameContainer = document.getElementById('game-screen');
+      document.body.style.backgroundColor = selectedTheme.body;
+      if (gameContainer) {
+        gameContainer.style.backgroundColor = selectedTheme.container;
+      }
+
+      const levelIndicator = document.getElementById('level-indicator');
+      if (levelIndicator) {
+        levelIndicator.innerText = `Level ${currentLevel + 1}`;
+      }
+    }
+  }
+  let totalPlayedSeconds = 0;
   let totalQuestions = 0;           
   let totalCorrect = 0;  
   let initialRawVerbData = [];  
@@ -2421,6 +2476,11 @@ function checkAnswer() {
     }
     chuacheSpeaks('correct');
 
+    if (selectedGameMode === 'timer' || selectedGameMode === 'lives') {
+      correctAnswersTotal++;
+      updateLevelAndVisuals();
+    }
+
     if (isStudyMode) {
       feedback.textContent = 'Correct!';
       setTimeout(prepareNextQuestion, 200);
@@ -2565,13 +2625,21 @@ function checkAnswer() {
       isPrizeVerbActive = false; // Se pierde la oportunidad del verbo premio
       qPrompt.classList.remove('prize-verb-active'); // Quitar estilo
     }
-	// ⌛ Penalización por error
-        timerTimeLeft = Math.max(0, timerTimeLeft - 3);
-        checkTickingSound();
-        showTimeChange(-3);
-	
+
+    if (selectedGameMode === 'timer') {
+      const penalty = 3 * Math.pow(2, currentLevel);
+      timerTimeLeft = Math.max(0, timerTimeLeft - penalty);
+      checkTickingSound();
+      showTimeChange(-penalty);
+    } else {
+      timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+      checkTickingSound();
+      showTimeChange(-3);
+    }
+
     if (selectedGameMode === 'lives') {
-      remainingLives--;
+      const penalty = 1 + currentLevel;
+      remainingLives -= penalty;
 
 	  currentStreakForLife = 0;
 
@@ -2678,6 +2746,7 @@ function checkAnswer() {
 }
 function startTimerMode() {
   document.getElementById('timer-container').style.display = 'flex';
+  resetLevelState();
   timerTimeLeft      = countdownTime;
   soundTicking.pause();
   soundTicking.currentTime = 0;
@@ -3086,6 +3155,9 @@ finalStartGameButton.addEventListener('click', async () => {
         // ... tu lógica de countdown para timer mode ...
         startTimerMode(); // O como se llame tu función
     } else {
+        if (window.selectedGameMode === 'lives') {
+            resetLevelState();
+        }
         soundStart.play();
         fadeOutAudio(menuMusic, 1000);
         setTimeout(() => {
