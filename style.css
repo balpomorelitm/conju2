@@ -575,6 +575,13 @@ button:active {
   font-size: 1em;
 }
 
+#level-indicator {
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 10px auto;
+}
+
 
 
 
