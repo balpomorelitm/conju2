@@ -2573,8 +2573,8 @@ function checkAnswer() {
 	else if (streak <= 8)  timeBonus = 8;
 	else if (streak <= 10) timeBonus = 9;
 	else                   timeBonus = 10;
-	// opcional: máximo 240 s
-        timerTimeLeft = Math.min(240, timerTimeLeft + timeBonus);
+        // add time without an upper limit
+        timerTimeLeft += timeBonus;
         checkTickingSound();
         showTimeChange(timeBonus);
 
