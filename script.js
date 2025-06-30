@@ -18,6 +18,10 @@ const chuacheSound = new Audio('sounds/talks.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+// Dynamic difficulty tracking
+let correctAnswersTotal = 0;
+let currentLevel = 0;
+
 // Global settings defaults
 window.animationsEnabled = false;
 window.chuacheReactionsEnabled = true;
@@ -374,8 +378,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         el.classList.remove('vibrate');
         void el.offsetWidth;
         el.classList.add('vibrate');
-	}
-  let totalPlayedSeconds = 0;       
+        }
+
+  function updateLevelAndVisuals() {
+    let newLevel = 0;
+    if (selectedGameMode === 'timer') {
+      newLevel = Math.floor(correctAnswersTotal / 10);
+    } else if (selectedGameMode === 'lives') {
+      newLevel = Math.floor(correctAnswersTotal / 15);
+    }
+    if (newLevel > currentLevel) {
+      currentLevel = newLevel;
+      const levelColors = ['#f4f4f4', '#e8f0fe', '#fff8e1', '#e8f5e9', '#fce4ec'];
+      const color = levelColors[currentLevel % levelColors.length];
+      document.body.style.backgroundColor = color;
+    }
+  }
+  let totalPlayedSeconds = 0;
   let totalQuestions = 0;           
   let totalCorrect = 0;  
   let initialRawVerbData = [];  
@@ -2431,6 +2450,9 @@ function checkAnswer() {
     streak++;
     if (streak > bestStreak) bestStreak = streak;
     multiplier = Math.min(5, multiplier + 0.5);
+
+    correctAnswersTotal++;
+    updateLevelAndVisuals();
     
     let basePoints = 10;
     if (currentOptions.mode === 'receptive') {
@@ -2565,13 +2587,18 @@ function checkAnswer() {
       isPrizeVerbActive = false; // Se pierde la oportunidad del verbo premio
       qPrompt.classList.remove('prize-verb-active'); // Quitar estilo
     }
-	// ⌛ Penalización por error
-        timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+        // ⌛ Penalización por error
+        let penaltyTime = 3;
+        if (selectedGameMode === 'timer') {
+          penaltyTime = 3 * Math.pow(2, currentLevel);
+        }
+        timerTimeLeft = Math.max(0, timerTimeLeft - penaltyTime);
         checkTickingSound();
-        showTimeChange(-3);
-	
+        showTimeChange(-penaltyTime);
+
     if (selectedGameMode === 'lives') {
-      remainingLives--;
+      const penalty = 1 + currentLevel;
+      remainingLives -= penalty;
 
 	  currentStreakForLife = 0;
 
@@ -2677,6 +2704,9 @@ function checkAnswer() {
 	}
 }
 function startTimerMode() {
+  correctAnswersTotal = 0;
+  currentLevel = 0;
+  document.body.style.backgroundColor = '#f4f4f4';
   document.getElementById('timer-container').style.display = 'flex';
   timerTimeLeft      = countdownTime;
   soundTicking.pause();
@@ -2769,6 +2799,12 @@ function startTimerMode() {
       }, 2000);
     }
   }, 1000);
+}
+
+function startLivesMode() {
+  correctAnswersTotal = 0;
+  currentLevel = 0;
+  document.body.style.backgroundColor = '#f4f4f4';
 }
 
 function updateTotalCorrectForLifeDisplay() {
@@ -3019,6 +3055,9 @@ finalStartGameButton.addEventListener('click', async () => {
 
     // Sincronizar el modo global por si acaso
     selectedGameMode = window.selectedGameMode || selectedMode;
+    if (selectedGameMode === 'lives') {
+        startLivesMode();
+    }
 
     if (window.defaultVosEnabled) {
         const vosBtn = Array.from(document.querySelectorAll('#pronoun-buttons .pronoun-group-button'))
