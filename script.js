@@ -996,12 +996,8 @@ function navigateToStep(stepName) {
     const targetIndex = stepsOrder.indexOf(stepName);
     const configFlowScreenDiv = document.getElementById('config-flow-screen'); // Necesaria para .splash-active
     const infoPanel = document.querySelector('.config-info-panel'); // Referencia al panel derecho
-    const recordsSection = document.getElementById('setup-records');
-
-    if (recordsSection) {
-        recordsSection.style.display = stepName === 'splash' ? 'flex' : 'none';
-        if (stepName === 'splash') renderSetupRecords();
-    }
+    // No longer toggle records on the splash screen; records are shown in the
+    // Hall of Fame overlay instead.
 
     allSteps.forEach(stepDiv => {
         const stepIdWithoutSuffix = stepDiv.id.replace('-step', '');
@@ -3787,6 +3783,8 @@ window.addEventListener('resize', () => {
   const hofCloseBtn = document.getElementById('hof-close-btn');
 
   function openHallOfFame() {
+    // Ensure latest records are displayed when opening
+    renderSetupRecords();
     hofOverlay.classList.add('is-visible');
   }
 
