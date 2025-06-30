@@ -392,46 +392,55 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function updateLevelAndVisuals() {
     let newLevel = 0;
-    if (selectedGameMode === 'timer') {
+    const timeMode = selectedGameMode === 'timer';
+    const livesMode = selectedGameMode === 'lives';
+
+    if (timeMode) {
       newLevel = Math.floor(correctAnswersTotal / 10);
-    } else if (selectedGameMode === 'lives') {
+    } else if (livesMode) {
       newLevel = Math.floor(correctAnswersTotal / 15);
     }
 
     if (newLevel > currentLevel) {
       currentLevel = newLevel;
 
-      const colorThemes = [
-        { body: '#2913CE', mainPanel: '#1F0F9A', chuacheBox: '#1A0D6A' },
-        { body: '#54067C', mainPanel: '#430563', chuacheBox: '#2E0443' },
-        { body: '#5B3704', mainPanel: '#482C03', chuacheBox: '#352102' },
-        { body: '#7C1717', mainPanel: '#611212', chuacheBox: '#450C0C' },
-        { body: '#254747', mainPanel: '#1C3636', chuacheBox: '#132525' },
-        { body: '#5B0723', mainPanel: '#48051B', chuacheBox: '#340414' },
-        { body: '#000000', mainPanel: '#1C1C1C', chuacheBox: '#101010' }
+      // NEW unified color palette for Levels 2 through 8
+      const levelColors = [
+        '#2913CE', // Level 2
+        '#54067C', // Level 3
+        '#5B3704', // Level 4
+        '#7C1717', // Level 5
+        '#254747', // Level 6
+        '#5B0723', // Level 7
+        '#000000'  // Level 8+
       ];
 
-      if (currentLevel >= 1) {
-        const themeIndex = Math.min(currentLevel - 1, colorThemes.length - 1);
-        const selectedTheme = colorThemes[themeIndex];
+      const colorIndex = Math.min(currentLevel - 1, levelColors.length - 1);
+      const newColor = levelColors[colorIndex];
 
-        const gameMainPanel = document.getElementById('game-main-panel');
-        const chuacheBox = document.getElementById('chuache-box');
+      const gameMainPanel = document.getElementById('game-main-panel');
+      const chuacheBox = document.getElementById('chuache-box');
 
-        document.body.style.backgroundColor = selectedTheme.body;
-        if (gameMainPanel) {
-          gameMainPanel.style.backgroundColor = selectedTheme.mainPanel;
-        }
-        if (chuacheBox) {
-          chuacheBox.style.backgroundColor = selectedTheme.chuacheBox;
-        }
+      document.body.style.backgroundColor = newColor;
+      if (gameMainPanel) {
+        gameMainPanel.style.backgroundColor = newColor;
       }
-
-      const levelIndicator = document.getElementById('level-indicator');
-      if (levelIndicator) {
-        levelIndicator.textContent = `Level ${currentLevel + 1}`;
+      if (chuacheBox) {
+        chuacheBox.style.backgroundColor = newColor;
       }
     }
+  }
+
+  function updateProgressUI() {
+    const levelIndicator = document.getElementById('level-indicator');
+    if (!levelIndicator) return;
+
+    const timeMode = selectedGameMode === 'timer';
+    const goal = timeMode ? 10 : 15;
+    const progress = correctAnswersTotal % goal;
+
+    const newText = `Level ${currentLevel + 1} (${progress}/${goal})`;
+    levelIndicator.textContent = newText;
   }
   let totalPlayedSeconds = 0;
   let totalQuestions = 0;           
@@ -2482,6 +2491,7 @@ function checkAnswer() {
     if (selectedGameMode === 'timer' || selectedGameMode === 'lives') {
       correctAnswersTotal++;
       updateLevelAndVisuals();
+      updateProgressUI();
     }
 
     if (isStudyMode) {
@@ -2750,6 +2760,7 @@ function checkAnswer() {
 function startTimerMode() {
   document.getElementById('timer-container').style.display = 'flex';
   resetLevelState();
+  updateProgressUI();
   timerTimeLeft      = countdownTime;
   soundTicking.pause();
   soundTicking.currentTime = 0;
@@ -3160,6 +3171,7 @@ finalStartGameButton.addEventListener('click', async () => {
     } else {
         if (window.selectedGameMode === 'lives') {
             resetLevelState();
+            updateProgressUI();
         }
         soundStart.play();
         fadeOutAudio(menuMusic, 1000);
