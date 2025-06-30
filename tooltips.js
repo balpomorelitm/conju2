@@ -10,7 +10,7 @@ const specificInfoData = {
     html: `You have <strong>4 minutes</strong> to score as many points as possible.<br>
            <strong class="modal-subtitle">Time Mechanics:</strong><br>
            - Start with 4:00 minutes.<br>
-           - Correct answers ✅ add time based on your streak (<span class="emphasis-mechanic">+5s to +10s</span>). Max time is 4:00.<br>
+           - Correct answers ✅ add time based on your streak (<span class="emphasis-mechanic">+5s to +10s</span>). No upper time limit.<br>
            - Incorrect/Skipped answers ❌ deduct <span class="emphasis-mechanic">3 seconds</span>.<br><br>
            <strong class="modal-subtitle">Time UI:</strong><br>
            - ⏳ Remaining Time: Main clock (turns <span class="text-red">red</span> and pulses in the last 10s).<br>
