@@ -355,6 +355,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
   let freeClues = 0;
+  let awaitingNextQuestion = false;
   const defaultBackgroundColor = getComputedStyle(document.documentElement)
     .getPropertyValue('--bg-color').trim();
 
@@ -494,6 +495,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function onClueButtonClick() {
+    if (awaitingNextQuestion) {
+      awaitingNextQuestion = false;
+      prepareNextQuestion();
+    }
     if (selectedGameMode !== 'timer' && selectedGameMode !== 'lives') {
       timerTimeLeft = Math.max(0, timerTimeLeft - 3);
       checkTickingSound();
@@ -2466,6 +2471,11 @@ function prepareNextQuestion() {
 }
 
 function checkAnswer() {
+  if (awaitingNextQuestion) {
+    awaitingNextQuestion = false;
+    prepareNextQuestion();
+    return;
+  }
   const isStudyMode = (selectedGameMode === 'study');
   let possibleCorrectAnswers = [];
   const rt    = (Date.now() - startTime) / 1000;
@@ -2637,7 +2647,7 @@ function checkAnswer() {
 
     if (isStudyMode) {
       feedback.textContent = 'Correct!';
-      setTimeout(prepareNextQuestion, 200);
+      awaitingNextQuestion = true;
       return;
     }
 
@@ -2680,7 +2690,7 @@ function checkAnswer() {
         showTimeChange(timeBonus);
 
     updateScore();
-    setTimeout(prepareNextQuestion, 200);
+    awaitingNextQuestion = true;
 	
     const irregularityEmojis = {
       "first_person_irregular": "🧏‍♀️",
@@ -2933,6 +2943,7 @@ function startTimerMode() {
     volumeSlider.disabled = false;
   }, 3000);
 
+  awaitingNextQuestion = false;
   prepareNextQuestion();
 
         countdownTimer = setInterval(() => {
@@ -3020,6 +3031,7 @@ function startLivesMode() {
     volumeSlider.value = targetVolume;
     volumeSlider.disabled = false;
   }, 1000);
+  awaitingNextQuestion = false;
   prepareNextQuestion();
 }
 
@@ -3034,6 +3046,10 @@ function updateTotalCorrectForLifeDisplay() {
 }
 
 function skipQuestion() {
+    if (awaitingNextQuestion) {
+        awaitingNextQuestion = false;
+        prepareNextQuestion();
+    }
         if (soundSkip) {
           soundSkip
                 .play()
@@ -3153,8 +3169,8 @@ function skipQuestion() {
           feedback.innerHTML = feedbackMessage;
           feedback.classList.remove('vibrate');
 
-          // Si no es game-over, preparamos la siguiente pregunta
-          setTimeout(prepareNextQuestion, 1500);
+          // Esperar a la siguiente acción del usuario
+          awaitingNextQuestion = true;
         }
 
 function updateStreakForLifeDisplay() {
@@ -3367,9 +3383,10 @@ finalStartGameButton.addEventListener('click', async () => {
             volumeSlider.value = targetVolume;
             volumeSlider.disabled = gameMusic.paused;
         }, 1000);
+        awaitingNextQuestion = false;
         prepareNextQuestion();
     }
-}); 
+});
 
 function checkFinalStartButtonState() {
     const selTenses = document.querySelectorAll('#tense-buttons .tense-button.selected').length;
