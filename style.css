@@ -623,7 +623,6 @@ button:active {
 .mode-badge.receptive { background-color: #dc3545; }
 .mode-badge.productive_easy { background-color: #6f42c1; }
 .mode-badge.productive { background-color: #28a745; }
-.mode-badge.infinite { background-color: #e68a00; }
 .mode-badge.timer { background-color: #ee3c30; }
 .mode-badge.lives { background-color: #0b5ac8; }
 
@@ -1071,7 +1070,6 @@ button:active {
 }
 
 /* Opcional: fondo distinto por modo */
-.mode-records[data-mode="infinite"] { background-color: #e68a00; }
 .mode-records[data-mode="timer"]    { background-color: #ee3c30; }
 .mode-records[data-mode="lives"]    { background-color: #0b5ac8; }
 
@@ -3214,14 +3212,6 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
 /* 2. ESTADO DE SELECCIÓN PROVISIONAL (COLORES "CHULOS") */
 
 /* --- Botones de MODO DE JUEGO en estado provisional --- */
-.config-flow-button[data-infokey="infiniteMode"].provisional-selection {
-    background-color: #e68a00 !important; /* Naranja para Infinite */
-    border-color: #c07000 !important;
-    color: white !important;
-}
-.config-flow-button[data-infokey="infiniteMode"].provisional-selection:hover {
-    background-color: #ff9800 !important; /* Naranja más claro */
-}
 
 .config-flow-button[data-infokey="timerMode"].provisional-selection {
     background-color: #ee3c30 !important; /* Rojo para Timer */

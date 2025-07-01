@@ -3676,7 +3676,6 @@ function openNameModal(message, callback) {
 
 function updateGameTitle() {
   const modeLabels = {
-    'infinite':   '♾️Infinite♾️',
     'timer':      'Timer 4m⏱️',
     'lives':      '5x💖',
     'receptive':  '💭ReCall💭',

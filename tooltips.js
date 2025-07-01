@@ -1,10 +1,4 @@
 const specificInfoData = {
-  infiniteMode: {
-    title: "♾️ Infinite Mode",
-    html: `<p>Play without time or life limits. Ideal for practicing at your own pace.</p>
-           <p><strong class="modal-subtitle">Goal:</strong> Achieve the highest score and longest streak possible!</p>
-           <p><strong class="modal-subtitle">Bonuses:</strong> Awarded for speed and accuracy.</p>`
-  },
   timerMode: {
     title: "⏱️ Timer Mode (4 Minutes)",
     html: `You have <strong>4 minutes</strong> to score as many points as possible.<br>
