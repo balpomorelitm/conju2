@@ -980,6 +980,10 @@ function playHeaderIntro() {
 }
 playHeaderIntro();
 function navigateToStep(stepName) {
+    // Ensure Hall of Fame tooltip is hidden outside the splash step
+    if (stepName !== 'splash') {
+        closeHallOfFame();
+    }
     const allSteps = document.querySelectorAll('.config-step');
     const stepsOrder = ['splash', 'mode', 'difficulty', 'details'];
     const targetIndex = stepsOrder.indexOf(stepName);
@@ -3108,6 +3112,8 @@ function fadeOutToMenu(callback) {
 
 
 finalStartGameButton.addEventListener('click', async () => {
+    // Ensure Hall of Fame tooltip is closed when starting a game
+    closeHallOfFame();
     const selTenses = Array.from(
         document.querySelectorAll('#tense-buttons .tense-button.selected')
     ).map(btn => btn.dataset.value);
