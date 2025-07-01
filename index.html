@@ -108,11 +108,13 @@
       <div id="mode-step" class="config-step">
         <h3>Select Game Mode:</h3>
         <div id="game-modes-container">
+          <!--
           <button class="mode-button config-flow-button" data-mode="infinite" data-infokey="infiniteMode">
             ♾️Infinite♾️
             <span class="context-info-icon" data-info-key="infiniteMode"></span>
           </button>
-          <button class="mode-button config-flow-button provisional-selection" data-mode="timer" data-infokey="timerMode">
+          -->
+          <button class="mode-button config-flow-button provisional-selection" data-mode="timer" data-infokey="timerMode" data-tooltip="Score as many points as possible within the time limit. The difficulty increases every 10 correct answers. You get 5 clues per level.">
             Timer 4m⏱️
             <span class="context-info-icon" data-info-key="timerMode"></span>
           </button>
@@ -289,7 +291,7 @@
       <div id="bottom-panel">
         <div id="action-buttons">
           <button id="check-answer-button">Check Answer</button>
-          <button id="clue-button">Use Clue</button>
+          <button id="clue-button" data-tooltip="Reveals a correct letter. You have 5 clues per difficulty level. Using a clue costs points.">Use Clue</button>
           <button id="skip-button">Skip</button>
           <button id="end-button">END GAME</button>
         </div>
@@ -324,10 +326,12 @@
             
             <div id="setup-records">
                 <h3>🏆 Los mejores de los mejores / Best of the Best 🏆</h3>
+                <!--
                 <div class="mode-records" data-mode="infinite">
                     <h4>♾️InFiNiTeRs♾️</h4>
                     <ul class="record-list"></ul>
                 </div>
+                -->
                 <div class="mode-records" data-mode="timer">
                     <h4>⏱DesPaCiToS⏱️</h4>
                     <ul class="record-list"></ul>

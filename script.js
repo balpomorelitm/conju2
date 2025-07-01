@@ -27,6 +27,7 @@ let currentLevel = 0;
 window.animationsEnabled = false;
 window.chuacheReactionsEnabled = true;
 window.defaultVosEnabled = false;
+window.selectedGameMode = 'timer';
 
 // ---------------- Level Up Visual Effects -----------------
 // Trigger a quick screen shake when leveling up.
@@ -342,7 +343,7 @@ let openFilterDropdownMenu = null;
 let tenseDropdownInitialized = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let selectedGameMode = null;
+  let selectedGameMode = 'timer';
   let allVerbData = [];
   let currentQuestion = {};
   let currentOptions = {};
@@ -353,6 +354,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let remainingLives = 5;
   let targetVolume=0.2;
   loadSettings();
+  const timerRadio = document.getElementById('mode-timer');
+  if (timerRadio) timerRadio.checked = true;
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
   let freeClues = 0;
@@ -804,9 +807,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     toggleIgnoreAccentsBtn.addEventListener('click', handleIgnoreAccentsToggle);
   }
 let currentConfigStep = 'splash'; // 'splash', 'mode', 'difficulty', 'details'
-let selectedMode = null;
-let selectedDifficulty = null;
 const DEFAULT_MODE = 'timer';
+let selectedMode = DEFAULT_MODE;
+let selectedDifficulty = null;
 const DEFAULT_DIFFICULTY = 'productive_easy';
 let provisionallySelectedOption = null;
 
@@ -3676,7 +3679,7 @@ function openNameModal(message, callback) {
 
 function updateGameTitle() {
   const modeLabels = {
-    'infinite':   '♾️Infinite♾️',
+    //'infinite':   '♾️Infinite♾️',
     'timer':      'Timer 4m⏱️',
     'lives':      '5x💖',
     'receptive':  '💭ReCall💭',
