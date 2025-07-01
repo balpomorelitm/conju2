@@ -15,6 +15,7 @@ const soundLifeGained = new Audio('sounds/soundLifeGained.mp3');
 const soundElectricShock = new Audio('sounds/electricshock.mp3');
 const soundTicking = new Audio('sounds/ticking.mp3');
 const chuacheSound = new Audio('sounds/talks.mp3');
+const soundLevelUp = new Audio('sounds/levelup.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
@@ -100,7 +101,7 @@ function loadSettings() {
     const vol = parseFloat(sfxVol);
     [soundCorrect, soundWrong, soundWrongStudy, soundClick, soundStart, soundSkip,
      soundGameOver, soundbubblepop, soundLifeGained, soundElectricShock, soundTicking,
-     chuacheSound].forEach(a => { a.volume = vol; });
+     chuacheSound, soundLevelUp].forEach(a => { a.volume = vol; });
     const sfxSlider = document.getElementById('sfx-volume-slider');
     if (sfxSlider) sfxSlider.value = vol;
   } else {
@@ -108,7 +109,7 @@ function loadSettings() {
     if (sfxSlider) sfxSlider.value = 1.0;
     [soundCorrect, soundWrong, soundWrongStudy, soundClick, soundStart, soundSkip,
      soundGameOver, soundbubblepop, soundLifeGained, soundElectricShock, soundTicking,
-     chuacheSound].forEach(a => { a.volume = 1.0; });
+     chuacheSound, soundLevelUp].forEach(a => { a.volume = 1.0; });
   }
 
   const animChk = document.getElementById('toggle-animations-setting');
@@ -568,6 +569,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const chuacheBox = document.getElementById('chuache-box');
 
       triggerLevelUpShake();
+      playFromStart(soundLevelUp);
       updateLevelText(`Level ${currentLevel + 1} (0/10)`);
       document.body.style.backgroundColor = newBodyColor;
       if (gameMainPanel) gameMainPanel.style.backgroundColor = newPanelColor;
@@ -648,7 +650,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const allSfx = [soundCorrect, soundWrong, soundWrongStudy, soundClick, soundStart,
                    soundSkip, soundGameOver, soundbubblepop, soundLifeGained,
-                   soundElectricShock, soundTicking, chuacheSound];
+                   soundElectricShock, soundTicking, chuacheSound, soundLevelUp];
 
   if (sfxVolumeSlider) {
     sfxVolumeSlider.addEventListener('input', () => {
