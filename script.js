@@ -496,6 +496,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const enContainer  = document.getElementById('input-en-container');
   const feedback     = document.getElementById('feedback-message');
   const settingsButton = document.getElementById('settings-button');
+  const hallOfFameBtn = document.getElementById('hall-of-fame-btn');
   const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
   const settingsModal = document.getElementById('settings-modal');
   const settingsBackdrop = document.getElementById('settings-modal-backdrop');
@@ -2160,7 +2161,7 @@ let usedVerbs = [];
                 }
                 navigateToStep('mode');
         }
-        const splashButtons = [initialStartButton, settingsButton];
+        const splashButtons = [initialStartButton, settingsButton, hallOfFameBtn].filter(Boolean);
         let currentSplashIndex = 0;
         function focusSplashButton(i) {
                 if (!splashButtons[i]) return;
@@ -3783,7 +3784,6 @@ window.addEventListener('resize', () => {
   }
 
   // --- Hall of Fame Modal Logic ---
-  const hallOfFameBtn = document.getElementById('hall-of-fame-btn');
   const hofOverlay = document.getElementById('hof-overlay');
   const hofCloseBtn = document.getElementById('hof-close-btn');
 
