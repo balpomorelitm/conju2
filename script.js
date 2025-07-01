@@ -2334,10 +2334,10 @@ let usedVerbs = [];
 	navigateToStep('splash'); // Empezar en el splash screen  
 function prepareNextQuestion() {
   const feedback = document.getElementById('feedback-message');
-  const oldNote = document.getElementById('prize-note');
-  if (oldNote) oldNote.remove();
   feedback.innerHTML = '';
   feedback.classList.remove('vibrate');
+  const oldNote = document.getElementById('prize-note');
+  if (oldNote) oldNote.remove();
   if (!allVerbData || allVerbData.length === 0) {
     console.error("No valid verb data.");
     feedback.textContent = "Error: Could not load verb data.";
