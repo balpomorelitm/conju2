@@ -2333,6 +2333,7 @@ let usedVerbs = [];
 
 	navigateToStep('splash'); // Empezar en el splash screen  
 function prepareNextQuestion() {
+  const feedback = document.getElementById('feedback-message');
   const oldNote = document.getElementById('prize-note');
   if (oldNote) oldNote.remove();
   feedback.innerHTML = '';
