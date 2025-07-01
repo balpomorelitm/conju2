@@ -394,9 +394,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
   function showTimeChange(amount) {
-	  const clockEl = document.getElementById('timer-clock');
-	  const el      = document.getElementById('time-change');
-	  if (!clockEl || !el) return;
+          const clockEl = document.getElementById('timer-clock');
+          const el      = document.getElementById('time-change');
+          if (!clockEl || !el) return;
 
         el.textContent = `${amount > 0 ? '+' : ''}${amount}s`;
         el.style.color = amount < 0 ? 'red' : 'lightgreen';
@@ -410,6 +410,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         void el.offsetWidth;
         el.classList.add('vibrate');
         }
+
+  function calculateTimePenalty(level) {
+    if (level === 0) return 3;
+    if (level === 1) return 6;
+    if (level === 2) return 13;
+    if (level === 3) return 25;
+    return 25 * Math.pow(2, level - 3);
+  }
 
   function resetLevelState() {
     correctAnswersTotal = 0;
@@ -2671,7 +2679,7 @@ function checkAnswer() {
     }
 
     if (selectedGameMode === 'timer') {
-      const penalty = 3 * Math.pow(2, currentLevel);
+      const penalty = calculateTimePenalty(currentLevel);
       timerTimeLeft = Math.max(0, timerTimeLeft - penalty);
       checkTickingSound();
       showTimeChange(-penalty);
