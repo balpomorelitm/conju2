@@ -3676,8 +3676,8 @@ function openNameModal(message, callback) {
 
 function updateGameTitle() {
   const modeLabels = {
-    'timer':      'Timer 4m⏱️',
-    'lives':      '5x💖',
+    'timer':      'Time Attack ⏱️',
+    'lives':      'Survival',
     'receptive':  '💭ReCall💭',
     'productive_easy': '⚙️conjugATE⚙️',
     'productive': '⌨️Pr0duc€⌨️'
