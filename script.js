@@ -336,6 +336,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadSettings();
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
+  let freeClues = 0;
   const defaultBackgroundColor = getComputedStyle(document.documentElement)
     .getPropertyValue('--bg-color').trim();
 
@@ -347,18 +348,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (chuacheBox) chuacheBox.style.backgroundColor = defaultBackgroundColor;
   }
 
-  function updateClueButton() {
-    const maxClues =
-      currentOptions.mode === 'receptive' ||
-      currentOptions.mode === 'productive_easy'
-        ? 1
-        : 2;
-    if (!checkButton) return;
-    if (currentQuestion.hintLevel >= maxClues) {
-      checkButton.innerHTML = `<span class="no-clues-left">Get Clue ${maxClues}/${maxClues}</span> / Check Answer`;
+  function updateClueButtonUI() {
+    if (!clueButton) return;
+
+    if (selectedGameMode === 'timer') {
+      if (freeClues > 0) {
+        clueButton.textContent = `Use Clue (${freeClues})`;
+      } else {
+        const penalty = calculateTimePenalty(currentLevel);
+        clueButton.textContent = `Get Clue (Cost: ${penalty}s)`;
+      }
+    } else if (selectedGameMode === 'lives') {
+      if (freeClues > 0) {
+        clueButton.textContent = `Use Clue (${freeClues})`;
+      } else {
+        const penalty = 1 + currentLevel;
+        const lifeText = penalty === 1 ? 'life' : 'lives';
+        clueButton.textContent = `Get Clue (Cost: ${penalty} ${lifeText})`;
+      }
     } else {
-      const next = currentQuestion.hintLevel + 1;
-      checkButton.innerHTML = `Get Clue ${next}/${maxClues} / Check Answer`;
+      clueButton.textContent = 'Get Clue';
     }
   }
 
@@ -419,6 +428,76 @@ document.addEventListener('DOMContentLoaded', async () => {
     return 25 * Math.pow(2, level - 3);
   }
 
+  function displayClue() {
+    if (currentOptions.mode === 'receptive') {
+      const verbData = currentQuestion.verb;
+      feedback.innerHTML = `💡 The English infinitive is <strong>${verbData.infinitive_en}</strong>.`;
+      ansEN.value = '';
+      setTimeout(() => ansEN.focus(), 0);
+    } else if (currentOptions.mode === 'productive' || currentOptions.mode === 'productive_easy') {
+      if (currentOptions.mode === 'productive_easy') {
+        if (currentQuestion.hintLevel === 0) {
+          const conjTenseKey = currentQuestion.tenseKey;
+          const conj = currentQuestion.verb.conjugations[conjTenseKey];
+          const botones = Object.entries(conj || {})
+            .filter(([pr]) => pr !== currentQuestion.pronoun)
+            .map(([, form]) => `<span class="hint-btn">${form}</span>`)
+            .join('');
+          feedback.innerHTML = `❌ <em>Clue 1:</em> ` + botones;
+          playFromStart(soundElectricShock);
+          currentQuestion.hintLevel = 1;
+        }
+      } else {
+        if (currentQuestion.hintLevel === 0) {
+          feedback.innerHTML = `❌ <em>Clue 1:</em> infinitive is <strong>${currentQuestion.verb.infinitive_es}</strong>.`;
+          playFromStart(soundElectricShock);
+          currentQuestion.hintLevel = 1;
+        } else if (currentQuestion.hintLevel === 1) {
+          const conjTenseKey = currentQuestion.tenseKey;
+          const conj = currentQuestion.verb.conjugations[conjTenseKey];
+          const botones = Object.entries(conj || {})
+            .filter(([pr]) => pr !== currentQuestion.pronoun)
+            .map(([, form]) => `<span class="hint-btn">${form}</span>`)
+            .join('');
+          feedback.innerHTML = `❌ <em>Clue 2:</em> ` + botones;
+          playFromStart(soundElectricShock);
+          currentQuestion.hintLevel = 2;
+        }
+      }
+      ansES.value = '';
+      setTimeout(() => ansES.focus(), 0);
+    }
+  }
+
+  function onClueButtonClick() {
+    if (selectedGameMode !== 'timer' && selectedGameMode !== 'lives') {
+      timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+      checkTickingSound();
+      playFromStart(soundElectricShock);
+      displayClue();
+      return;
+    }
+
+    if (freeClues > 0) {
+      freeClues--;
+      displayClue();
+    } else {
+      if (selectedGameMode === 'timer') {
+        const penalty = calculateTimePenalty(currentLevel);
+        timerTimeLeft = Math.max(0, timerTimeLeft - penalty);
+        checkTickingSound();
+        showTimeChange(-penalty);
+      } else {
+        const penalty = 1 + currentLevel;
+        remainingLives -= penalty;
+        updateGameTitle();
+      }
+      streak = 0;
+      displayClue();
+    }
+    updateClueButtonUI();
+  }
+
   function resetLevelState() {
     correctAnswersTotal = 0;
     currentLevel = 0;
@@ -442,6 +521,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (newLevel > currentLevel) {
       currentLevel = newLevel;
+      freeClues++;
+      updateClueButtonUI();
 
       // Palette for Levels 2 through 8
       const levelColors = [
@@ -2283,7 +2364,7 @@ function prepareNextQuestion() {
   startTime = Date.now();
   ansES.value = '';
   ansEN.value = '';
-  updateClueButton();
+  updateClueButtonUI();
     isPrizeVerbActive = false; // Reset por defecto
         qPrompt.classList.remove('prize-verb-active'); // Quitar estilo especial
 
@@ -2377,6 +2458,7 @@ function checkAnswer() {
 
   if (currentOptions.mode === 'productive' || currentOptions.mode === 'productive_easy') {
     let ans = ansES.value.trim().toLowerCase();
+    if (ans === '') return;
     let cor = currentQuestion.answer.toLowerCase();
     if (currentOptions.ignoreAccents) {
       ans = removeAccents(ans);
@@ -2391,20 +2473,11 @@ function checkAnswer() {
     }
   } else {
     const ans = ansEN.value.trim().toLowerCase();
+    if (ans === '') return;
     const tense = currentQuestion.tenseKey;        // p.ej. 'present'
     const spanishForm = currentQuestion.answer;    
     const verbData = currentQuestion.verb;
 	
-    if (ans === '' && currentQuestion.hintLevel === 0) {
-        feedback.innerHTML = `💡 The English infinitive is <strong>${verbData.infinitive_en}</strong>.`;
-        timerTimeLeft = Math.max(0, timerTimeLeft - 3);
-        checkTickingSound();
-        playFromStart(soundElectricShock);
-        currentQuestion.hintLevel = 1; // Marcar que la pista ha sido solicitada/dada
-        updateClueButton();
-        ansEN.focus();
-        return;
-    }
 
     const allForms = verbData.conjugations[tense];
     if (!allForms) {
@@ -2712,7 +2785,8 @@ function checkAnswer() {
         soundGameOver.play();
         chuacheSpeaks('gameover');
 		gameTitle.textContent = '💀 ¡Estás MUERTO!';
-		checkButton.disabled = true;
+                checkAnswerButton.disabled = true;
+                clueButton.disabled = true;
         skipButton.disabled  = true;
 		ansEN.disabled = true;
 		ansES.disabled = true;
@@ -2770,7 +2844,6 @@ function checkAnswer() {
                                         `❌ <em>Clue 1:</em> ` + botones;
                                 playFromStart(soundElectricShock);
                                 currentQuestion.hintLevel = 1;
-                                updateClueButton();
                         }
                 } else { // productive mode keeps two clues
                         if (currentQuestion.hintLevel === 0) {
@@ -2778,7 +2851,6 @@ function checkAnswer() {
                                   `❌ <em>Clue 1:</em> infinitive is <strong>${currentQuestion.verb.infinitive_es}</strong>.`;
                                 playFromStart(soundElectricShock);
                                 currentQuestion.hintLevel = 1;
-                                updateClueButton();
                         } else if (currentQuestion.hintLevel === 1) {
                                 const conjTenseKey = currentQuestion.tenseKey;
                                 const conj = currentQuestion.verb.conjugations[conjTenseKey];
@@ -2790,7 +2862,6 @@ function checkAnswer() {
                                         `❌ <em>Clue 2:</em> ` + botones;
                                 playFromStart(soundElectricShock);
                                 currentQuestion.hintLevel = 2;
-                                updateClueButton();
                         }
                 }
 		ansES.value = '';
@@ -2799,6 +2870,8 @@ function checkAnswer() {
 }
 function startTimerMode() {
   document.getElementById('timer-container').style.display = 'flex';
+  freeClues = 3;
+  updateClueButtonUI();
   resetLevelState();
   updateProgressUI();
   timerTimeLeft      = countdownTime;
@@ -2893,6 +2966,32 @@ function startTimerMode() {
       }, 2000);
     }
   }, 1000);
+}
+
+function startLivesMode() {
+  freeClues = 3;
+  updateClueButtonUI();
+  resetLevelState();
+  updateProgressUI();
+  feedback.innerHTML = '';
+  feedback.classList.remove('vibrate');
+  score = 0; streak = 0; multiplier = 1.0;
+  updateScore();
+  configFlowScreen.style.display = 'none';
+  gameScreen.style.display = 'block';
+  updateGameTitle();
+  soundStart.play();
+  fadeOutAudio(menuMusic, 1000);
+  setTimeout(() => {
+    currentMusic = gameMusic;
+    gameMusic.volume = targetVolume;
+    gameMusic.play();
+    musicToggle.style.display = 'block';
+    volumeSlider.style.display = 'block';
+    volumeSlider.value = targetVolume;
+    volumeSlider.disabled = false;
+  }, 1000);
+  prepareNextQuestion();
 }
 
 function updateTotalCorrectForLifeDisplay() {
@@ -2993,7 +3092,8 @@ function skipQuestion() {
                   soundGameOver.play();
                   chuacheSpeaks('gameover');
                   gameTitle.textContent   = '💀¡Estás MUERTO!💀';
-		  checkButton.disabled    = true;
+                  checkAnswerButton.disabled    = true;
+                  clueButton.disabled     = true;
 		  skipButton.disabled     = true;
 		  ansEN.disabled          = true;
 		  ansES.disabled          = true;
@@ -3211,13 +3311,12 @@ finalStartGameButton.addEventListener('click', async () => {
     updateGameTitle(); // Actualiza el título con todo
 
     if (window.selectedGameMode === 'timer') {
-        // ... tu lógica de countdown para timer mode ...
-        startTimerMode(); // O como se llame tu función
+        startTimerMode();
+    } else if (window.selectedGameMode === 'lives') {
+        startLivesMode();
     } else {
-        if (window.selectedGameMode === 'lives') {
-            resetLevelState();
-            updateProgressUI();
-        }
+        freeClues = 0;
+        updateClueButtonUI();
         soundStart.play();
         fadeOutAudio(menuMusic, 1000);
         setTimeout(() => {
@@ -3236,9 +3335,9 @@ finalStartGameButton.addEventListener('click', async () => {
             }
             musicToggle.style.display = 'block';
             volumeSlider.style.display = 'block';
-            volumeSlider.value = targetVolume; // targetVolume es tu variable de volumen
+            volumeSlider.value = targetVolume;
             volumeSlider.disabled = gameMusic.paused;
-        }, 1000); // Retraso menor si no hay countdown
+        }, 1000);
         prepareNextQuestion();
     }
 }); 
@@ -3268,14 +3367,16 @@ function checkFinalStartButtonState() {
 
     //prepareNextQuestion(); // Mantenla comentada por ahora hasta que todo el flujo funcione
     // <<<< INICIO DE LAS LÍNEAS MOVIDAS >>>>
-    const checkButton  = document.getElementById('check-button'); // Asegúrate que estas constantes estén definidas
-    const skipButton   = document.getElementById('skip-button');   // dentro de DOMContentLoaded si no son globales
-    const endButton    = document.getElementById('end-button');
-    const ansES        = document.getElementById('answer-input-es');
-    const ansEN        = document.getElementById('answer-input-en');
+    const checkAnswerButton = document.getElementById('check-answer-button');
+    const clueButton        = document.getElementById('clue-button');
+    const skipButton        = document.getElementById('skip-button');   // dentro de DOMContentLoaded si no son globales
+    const endButton         = document.getElementById('end-button');
+    const ansES             = document.getElementById('answer-input-es');
+    const ansEN             = document.getElementById('answer-input-en');
     // (Estas ya las tienes definidas más arriba, así que no necesitas redeclararlas, solo asegúrate de que su ámbito sea accesible aquí)
 
-    if (checkButton) checkButton.addEventListener('click', checkAnswer);
+    if (checkAnswerButton) checkAnswerButton.addEventListener('click', checkAnswer);
+    if (clueButton) clueButton.addEventListener('click', onClueButtonClick);
     if (skipButton) skipButton.addEventListener('click', skipQuestion);
     if (endButton) {
         endButton.addEventListener('click', () => {
