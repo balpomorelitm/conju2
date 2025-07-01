@@ -618,6 +618,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
   const titleElement = document.querySelector('.glitch-title');
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
+
+  // --- Hall of Fame Modal Logic ---
+  const hofOverlay = document.getElementById('hof-overlay');
+  const hofCloseBtn = document.querySelector('#hof-overlay .hof-close-btn');
+
+  function openHallOfFame() {
+    if (hofOverlay) {
+      renderSetupRecords();
+      hofOverlay.classList.add('is-visible');
+    }
+  }
+
+  function closeHallOfFame() {
+    if (hofOverlay) {
+      hofOverlay.classList.remove('is-visible');
+    }
+  }
+
+  if (hallOfFameBtn) hallOfFameBtn.addEventListener('click', openHallOfFame);
+  if (gameHallOfFameBtn) gameHallOfFameBtn.addEventListener('click', openHallOfFame);
+  if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
+  if (hofOverlay) {
+    hofOverlay.addEventListener('click', (event) => {
+      if (event.target === hofOverlay) {
+        closeHallOfFame();
+      }
+    });
+  }
   
   const container = document.getElementById('verb-buttons');
   // Use a live query so replacing the container element doesn't break references
@@ -3909,32 +3937,6 @@ window.addEventListener('resize', () => {
       const original = coffeeLink.textContent;
       coffeeLink.textContent = 'THANKS!';
       setTimeout(() => { coffeeLink.textContent = original; }, 1500);
-    });
-  }
-
-  // --- Hall of Fame Modal Logic ---
-  const hofOverlay = document.getElementById('hof-overlay');
-  const hofCloseBtn = document.getElementById('hof-close-btn');
-
-  function openHallOfFame() {
-    // Ensure latest records are displayed when opening
-    renderSetupRecords();
-    hofOverlay.classList.add('is-visible');
-  }
-
-  function closeHallOfFame() {
-    hofOverlay.classList.remove('is-visible');
-  }
-
-  if (hallOfFameBtn) hallOfFameBtn.addEventListener('click', openHallOfFame);
-  if (gameHallOfFameBtn) gameHallOfFameBtn.addEventListener('click', openHallOfFame);
-  if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
-
-  if (hofOverlay) {
-    hofOverlay.addEventListener('click', (event) => {
-      if (event.target === hofOverlay) {
-        closeHallOfFame();
-      }
     });
   }
 
