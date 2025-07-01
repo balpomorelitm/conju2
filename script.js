@@ -605,6 +605,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const feedback     = document.getElementById('feedback-message');
   const settingsButton = document.getElementById('settings-button');
   const hallOfFameBtn = document.getElementById('hall-of-fame-btn');
+  const gameHallOfFameBtn = document.getElementById('game-hall-of-fame-btn');
   const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
   const settingsModal = document.getElementById('settings-modal');
   const settingsBackdrop = document.getElementById('settings-modal-backdrop');
@@ -3926,6 +3927,7 @@ window.addEventListener('resize', () => {
   }
 
   if (hallOfFameBtn) hallOfFameBtn.addEventListener('click', openHallOfFame);
+  if (gameHallOfFameBtn) gameHallOfFameBtn.addEventListener('click', openHallOfFame);
   if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
 
   if (hofOverlay) {
