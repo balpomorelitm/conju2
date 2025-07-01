@@ -25,7 +25,8 @@ const URLS_TO_CACHE = [
   'sounds/soundbubblepop.mp3',
   'sounds/soundLifeGained.mp3',
   'sounds/electricshock.mp3',
-  'sounds/ticking.mp3'
+  'sounds/ticking.mp3',
+  'sounds/levelup.mp3'
 ];
 
 self.addEventListener('install', event => {
