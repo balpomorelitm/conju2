@@ -13,6 +13,9 @@ const specificInfoData = {
            <strong class="modal-subtitle">Scoring Bonuses (per question):</strong><br>
            - Streak Bonus: Multiplies points for consecutive correct answers.<br>
            - Speed Bonus: Answering in under 5 seconds gives an additional score multiplier (up to <span class="points-value">x2.0</span>).<br><br>
+           <strong class="modal-subtitle">Levels & Clues:</strong><br>
+           - Every 10 correct answers you advance a level and gain <strong>1 free clue</strong>.<br>
+           - Without free clues, using one deducts time based on your level (<span class="emphasis-mechanic">3s, 6s, 13s, 25s</span>, and then it doubles).<br><br>
            <strong class="modal-subtitle">Goal:</strong> Maximize your score before time runs out!`
   },
   livesMode: {
@@ -26,7 +29,10 @@ const specificInfoData = {
               - Appear randomly in "<span class="difficulty-normal">Conjugate</span>" (⚙️) and "<span class="difficulty-hard">Produce</span>" (⌨️) difficulties if the verb is irregular or reflexive.<br>
               - Chance: Approx. <span class="emphasis-mechanic">1 in 30</span> for "Conjugate", approx. <span class="emphasis-mechanic">1 in 20</span> for "Produce".<br>
               - Correctly conjugating a prize verb (marked with 🎁) grants an <span class="emphasis-mechanic">extra life!</span><br>
-          <br><strong class="modal-subtitle">Goal:</strong> Stay alive and get the highest score!`
+           <br><strong class="modal-subtitle">Levels & Clues:</strong><br>
+           - Level up every 10 correct answers and receive <strong>1 free clue</strong>.<br>
+           - If you have no free clues, using one costs lives: 1 life at Level 1, 2 at Level 2, and so on.<br><br>
+          <strong class="modal-subtitle">Goal:</strong> Stay alive and get the highest score!`
   },
   studyMode: {
     title: "📚 Study Mode",
