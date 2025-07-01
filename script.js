@@ -48,6 +48,24 @@ function updateLevelText(newText) {
   }, 300);
 }
 
+/**
+ * Darkens a HEX color by a given percentage.
+ * @param {string} hex - The hex color string (e.g., '#RRGGBB').
+ * @param {number} percent - The percentage to darken by (e.g., 20 for 20%).
+ * @returns {string} The new, darker hex color string.
+ */
+function darkenColor(hex, percent) {
+  let f = parseInt(hex.slice(1), 16),
+      t = percent / 100,
+      r = f >> 16,
+      g = (f >> 8) & 0x00ff,
+      b = f & 0x0000ff;
+  r = Math.round(r * (1 - t));
+  g = Math.round(g * (1 - t));
+  b = Math.round(b * (1 - t));
+  return `#${(0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
+
 function saveSetting(key, value) {
   localStorage.setItem(key, value);
 }
@@ -336,15 +354,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadSettings();
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
-  const defaultBackgroundColor = getComputedStyle(document.documentElement)
-    .getPropertyValue('--bg-color').trim();
-
   function resetBackgroundColor() {
     const gameMainPanel = document.getElementById('game-main-panel');
+    const gameHeaderPanel = document.getElementById('game-header-panel');
+    const bottomPanel = document.getElementById('bottom-panel');
     const chuacheBox = document.getElementById('chuache-box');
-    document.body.style.backgroundColor = defaultBackgroundColor;
-    if (gameMainPanel) gameMainPanel.style.backgroundColor = defaultBackgroundColor;
-    if (chuacheBox) chuacheBox.style.backgroundColor = defaultBackgroundColor;
+
+    document.body.style.backgroundColor = '';
+    if (gameMainPanel) gameMainPanel.style.backgroundColor = '';
+    if (gameHeaderPanel) gameHeaderPanel.style.backgroundColor = '';
+    if (bottomPanel) bottomPanel.style.backgroundColor = '';
+    if (chuacheBox) chuacheBox.style.backgroundColor = '';
   }
 
   function updateClueButton() {
@@ -443,31 +463,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (newLevel > currentLevel) {
       currentLevel = newLevel;
 
-      // Palette for Levels 2 through 8
       const levelColors = [
-        '#270D22', // Level 2 - dark fucsia
-        '#100D27', // Level 3 - dark blue
-        '#0D2127', // Level 4 - gunmetal
-        '#2C2015', // Level 5 - bistre
-        '#1F152C', // Level 6 - dark purple
-        '#2C1918', // Level 7 - licorice
-        '#000000'  // Level 8+ - black
+        '#2913CE', // Level 2
+        '#54067C', // Level 3
+        '#5B3704', // Level 4
+        '#7C1717', // Level 5
+        '#254747', // Level 6
+        '#5B0723', // Level 7
+        '#000000'  // Level 8+
       ];
 
       const colorIndex = Math.min(currentLevel - 1, levelColors.length - 1);
-      const newColor = levelColors[colorIndex];
+      const newBodyColor = levelColors[colorIndex];
+      const newPanelColor = darkenColor(newBodyColor, 15);
 
       const gameMainPanel = document.getElementById('game-main-panel');
+      const gameHeaderPanel = document.getElementById('game-header-panel');
+      const bottomPanel = document.getElementById('bottom-panel');
       const chuacheBox = document.getElementById('chuache-box');
+
       triggerLevelUpShake();
       updateLevelText(`Level ${currentLevel + 1} (0/10)`);
-      document.body.style.backgroundColor = newColor;
-      if (gameMainPanel) {
-        gameMainPanel.style.backgroundColor = newColor;
-      }
-      if (chuacheBox) {
-        chuacheBox.style.backgroundColor = newColor;
-      }
+      document.body.style.backgroundColor = newBodyColor;
+      if (gameMainPanel) gameMainPanel.style.backgroundColor = newPanelColor;
+      if (gameHeaderPanel) gameHeaderPanel.style.backgroundColor = newPanelColor;
+      if (bottomPanel) bottomPanel.style.backgroundColor = newPanelColor;
+      if (chuacheBox) chuacheBox.style.backgroundColor = darkenColor(newBodyColor, 25);
+
+      updateProgressUI();
     }
   }
 
