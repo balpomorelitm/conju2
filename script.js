@@ -884,6 +884,7 @@ const confirmDifficultyButton = document.getElementById('confirm-difficulty-butt
 const detailsConfigStep = document.getElementById('details-config-step');
 const finalStartGameButton = document.getElementById('final-start-game-button');
 const backButton = document.getElementById('back-button');
+const scorePreviewValue = document.getElementById('score-preview-value');
 
 const infoPanelTitle = document.getElementById('info-panel-title');
 const infoPanelContent = document.getElementById('info-panel-content');
@@ -1296,6 +1297,7 @@ function navigateToStep(stepName) {
         } else if (stepName === 'details') {
             updateInfoPanelContent('Customize Your Game', `<p> <strong><span class="math-inline">\</strong\> </strong>.<br>Adjust tenses, verbs, pronouns, and other options.</p>`);
             checkFinalStartButtonState();
+            updateScorePreview();
         }
     }
 }
@@ -3500,6 +3502,44 @@ function checkFinalStartButtonState() {
     } else if (조건) {
         finalStartGameButton.title = "";
     }
+}
+
+function updateScorePreview() {
+    if (!scorePreviewValue) return;
+
+    let basePoints = 10;
+    if (selectedDifficulty === 'receptive') {
+        basePoints = 5;
+    } else if (selectedDifficulty === 'productive') {
+        basePoints = 15;
+    }
+
+    const selectedTensesCount = document.querySelectorAll('#tense-buttons .tense-button.selected').length;
+    const tenseBonus = (selectedTensesCount > 0) ? (selectedTensesCount - 1) * 2 : 0;
+
+    const selectedPronounsCount = document.querySelectorAll('#pronoun-buttons .pronoun-group-button.selected').length;
+    const selectedVerbsCount = document.querySelectorAll('#verb-buttons .verb-button.selected').length;
+
+    const pronounBonusValue = 0.5;
+    const verbBonusValue = 0.1;
+
+    const pronounBonus = (selectedPronounsCount > 1) ? (selectedPronounsCount - 1) * pronounBonusValue : 0;
+    const verbBonus = (selectedVerbsCount > 1) ? (selectedVerbsCount - 1) * verbBonusValue : 0;
+
+    const ignoreAccentsBtn = document.getElementById('toggle-ignore-accents');
+    const accentBonus = (ignoreAccentsBtn && !ignoreAccentsBtn.classList.contains('selected')) ? 8 : 0;
+
+    const totalPoints = basePoints + tenseBonus + pronounBonus + verbBonus + accentBonus;
+    scorePreviewValue.textContent = totalPoints.toFixed(1);
+}
+
+const filterBar = document.getElementById('filter-bar-container');
+if (filterBar) {
+    filterBar.addEventListener('click', () => setTimeout(updateScorePreview, 50));
+}
+const irregularitiesContainer = document.getElementById('verb-irregularities-container');
+if (irregularitiesContainer) {
+    irregularitiesContainer.addEventListener('click', () => setTimeout(updateScorePreview, 50));
 }
 	document.getElementById('tense-buttons').addEventListener('click', checkFinalStartButtonState);
 	document.getElementById('verb-buttons').addEventListener('click', checkFinalStartButtonState);
