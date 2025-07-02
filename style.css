@@ -4024,3 +4024,26 @@ td.irregular-highlight {
         padding-top: 10px;
     }
 }
+
+@keyframes iridescent-dark-flow {
+  0% {
+    background-color: #0d0221; /* Dark Navy */
+  }
+  25% {
+    background-color: #2d00f7; /* Vibrant Blue */
+  }
+  50% {
+    background-color: #4a0072; /* Deep Purple */
+  }
+  75% {
+    background-color: #0b2027; /* Dark Teal */
+  }
+  100% {
+    background-color: #0d0221; /* Back to Dark Navy */
+  }
+}
+
+body.iridescent-level {
+  animation: iridescent-dark-flow 15s ease infinite;
+  background-size: 400% 400%; /* Ensures smooth transition */
+}
