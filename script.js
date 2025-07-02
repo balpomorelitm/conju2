@@ -373,6 +373,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (chuacheBox) chuacheBox.style.backgroundColor = '';
   }
 
+  /**
+   * Updates the body's background class based on the current level.
+   * Activates a special background for level 8 and higher.
+   * @param {number} level - The current game level.
+   */
+  function updateBackgroundForLevel(level) {
+    const body = document.body;
+    if (level >= 8) {
+      body.classList.add('iridescent-level');
+    } else {
+      body.classList.remove('iridescent-level');
+    }
+  }
+
   function updateClueButtonUI() {
     if (!clueButton) return;
 
@@ -555,7 +569,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         '#5B3704', // Level 4
         '#7C1717', // Level 5
         '#254747', // Level 6
-        '#5B0723', // Level 7
+        '#000000', // Level 7
         '#000000'  // Level 8+
       ];
 
@@ -578,6 +592,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (chuacheBox) chuacheBox.style.backgroundColor = darkenColor(newBodyColor, 25);
 
       updateProgressUI();
+      updateBackgroundForLevel(currentLevel + 1);
     }
   }
 
@@ -2932,6 +2947,7 @@ function startTimerMode() {
   updateClueButtonUI();
   resetLevelState();
   updateProgressUI();
+  updateBackgroundForLevel(currentLevel + 1);
   timerTimeLeft      = countdownTime;
   soundTicking.pause();
   soundTicking.currentTime = 0;
@@ -3031,6 +3047,7 @@ function startLivesMode() {
   updateClueButtonUI();
   resetLevelState();
   updateProgressUI();
+  updateBackgroundForLevel(currentLevel + 1);
   feedback.innerHTML = '';
   feedback.classList.remove('vibrate');
   score = 0; streak = 0; multiplier = 1.0;
@@ -3326,6 +3343,7 @@ finalStartGameButton.addEventListener('click', async () => {
         ignoreAccents: toggleIgnoreAccentsBtn && toggleIgnoreAccentsBtn.classList.contains('selected')
     };
     resetBackgroundColor();
+    updateBackgroundForLevel(1);
     // selectedGameMode ya debería estar seteado por el `selectedMode` de este nuevo flujo
     // Asegúrate de que `selectedGameMode` (variable global) se actualice con `selectedMode`
     // cuando se confirma el modo. Ej: selectedGameMode = selectedMode;
