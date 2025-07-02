@@ -21,10 +21,11 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.85); /* Dark, semi-transparent background */
-    z-index: 1000;
+    /* Ensure the Hall of Fame overlay appears above other modals */
+    z-index: 1100;
 
     /* Center the tooltip */
-    display: flex;
+    display: none; /* hidden until activated */
     justify-content: center;
     align-items: center;
     
@@ -36,6 +37,7 @@
 
 /* Class to show the overlay */
 .hof-overlay.is-visible {
+    display: flex;
     opacity: 1;
     visibility: visible;
 }
@@ -1557,6 +1559,7 @@ button:active {
   width: 80px;               /* Más estrecho que antes */
   height: 100%;
   pointer-events: none;       /* No intercept clicks until activated */
+
   z-index: 1;
 }
 
@@ -1587,8 +1590,8 @@ button:active {
   animation: rise 8s linear forwards;
   opacity: 0.85;
   text-shadow: 1px 1px 2px #000;
-  pointer-events: auto; 
-  image-rendering: pixelated; 
+  pointer-events: none;        /* Decorative bubbles shouldn't intercept clicks */
+  image-rendering: pixelated;
 }
 
 @keyframes rise {
