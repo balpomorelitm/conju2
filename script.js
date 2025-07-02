@@ -3678,9 +3678,9 @@ function updateGameTitle() {
   const modeLabels = {
     'timer':      'Time Attack ⏱️',
     'lives':      'Survival',
-    'receptive':  '💭ReCall💭',
-    'productive_easy': '⚙️conjugATE⚙️',
-    'productive': '⌨️Pr0duc€⌨️'
+    'receptive':  '💭ReCall: Easy (Spanish to English)💭',
+    'productive_easy': '⚙️ConjugaATE: Normal (Spanish to Spanish)⚙️',
+    'productive': '⌨️Pr0duc€: Difficult (English to Spanish)⌨️'
   };
 
   const tenseObjs = currentOptions.tenses.map(tKey => {
