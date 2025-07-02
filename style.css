@@ -1652,7 +1652,6 @@ button:active {
 /* Splash buttons */
 #initial-start-button,
 #settings-button,
-#hall-of-fame-btn,
 #help-button {
   font-family: var(--font-pixel);
   font-size: 1.5em;
@@ -1667,11 +1666,9 @@ button:active {
 
 #initial-start-button:hover,
 #settings-button:hover,
-#hall-of-fame-btn:hover,
 #help-button:hover,
 #initial-start-button.selected,
 #settings-button.selected,
-#hall-of-fame-btn.selected,
 #help-button.selected {
   animation: splash-blink 1s infinite;
   color: #ffffff !important;
