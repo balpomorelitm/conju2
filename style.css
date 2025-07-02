@@ -1511,7 +1511,7 @@ button:active {
   transition: background-color 0.2s, filter 0.2s;
 }
 .splash-footer .feedback-link {
-  color: var(--accent-color-blue);
+  color: var(--accent-color-blue) !important;
   text-decoration: none;
   padding: 4px 8px;
   border: 1px solid var(--accent-color-blue);
@@ -1545,7 +1545,7 @@ button:active {
   transition: box-shadow 0.2s, filter 0.2s;
 }
 .splash-footer .coffee-link {
-  color: #8b0000;
+  color: #8b0000 !important;
   text-decoration: none;
   padding: 4px 8px;
   border: 1px solid #8b0000;
@@ -4128,4 +4128,18 @@ body.iridescent-level.level-up-shake {
 .hof-record-block {
     flex: 1;
     min-width: 200px;
+}
+
+/* --- Splash Screen Text Color Overrides --- */
+#splash-step .splash-footer span {
+    color: #39FF14 !important;
+}
+
+#splash-records-box .hof-header h1 {
+    color: #39FF14;
+}
+
+#splash-records-box .record-item,
+#splash-records-box .record-item strong {
+    color: #39FF14;
 }
