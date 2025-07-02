@@ -25,7 +25,7 @@ let currentLevel = 0;
 
 // Temporary level goals for testing
 const LEVEL_GOAL_TIMER = 10;
-const LEVEL_GOAL_LIVES = 1; // Survival mode
+const LEVEL_GOAL_LIVES = 10; // Survival mode
 
 // Global settings defaults
 window.animationsEnabled = false;
