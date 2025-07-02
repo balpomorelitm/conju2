@@ -81,6 +81,10 @@
 }
 
 /* Header Text */
+.hof-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
 .hof-header h1 {
     font-family: 'Paytone One', sans-serif; /* Use a dramatic font */
     font-size: 2.5rem;
@@ -1047,6 +1051,9 @@ button:active {
   flex-wrap: wrap;    /* permite que el h3 ocupe la primera “fila” */
   gap: 20px;
   margin-top: 20px;
+  justify-content: center;
+  max-height: calc(100% - 60px);
+  overflow-y: auto;
 }
 
 
