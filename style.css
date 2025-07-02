@@ -89,14 +89,14 @@
     margin-bottom: 20px;
 }
 .hof-header h1 {
-    font-family: 'Paytone One', sans-serif; /* Use a dramatic font */
+    font-family: var(--font-pixel);
     font-size: 2.5rem;
     color: #ffffff;
     margin: 0;
     text-transform: uppercase;
 }
 .hof-header h2 {
-    font-family: sans-serif;
+    font-family: var(--font-pixel);
     font-size: 1.2rem;
     color: #f39c12;
     margin-top: 5px;
@@ -118,6 +118,7 @@
     border-radius: 15px;
     flex: 1;
     border: 1px solid rgba(243, 156, 18, 0.3);
+    text-align: left;
 }
 
 .hof-record-block .trophy-icon {
@@ -126,7 +127,7 @@
 }
 
 .hof-record-block h3 {
-    font-family: 'Paytone One', sans-serif;
+    font-family: var(--font-pixel);
     color: #f39c12;
     font-size: 1.5rem;
     margin-bottom: 15px;
@@ -1078,6 +1079,7 @@ button:active {
   letter-spacing: 0.05em;
   text-shadow: 2px 2px #111; /* Sombra sutil para darle profundidad */
   font-size: 0.85em;
+  text-align: left;
 }
 
 /* Opcional: fondo distinto por modo */
