@@ -664,6 +664,54 @@ document.addEventListener('DOMContentLoaded', async () => {
   const titleElement = document.querySelector('.glitch-title');
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
 
+  // --- Automatically load records into the splash screen box ---
+  const recordsContainer = document.getElementById('records-display-container');
+
+  async function displaySplashRecords() {
+    if (!recordsContainer) {
+      console.error('Error: records-display-container not found!');
+      return;
+    }
+    recordsContainer.innerHTML = '<h3>Cargando r\xE9cords...</h3>';
+
+    const modes = ['timer', 'lives'];
+    let content = '';
+
+    for (const mode of modes) {
+      const modeTitle = mode === 'timer' ? 'Contrarreloj' : 'Supervivencia';
+      let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>Modo ${modeTitle}</h3>\n                    <ul class="record-list">`;
+
+      try {
+        if (typeof supabase === 'undefined') throw new Error('Supabase client not defined.');
+
+        const { data, error } = await supabase
+          .from('records')
+          .select('name, score, level')
+          .eq('mode', mode)
+          .order('score', { ascending: false })
+          .limit(10);
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          data.forEach((record, i) => {
+            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+            const levelInfo = record.level ? ` (Nivel ${record.level})` : '';
+            recordsHtml += `<li><div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score} pts${levelInfo}</div></li>`;
+          });
+        } else {
+          recordsHtml += '<li>A\xFAn no hay r\xE9cords.</li>';
+        }
+      } catch (err) {
+        console.error(`Error loading ${mode} records:`, err);
+        recordsHtml += '<li>Error al cargar los r\xE9cords.</li>';
+      }
+      recordsHtml += '</ul></div>';
+      content += recordsHtml;
+    }
+    recordsContainer.innerHTML = content;
+  }
+
   // --- Hall of Fame Modal Logic ---
   const hofOverlay = document.getElementById('hof-overlay');
   const hofCloseBtn = document.querySelector('#hof-overlay .hof-close-btn');
@@ -4200,6 +4248,9 @@ window.addEventListener('resize', () => {
       setTimeout(() => { coffeeLink.textContent = original; }, 1500);
     });
   }
+
+  // Call the function to load the records as soon as the page is ready
+  displaySplashRecords();
 
 });
 
