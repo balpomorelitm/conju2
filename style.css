@@ -24,7 +24,7 @@
     z-index: 1000;
 
     /* Center the tooltip */
-    display: flex;
+    display: none; /* hidden until activated */
     justify-content: center;
     align-items: center;
     
@@ -36,6 +36,7 @@
 
 /* Class to show the overlay */
 .hof-overlay.is-visible {
+    display: flex;
     opacity: 1;
     visibility: visible;
 }
