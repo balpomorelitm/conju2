@@ -640,7 +640,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const hofCloseBtn = document.querySelector('#hof-overlay .hof-close-btn');
 
   function openHallOfFame() {
-    if (!hofOverlay) return;
+    if (!hofOverlay) {
+      console.warn('Hall of Fame overlay not found');
+      return;
+    }
+    console.log('Opening Hall of Fame');
     try {
       renderSetupRecords();
     } catch (err) {
@@ -652,13 +656,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function closeHallOfFame() {
-    if (hofOverlay) {
-      hofOverlay.classList.remove('is-visible');
-    }
+    if (!hofOverlay) return;
+    console.log('Closing Hall of Fame');
+    hofOverlay.classList.remove('is-visible');
   }
 
-  if (hallOfFameBtn) hallOfFameBtn.addEventListener('click', openHallOfFame);
-  if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
+  if (hallOfFameBtn) {
+    hallOfFameBtn.addEventListener('click', openHallOfFame);
+    console.log('Hall of Fame button listener attached');
+  } else {
+    console.warn('Hall of Fame button not found');
+  }
+  if (hofCloseBtn) {
+    hofCloseBtn.addEventListener('click', closeHallOfFame);
+  }
   if (hofOverlay) {
     hofOverlay.addEventListener('click', (event) => {
       if (event.target === hofOverlay) {
