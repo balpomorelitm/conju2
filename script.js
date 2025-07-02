@@ -625,10 +625,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const hofCloseBtn = document.querySelector('#hof-overlay .hof-close-btn');
 
   function openHallOfFame() {
-    if (hofOverlay) {
+    if (!hofOverlay) return;
+    try {
       renderSetupRecords();
-      hofOverlay.classList.add('is-visible');
+    } catch (err) {
+      console.error('Error rendering records:', err);
+      const setupContainer = document.getElementById('setup-records');
+      if (setupContainer) setupContainer.innerHTML = '<p>No records available.</p>';
     }
+    hofOverlay.classList.add('is-visible');
   }
 
   function closeHallOfFame() {
