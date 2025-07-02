@@ -509,6 +509,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function onClueButtonClick() {
+    feedback.innerHTML = '';
     if (selectedGameMode !== 'timer' && selectedGameMode !== 'lives') {
       timerTimeLeft = Math.max(0, timerTimeLeft - 3);
       checkTickingSound();
@@ -2354,7 +2355,7 @@ let usedVerbs = [];
 	navigateToStep('splash'); // Empezar en el splash screen  
 function prepareNextQuestion() {
   const feedback = document.getElementById('feedback-message');
-  feedback.innerHTML = '';
+  // feedback.innerHTML = '';
   feedback.classList.remove('vibrate');
   const oldNote = document.getElementById('prize-note');
   if (oldNote) oldNote.remove();
@@ -2515,6 +2516,7 @@ function prepareNextQuestion() {
 }
 
 function checkAnswer() {
+  feedback.innerHTML = '';
   const isStudyMode = (selectedGameMode === 'study');
   let possibleCorrectAnswers = [];
   const rt    = (Date.now() - startTime) / 1000;
@@ -3085,6 +3087,7 @@ function updateTotalCorrectForLifeDisplay() {
 }
 
 function skipQuestion() {
+  feedback.innerHTML = '';
         if (soundSkip) {
           soundSkip
                 .play()
