@@ -641,6 +641,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function openHallOfFame() {
     if (!hofOverlay) return;
+    console.log('Opening Hall of Fame overlay');
     try {
       renderSetupRecords();
     } catch (err) {
@@ -653,6 +654,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function closeHallOfFame() {
     if (hofOverlay) {
+      console.log('Closing Hall of Fame overlay');
       hofOverlay.classList.remove('is-visible');
     }
   }
@@ -3786,6 +3788,10 @@ const rightBubbles = document.getElementById('right-bubbles');
 let bubblesActive = false;
 let leftBubbleInterval, rightBubbleInterval;
 
+// Avoid blocking UI clicks before animations start
+if (leftBubbles) leftBubbles.style.pointerEvents = 'none';
+if (rightBubbles) rightBubbles.style.pointerEvents = 'none';
+
 function showLifeGainedAnimation() {
 	
   // 1) SONIDO: ver si la variable existe y está lista
@@ -3891,6 +3897,8 @@ function startBubbles() {
   if (!window.animationsEnabled) return;
   if (bubblesActive) return;   // ya arrancadas
   bubblesActive = true;
+  if (leftBubbles) leftBubbles.style.pointerEvents = 'auto';
+  if (rightBubbles) rightBubbles.style.pointerEvents = 'auto';
   leftBubbleInterval = setInterval(() => {
     createBubble('left');
   }, 1800);
@@ -3903,6 +3911,8 @@ function stopBubbles() {
   bubblesActive = false;
   clearInterval(leftBubbleInterval);
   clearInterval(rightBubbleInterval);
+  if (leftBubbles) leftBubbles.style.pointerEvents = 'none';
+  if (rightBubbles) rightBubbles.style.pointerEvents = 'none';
   leftBubbles.innerHTML  = '';
   rightBubbles.innerHTML = '';
 }
