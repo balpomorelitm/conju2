@@ -661,13 +661,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const titleElement = document.querySelector('.glitch-title');
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
 
-  // --- Hall of Fame Modal Logic ---
-  const hofOverlay = document.getElementById('hof-overlay');
-  const hofCloseBtn = document.querySelector('#hof-overlay .hof-close-btn');
+  // --- Salon & Hall of Fame Overlay Logic ---
+  const salonOverlay = document.getElementById('salon-overlay');
+  const salonCloseBtn = document.querySelector('#salon-overlay .hof-close-btn');
 
-  async function openHallOfFame() {
-    if (!hofOverlay) return;
-    if (hofOverlay.classList.contains('is-visible')) {
+  async function openSalonOverlay() {
+    if (!salonOverlay) return;
+    if (salonOverlay.classList.contains('is-visible')) {
       return;
     }
     console.log('Opening Hall of Fame overlay');
@@ -680,66 +680,47 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (setupContainer) setupContainer.innerHTML = '<p>No records available.</p>';
     }
     // Ensure overlay is visible even if some style disabled it
-    hofOverlay.style.display = 'flex';
+    salonOverlay.style.display = 'flex';
     // Use requestAnimationFrame for smoother transition
     requestAnimationFrame(() => {
-      hofOverlay.classList.add('is-visible');
+      salonOverlay.classList.add('is-visible');
     });
     document.body.classList.add('tooltip-open-no-scroll');
     console.log('Hall of Fame opened');
   }
 
-  function closeHallOfFame() {
-    if (hofOverlay) {
+  function closeSalonOverlay() {
+    if (salonOverlay) {
       console.log('Closing Hall of Fame overlay');
-      hofOverlay.classList.remove('is-visible');
+      salonOverlay.classList.remove('is-visible');
       const cleanup = () => {
-        hofOverlay.style.display = 'none';
-        hofOverlay.removeEventListener('transitionend', cleanup);
+        salonOverlay.style.display = 'none';
+        salonOverlay.removeEventListener('transitionend', cleanup);
       };
-      hofOverlay.addEventListener('transitionend', cleanup);
+      salonOverlay.addEventListener('transitionend', cleanup);
       document.body.classList.remove('tooltip-open-no-scroll');
 
     }
 
   }
 
-  function openSalonTooltip() {
-    if (!tooltip || !generalBackdrop) return;
-    tooltip.textContent = 'BIENVENIDOS AL SALÓN';
-    tooltip.style.display = 'block';
-    generalBackdrop.style.display = 'block';
-    document.body.classList.add('tooltip-open-no-scroll');
-  }
-
-  function closeSalonTooltip() {
-    if (!tooltip || !generalBackdrop) return;
-    tooltip.style.display = 'none';
-    generalBackdrop.style.display = 'none';
-    document.body.classList.remove('tooltip-open-no-scroll');
-  }
-
   if (hallOfFameBtn) {
     console.log('Hall of Fame button listener attached');
-    hallOfFameBtn.addEventListener('click', openHallOfFame);
+    hallOfFameBtn.addEventListener('click', openSalonOverlay);
 
   }
-  if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
+  if (salonCloseBtn) salonCloseBtn.addEventListener('click', closeSalonOverlay);
 
-  if (hofOverlay) {
-    hofOverlay.addEventListener('click', (event) => {
-      if (event.target === hofOverlay) {
-        closeHallOfFame();
+  if (salonOverlay) {
+    salonOverlay.addEventListener('click', (event) => {
+      if (event.target === salonOverlay) {
+        closeSalonOverlay();
       }
     });
   }
 
   if (salonButton) {
-    salonButton.addEventListener('click', openSalonTooltip);
-  }
-
-  if (generalBackdrop) {
-    generalBackdrop.addEventListener('click', closeSalonTooltip);
+    salonButton.addEventListener('click', openSalonOverlay);
   }
   
   const container = document.getElementById('verb-buttons');
@@ -1238,10 +1219,9 @@ function playHeaderIntro() {
 }
 playHeaderIntro();
 function navigateToStep(stepName) {
-    // Ensure Hall of Fame tooltip is hidden outside the splash step
+    // Ensure Hall of Fame overlay is hidden outside the splash step
     if (stepName !== 'splash') {
-        closeHallOfFame();
-        closeSalonTooltip();
+        closeSalonOverlay();
     }
     const allSteps = document.querySelectorAll('.config-step');
     const stepsOrder = ['splash', 'mode', 'difficulty', 'details'];
@@ -3439,9 +3419,8 @@ function fadeOutToMenu(callback) {
 
 
 finalStartGameButton.addEventListener('click', async () => {
-    // Ensure Hall of Fame tooltip is closed when starting a game
-    closeHallOfFame();
-    closeSalonTooltip();
+    // Ensure Hall of Fame overlay is closed when starting a game
+    closeSalonOverlay();
     const selTenses = Array.from(
         document.querySelectorAll('#tense-buttons .tense-button.selected')
     ).map(btn => btn.dataset.value);
