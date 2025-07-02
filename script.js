@@ -651,7 +651,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const setupContainer = document.getElementById('setup-records');
       if (setupContainer) setupContainer.innerHTML = '<p>No records available.</p>';
     }
-    hofOverlay.style.display = 'flex';
+    // Rely solely on CSS class for visibility
     hofOverlay.classList.add('is-visible');
     console.log('Hall of Fame opened');
   }
@@ -660,7 +660,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (hofOverlay) {
       console.log('Closing Hall of Fame overlay');
       hofOverlay.classList.remove('is-visible');
-      hofOverlay.style.display = 'none';
 
     }
 
