@@ -4089,3 +4089,11 @@ body.iridescent-level.level-up-shake {
     margin-left: 8px;
     color: #ffffff;
 }
+
+#salon-records-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    width: 100%;
+    flex-wrap: wrap;
+}
