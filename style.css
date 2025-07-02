@@ -1558,7 +1558,8 @@ button:active {
   top: 0;
   width: 80px;               /* Más estrecho que antes */
   height: 100%;
-  pointer-events: none;       /* Avoid blocking underlying buttons */
+  pointer-events: none;       /* No intercept clicks until activated */
+
   z-index: 1;
 }
 
