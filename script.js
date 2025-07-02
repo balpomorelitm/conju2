@@ -2944,12 +2944,14 @@ function checkAnswer() {
     // ----------------------------------------------------
     multiplier = 1 + 0.1 * streak;
 
-    const pts = Math.round(basePoints * multiplier * bonus)
-                          + accentBonus
-                          + irregularBonus
-                          + reflexiveBonus
-                          + pronounBonus
-                          + verbBonus;
+    const pts = Math.round(
+      basePoints * multiplier * bonus +
+      accentBonus +
+      irregularBonus +
+      reflexiveBonus +
+      pronounBonus +
+      verbBonus
+    );
 	
     score += pts;
     let feedbackText = `✅<br><span class="feedback-time">Time: ${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span>`;
@@ -3712,7 +3714,7 @@ function updateScorePreview() {
     const accentBonus = (ignoreAccentsBtn && !ignoreAccentsBtn.classList.contains('selected')) ? 8 : 0;
 
     const totalPoints = basePoints + tenseBonus + pronounBonus + verbBonus + accentBonus;
-    scorePreviewValue.textContent = totalPoints.toFixed(1);
+    scorePreviewValue.textContent = Math.round(totalPoints);
 }
 
 const filterBar = document.getElementById('filter-bar-container');
