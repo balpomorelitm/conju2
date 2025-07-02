@@ -139,11 +139,25 @@ const verbosJsonPromise = fetch('verbos.json')
 
 let supabase;
 
+// Fallback data used when Supabase is unavailable
+const SAMPLE_RECORDS = {
+  timer: [
+    { name: 'Alice', score: 100, level: 5 },
+    { name: 'Bob', score: 80, level: 4 }
+  ],
+  lives: [
+    { name: 'Charlie', score: 120, level: 3 },
+    { name: 'Dana', score: 100, level: 2 }
+  ]
+};
+
 
 // `config.js` or inline script in index.html should define SUPABASE_URL and
 // SUPABASE_ANON_KEY. These may be injected during the build process. Ensure the
 // variables contain real values before initializing the client.
 if (
+  typeof window !== 'undefined' &&
+  window.supabase &&
   typeof SUPABASE_URL !== 'undefined' &&
   typeof SUPABASE_ANON_KEY !== 'undefined' &&
   SUPABASE_URL &&
@@ -151,15 +165,14 @@ if (
   !String(SUPABASE_URL).includes('%%') &&
   !String(SUPABASE_ANON_KEY).includes('%%')
 ) {
-  // Initialize Supabase client only when valid credentials are present
+  // Initialize Supabase client only when the library and credentials exist
   supabase = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
 } else {
   console.error(
-
-    'Supabase config variables not found. Ensure config.js is loaded before script.js.'
+    'Supabase client unavailable. Hall of Fame records will not load.'
   );
   const rankingBox = document.getElementById('ranking-box');
   if (rankingBox) {
@@ -2091,6 +2104,31 @@ function initConfirmButtonNavigation(confirmBtn, container) {
 async function renderSetupRecords() {
   const container = document.getElementById('setup-records');
   if (!container) return;
+
+  if (!supabase) {
+    container.querySelectorAll('.mode-records').forEach((div) => {
+      const mode = div.dataset.mode;
+      const ul = div.querySelector('.record-list');
+      const records = SAMPLE_RECORDS[mode] || [];
+      if (records.length === 0) {
+        ul.innerHTML = '<li>Records unavailable</li>';
+        return;
+      }
+      ul.innerHTML = '';
+      records.forEach((record, i) => {
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+        const levelInfo =
+          (mode === 'timer' || mode === 'lives') && record.level
+            ? ` lv${record.level}`
+            : '';
+        const li = document.createElement('li');
+        li.innerHTML =
+          `<div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score} pts${levelInfo}</div>`;
+        ul.appendChild(li);
+      });
+    });
+    return;
+  }
 
   container.querySelectorAll('.mode-records').forEach(async (div) => {
     const mode = div.dataset.mode;
