@@ -652,6 +652,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function openHallOfFame() {
     if (!hofOverlay) return;
+    if (hofOverlay.classList.contains('is-visible')) {
+      return;
+    }
     console.log('Opening Hall of Fame overlay');
 
     try {
