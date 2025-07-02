@@ -332,6 +332,27 @@
         </div>
     </div>
 
+    <div id="hof-modal-backdrop" class="modal-backdrop" style="display:none;"></div>
+
+    <div id="hof-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Hall of Fame</h2>
+                <button id="close-hof-modal-btn" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="hof-columns">
+                <div class="hof-column" id="time-attack-records">
+                    <h3>Time Attack Mode</h3>
+                    <ol id="time-attack-list"></ol>
+                </div>
+                <div class="hof-column" id="survival-records">
+                    <h3>Survival Mode</h3>
+                    <ol id="survival-list"></ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
       const SUPABASE_URL = "https://dmaztdtlixwcnwcgwsnp.supabase.co";
       const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtYXp0ZHRsaXh3Y253Y2d3c25wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzOTE3OTEsImV4cCI6MjA2NTk2Nzc5MX0.F-jBVWM9usSxXQPd-5JDeZUPg6JcOh-FY8tbFXSgGDo";
