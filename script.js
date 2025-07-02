@@ -623,9 +623,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const feedback     = document.getElementById('feedback-message');
   const settingsButton = document.getElementById('settings-button');
   const hallOfFameBtn = document.getElementById('hall-of-fame-btn');
+  const hallOfFameNewBtn = document.getElementById('hall-of-fame-new-btn');
   const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
   const settingsModal = document.getElementById('settings-modal');
   const settingsBackdrop = document.getElementById('settings-modal-backdrop');
+  const hofModal = document.getElementById('hof-modal');
+  const hofBackdrop = document.getElementById('hof-modal-backdrop');
+  const closeHofModalBtn = document.getElementById('close-hof-modal-btn');
   const musicVolumeSlider = document.getElementById('music-volume-slider');
   const sfxVolumeSlider = document.getElementById('sfx-volume-slider');
   const muteAllButton = document.getElementById('mute-all-button');
@@ -695,6 +699,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     if (closeSettingsModalBtn) closeSettingsModalBtn.addEventListener('click', closeFn);
     settingsBackdrop.addEventListener('click', closeFn);
+  }
+
+  if (hallOfFameNewBtn && hofModal && hofBackdrop) {
+    hallOfFameNewBtn.addEventListener('click', () => {
+      renderSetupRecords();
+      hofModal.style.display = 'block';
+      hofBackdrop.style.display = 'block';
+    });
+
+    const closeHofFn = () => {
+      hofModal.style.display = 'none';
+      hofBackdrop.style.display = 'none';
+    };
+
+    if (closeHofModalBtn) closeHofModalBtn.addEventListener('click', closeHofFn);
+    hofBackdrop.addEventListener('click', closeHofFn);
   }
 
   if (musicVolumeSlider) {
