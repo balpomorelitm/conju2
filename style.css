@@ -4129,3 +4129,18 @@ body.iridescent-level.level-up-shake {
     flex: 1;
     min-width: 200px;
 }
+
+/* --- Splash Screen Text Color Overrides --- */
+#splash-step .splash-footer span,
+#splash-step .splash-footer a {
+    color: #39FF14 !important;
+}
+
+#splash-records-box .hof-header h1 {
+    color: #39FF14;
+}
+
+#splash-records-box .record-item,
+#splash-records-box .record-item strong {
+    color: #39FF14;
+}
