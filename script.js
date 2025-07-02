@@ -678,7 +678,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let content = '';
 
     for (const mode of modes) {
-      const modeTitle = mode === 'timer' ? 'Time Attack' : 'Survival';
+      const modeTitle = mode === 'timer' ? 'Time Attackers⏱️🧨' : 'Survivalistas ❤️‍🩹';
       let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>Mode ${modeTitle}</h3>\n                    <ul class="record-list">`;
 
       try {
@@ -695,9 +695,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (data && data.length > 0) {
           data.forEach((record, i) => {
-            const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
-            const levelInfo = record.level ? ` (Nivel ${record.level})` : '';
-            recordsHtml += `<li><div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score} pts${levelInfo}</div></li>`;
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+      const levelInfo = record.level ? ` - lvl. ${record.level}` : '';
+      recordsHtml += `<li><div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score}${levelInfo}</div></li>`;
           });
         } else {
           recordsHtml += '<li>A\xFAn no hay r\xE9cords.</li>';
@@ -779,7 +779,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       let content = '';
 
       for (const mode of modes) {
-          const modeTitle = mode === 'timer' ? 'Time Attack' : 'Survival';
+        const modeTitle = mode === 'timer' ? 'Time Attackers⏱️🧨' : 'Survivalistas ❤️‍🩹';
           let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>Mode ${modeTitle}</h3>\n                    <ul class="record-list">`;
 
           try {
@@ -794,9 +794,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               if (data && data.length > 0) {
                   data.forEach((record, i) => {
-                      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
-                      const levelInfo = record.level ? ` (Nivel ${record.level})` : '';
-                      recordsHtml += `<li><div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score} pts${levelInfo}</div></li>`;
+                    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+                    const levelInfo = record.level ? ` - lvl. ${record.level}` : '';
+                    recordsHtml += `<li><div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score}${levelInfo}</div></li>`;
                   });
               } else {
                   recordsHtml += '<li>A\xFAn no hay r\xE9cords.</li>';
@@ -2248,11 +2248,11 @@ async function renderSetupRecords() {
         const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
         const levelInfo =
           (mode === 'timer' || mode === 'lives') && record.level
-            ? ` lv${record.level}`
+            ? ` - lvl. ${record.level}`
             : '';
         const li = document.createElement('li');
         li.innerHTML =
-          `<div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score} pts${levelInfo}</div>`;
+          `<div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score}${levelInfo}</div>`;
         ul.appendChild(li);
       });
     });
@@ -2284,11 +2284,11 @@ async function renderSetupRecords() {
       data.forEach((record, i) => {
         const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
         const li = document.createElement('li');
-        const levelInfo = (mode === 'timer' || mode === 'lives') && record.level ? ` lv${record.level}` : '';
+        const levelInfo = (mode === 'timer' || mode === 'lives') && record.level ? ` - lvl. ${record.level}` : '';
         li.innerHTML = `
           <div class="record-item">
             <span class="medal">${medal}</span>
-            <strong>${record.name}:</strong> ${record.score} pts${levelInfo}
+            <strong>${record.name}:</strong> ${record.score}${levelInfo}
           </div>`;
         ul.appendChild(li);
       });
@@ -3982,8 +3982,8 @@ function openNameModal(message, callback) {
 
 function updateGameTitle() {
   const modeLabels = {
-    'timer':      'Time Attack ⏱️',
-    'lives':      'Survival',
+    'timer':      'Time Attackers⏱️🧨',
+    'lives':      'Survivalistas ❤️‍🩹',
     'receptive':  '💭ReCall: Easy (Spanish to English)💭',
     'productive_easy': '⚙️ConjugaATE: Normal (Spanish to Spanish)⚙️',
     'productive': '⌨️Pr0duc€: Difficult (English to Spanish)⌨️'
