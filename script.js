@@ -2743,12 +2743,30 @@ function checkAnswer() {
     }
     const tenseBonus = Math.max(0, (currentOptions.tenses?.length || 1) - 1) * 2;
     basePoints += tenseBonus;
+
+    // --- Bonus Points for Pronoun and Verb Quantity ---
+    const pronounButtons = Array.from(document.querySelectorAll('.pronoun-group-button.selected'));
+    const selectedPronouns = pronounButtons.flatMap(btn => JSON.parse(btn.dataset.values));
+    const selectedVerbs   = Array.from(document.querySelectorAll('#verb-buttons .verb-button.selected'));
+
+    const pronounBonusValue = 0.5; // Points per extra pronoun
+    const verbBonusValue    = 0.1; // Points per extra verb
+
+    const pronounBonus = (selectedPronouns.length > 1)
+      ? (selectedPronouns.length - 1) * pronounBonusValue
+      : 0;
+    const verbBonus = (selectedVerbs.length > 1)
+      ? (selectedVerbs.length - 1) * verbBonusValue
+      : 0;
+    // ----------------------------------------------------
     multiplier = 1 + 0.1 * streak;
-	
-	const pts = Math.round(basePoints * multiplier * bonus)
-			  + accentBonus
-			  + irregularBonus
-			  + reflexiveBonus;
+
+    const pts = Math.round(basePoints * multiplier * bonus)
+                          + accentBonus
+                          + irregularBonus
+                          + reflexiveBonus
+                          + pronounBonus
+                          + verbBonus;
 	
     score += pts;
     let feedbackText = `✅<br><span class="feedback-time">Time: ${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span>`;
