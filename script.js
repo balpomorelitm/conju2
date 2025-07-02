@@ -657,7 +657,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const tooltip = document.getElementById('tooltip');
   const generalBackdrop = document.querySelector('.modal-backdrop');
   const salonOverlay = document.getElementById('salon-overlay');
-  const salonCloseBtn = document.querySelector('#salon-overlay .hof-close-btn');
+  const salonCloseBtn = document.getElementById('salon-close-btn');
+  const salonRecordsContainer = document.getElementById('salon-records-container');
   const toggleReflexiveBtn = document.getElementById('toggle-reflexive');
   const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
   const titleElement = document.querySelector('.glitch-title');
@@ -706,29 +707,62 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   }
 
-  function openSalonOverlay() {
-    if (!salonOverlay) return;
-    if (salonOverlay.classList.contains('is-visible')) {
-      return;
-    }
-    salonOverlay.style.display = 'flex';
-    requestAnimationFrame(() => {
-      salonOverlay.classList.add('is-visible');
-    });
-    document.body.classList.add('tooltip-open-no-scroll');
+  // --- "Sal\xF3n" Modal Logic ---
+
+  async function openSalon() {
+      if (!salonOverlay) return;
+      await renderSalonRecords();
+      salonOverlay.style.display = 'flex';
+      document.body.classList.add('tooltip-open-no-scroll');
   }
 
-  function closeSalonOverlay() {
-    if (salonOverlay) {
-      salonOverlay.classList.remove('is-visible');
-      const cleanup = () => {
-        salonOverlay.style.display = 'none';
-        salonOverlay.removeEventListener('transitionend', cleanup);
-      };
-      salonOverlay.addEventListener('transitionend', cleanup);
-      document.body.classList.remove('tooltip-open-no-scroll');
-    }
+  function closeSalon() {
+      if (salonOverlay) {
+          salonOverlay.style.display = 'none';
+          document.body.classList.remove('tooltip-open-no-scroll');
+      }
   }
+
+  async function renderSalonRecords() {
+      if (!salonRecordsContainer) return;
+      salonRecordsContainer.innerHTML = '<h3>Cargando r\xE9cords...</h3>';
+
+      const modes = ['timer', 'lives'];
+      let content = '';
+
+      for (const mode of modes) {
+          const modeTitle = mode === 'timer' ? 'Contrarreloj' : 'Supervivencia';
+          let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>Modo ${modeTitle}</h3>\n                    <ul class="record-list">`;
+
+          try {
+              const { data, error } = await supabase
+                  .from('records')
+                  .select('name, score, level')
+                  .eq('mode', mode)
+                  .order('score', { ascending: false })
+                  .limit(10);
+
+              if (error) throw error;
+
+              if (data && data.length > 0) {
+                  data.forEach((record, i) => {
+                      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+                      const levelInfo = record.level ? ` (Nivel ${record.level})` : '';
+                      recordsHtml += `<li><div class="record-item"><span class="medal">${medal}</span><strong>${record.name}:</strong> ${record.score} pts${levelInfo}</div></li>`;
+                  });
+              } else {
+                  recordsHtml += '<li>A\xFAn no hay r\xE9cords.</li>';
+              }
+          } catch (err) {
+              console.error(`Error loading ${mode} records:`, err);
+              recordsHtml += '<li>Error al cargar los r\xE9cords.</li>';
+          }
+          recordsHtml += '</ul></div>';
+          content += recordsHtml;
+      }
+      salonRecordsContainer.innerHTML = content;
+  }
+
 
   if (hallOfFameBtn) {
     console.log('Hall of Fame button listener attached');
@@ -746,21 +780,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   if (salonButton) {
-    salonButton.addEventListener('click', openSalonOverlay);
+    salonButton.addEventListener('click', openSalon);
   }
 
-  if (salonCloseBtn) salonCloseBtn.addEventListener('click', closeSalonOverlay);
+  if (salonCloseBtn) salonCloseBtn.addEventListener('click', closeSalon);
 
   if (salonOverlay) {
     salonOverlay.addEventListener('click', (event) => {
       if (event.target === salonOverlay) {
-        closeSalonOverlay();
+        closeSalon();
       }
     });
   }
 
   if (generalBackdrop) {
-    generalBackdrop.addEventListener('click', closeSalonOverlay);
+    generalBackdrop.addEventListener('click', closeSalon);
   }
   
   const container = document.getElementById('verb-buttons');
@@ -1262,7 +1296,7 @@ function navigateToStep(stepName) {
     // Ensure Hall of Fame tooltip is hidden outside the splash step
     if (stepName !== 'splash') {
         closeHallOfFame();
-        closeSalonOverlay();
+        closeSalon();
     }
     const allSteps = document.querySelectorAll('.config-step');
     const stepsOrder = ['splash', 'mode', 'difficulty', 'details'];
@@ -3462,7 +3496,7 @@ function fadeOutToMenu(callback) {
 finalStartGameButton.addEventListener('click', async () => {
     // Ensure Hall of Fame tooltip is closed when starting a game
     closeHallOfFame();
-    closeSalonOverlay();
+    closeSalon();
     const selTenses = Array.from(
         document.querySelectorAll('#tense-buttons .tense-button.selected')
     ).map(btn => btn.dataset.value);
