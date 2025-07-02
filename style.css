@@ -15,6 +15,7 @@
 
 /* The main overlay - full screen, hidden by default */
 .hof-overlay {
+    display: none; /* Hidden by default */
     position: fixed;
     top: 0;
     left: 0;
@@ -25,10 +26,9 @@
     z-index: 1100;
 
     /* Center the tooltip */
-    display: flex; /* Always use flex for centering */
     justify-content: center;
     align-items: center;
-    
+
     /* Hide/show transition */
     opacity: 0;
     visibility: hidden;
@@ -37,6 +37,9 @@
 
 /* Class to show the overlay */
 .hof-overlay.is-visible {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     opacity: 1;
     visibility: visible;
 }

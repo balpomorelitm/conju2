@@ -661,8 +661,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const setupContainer = document.getElementById('setup-records');
       if (setupContainer) setupContainer.innerHTML = '<p>No records available.</p>';
     }
-    // Rely solely on CSS class for visibility
+    // Ensure overlay is visible even if some style disabled it
+    hofOverlay.style.display = 'flex';
+    // force reflow so transition applies
+    void hofOverlay.offsetWidth;
     hofOverlay.classList.add('is-visible');
+    document.body.classList.add('tooltip-open-no-scroll');
     console.log('Hall of Fame opened');
   }
 
@@ -670,6 +674,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (hofOverlay) {
       console.log('Closing Hall of Fame overlay');
       hofOverlay.classList.remove('is-visible');
+      const cleanup = () => {
+        hofOverlay.style.display = 'none';
+        hofOverlay.removeEventListener('transitionend', cleanup);
+      };
+      hofOverlay.addEventListener('transitionend', cleanup);
+      document.body.classList.remove('tooltip-open-no-scroll');
 
     }
 
