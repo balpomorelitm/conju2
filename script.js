@@ -645,7 +645,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.warn('Hall of Fame overlay not found');
       return;
     }
+
     console.log('Opening Hall of Fame');
+
     try {
       renderSetupRecords();
     } catch (err) {
@@ -654,12 +656,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (setupContainer) setupContainer.innerHTML = '<p>No records available.</p>';
     }
     hofOverlay.classList.add('is-visible');
+    console.log('Hall of Fame opened');
   }
 
   function closeHallOfFame() {
-    if (!hofOverlay) return;
-    console.log('Closing Hall of Fame');
-    hofOverlay.classList.remove('is-visible');
+    if (hofOverlay) {
+      hofOverlay.classList.remove('is-visible');
+      console.log('Hall of Fame closed');
+    }
+
   }
 
   if (hallOfFameBtn) {
@@ -668,9 +673,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else {
     console.warn('Hall of Fame button not found');
   }
-  if (hofCloseBtn) {
-    hofCloseBtn.addEventListener('click', closeHallOfFame);
-  }
+  if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
+
   if (hofOverlay) {
     hofOverlay.addEventListener('click', (event) => {
       if (event.target === hofOverlay) {
