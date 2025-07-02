@@ -509,6 +509,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function onClueButtonClick() {
+    feedback.innerHTML = '';
     if (selectedGameMode !== 'timer' && selectedGameMode !== 'lives') {
       timerTimeLeft = Math.max(0, timerTimeLeft - 3);
       checkTickingSound();
@@ -645,6 +646,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     console.log('Opening Hall of Fame overlay');
+
     try {
       renderSetupRecords();
     } catch (err) {
@@ -654,6 +656,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     hofOverlay.style.display = 'flex';
     hofOverlay.classList.add('is-visible');
+    console.log('Hall of Fame opened');
   }
 
   function closeHallOfFame() {
@@ -661,14 +664,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.log('Closing Hall of Fame overlay');
       hofOverlay.classList.remove('is-visible');
       hofOverlay.style.display = 'none';
+
     }
+
   }
 
   if (hallOfFameBtn) {
     console.log('Hall of Fame button listener attached');
     hallOfFameBtn.addEventListener('click', openHallOfFame);
+
   }
   if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
+
   if (hofOverlay) {
     hofOverlay.addEventListener('click', (event) => {
       if (event.target === hofOverlay) {
@@ -2364,7 +2371,7 @@ let usedVerbs = [];
 	navigateToStep('splash'); // Empezar en el splash screen  
 function prepareNextQuestion() {
   const feedback = document.getElementById('feedback-message');
-  feedback.innerHTML = '';
+  // feedback.innerHTML = '';
   feedback.classList.remove('vibrate');
   const oldNote = document.getElementById('prize-note');
   if (oldNote) oldNote.remove();
@@ -2525,6 +2532,7 @@ function prepareNextQuestion() {
 }
 
 function checkAnswer() {
+  feedback.innerHTML = '';
   const isStudyMode = (selectedGameMode === 'study');
   let possibleCorrectAnswers = [];
   const rt    = (Date.now() - startTime) / 1000;
@@ -3095,6 +3103,7 @@ function updateTotalCorrectForLifeDisplay() {
 }
 
 function skipQuestion() {
+  feedback.innerHTML = '';
         if (soundSkip) {
           soundSkip
                 .play()
