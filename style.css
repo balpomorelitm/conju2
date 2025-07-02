@@ -4062,3 +4062,24 @@ body.iridescent-level.level-up-shake {
              strong-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
   background-size: 400% 400%;
 }
+
+/* --- Score Preview Box Styles --- */
+.score-preview {
+    background-color: #1a2a1a;
+    color: #f39c12;
+    border: 2px dashed #f39c12;
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-family: 'PixelSerif', sans-serif;
+    font-size: 1.1em;
+    text-shadow: 1px 1px #000;
+    transition: all 0.3s ease;
+}
+#score-preview-value {
+    font-size: 1.3em;
+    margin-left: 8px;
+    color: #ffffff;
+}
