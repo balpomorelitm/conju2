@@ -4056,3 +4056,9 @@ body.iridescent-level {
   animation: iridescent-dark-flow 15s ease infinite;
   background-size: 400% 400%; /* Ensures smooth transition */
 }
+
+body.iridescent-level.level-up-shake {
+  animation: iridescent-dark-flow 15s ease infinite,
+             strong-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+  background-size: 400% 400%;
+}
