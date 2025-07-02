@@ -115,6 +115,7 @@
 .hof-record-block {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 25px;
+    padding-left: 10px;
     border-radius: 15px;
     flex: 1;
     border: 1px solid rgba(243, 156, 18, 0.3);
@@ -140,7 +141,7 @@
 }
 
 .hof-record-block .player-score {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #bdc3c7;
     margin: 5px 0 0 0;
 }
@@ -1074,11 +1075,12 @@ button:active {
   flex: 1;                   /* ocupan partes iguales */
   background-color: #f4f4f4; /* un gris clarito */
   padding: 15px;
+  padding-left: 5px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   letter-spacing: 0.05em;
   text-shadow: 2px 2px #111; /* Sombra sutil para darle profundidad */
-  font-size: 0.85em;
+  font-size: 0.8em;
   text-align: left;
 }
 
