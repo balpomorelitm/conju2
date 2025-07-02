@@ -669,7 +669,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   }
 
-  // old Hall of Fame overlay listener disabled in favor of new modal
+  if (hallOfFameBtn) {
+    console.log('Hall of Fame button listener attached');
+    hallOfFameBtn.addEventListener('click', openHallOfFame);
+
+  }
   if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
 
   if (hofOverlay) {
@@ -911,7 +915,6 @@ confirmModeButton.addEventListener('click', () => {
         navigateToStep('difficulty');
     }
 });
-
 
 confirmDifficultyButton.addEventListener('click', () => {
     if (provisionallySelectedOption) {
@@ -4003,68 +4006,6 @@ window.addEventListener('resize', () => {
     });
   }
 
-});
-
-// ---------------------------------------------------------------------------
-// New Hall of Fame Modal Logic
-// ---------------------------------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-  const hallOfFameBtn = document.getElementById('hall-of-fame-btn');
-  const hofModal = document.getElementById('hof-modal');
-  const hofBackdrop = document.getElementById('hof-modal-backdrop');
-  const closeHofModalBtn = document.getElementById('close-hof-modal-btn');
-
-  const getRecordsForMode = (mode) => {
-    console.log(`Getting placeholder records for ${mode}`);
-    const records = [];
-    for (let i = 1; i <= 10; i++) {
-      records.push({
-        name: `Player${i}`,
-        score: Math.floor(15000 - i * 950 - Math.random() * 500)
-      });
-    }
-    return records.sort((a, b) => b.score - a.score);
-  };
-
-  const renderHallOfFame = () => {
-    const timeAttackList = document.getElementById('time-attack-list');
-    const survivalList = document.getElementById('survival-list');
-
-    const timeAttackRecords = getRecordsForMode('Time Attack');
-    const survivalRecords = getRecordsForMode('Survival');
-
-    timeAttackList.innerHTML = '';
-    survivalList.innerHTML = '';
-
-    timeAttackRecords.forEach(record => {
-      const li = document.createElement('li');
-      li.textContent = `${record.name}: ${record.score.toLocaleString()}`;
-      timeAttackList.appendChild(li);
-    });
-
-    survivalRecords.forEach(record => {
-      const li = document.createElement('li');
-      li.textContent = `${record.name}: ${record.score.toLocaleString()}`;
-      survivalList.appendChild(li);
-    });
-  };
-
-  const openHofModal = () => {
-    if (!hofModal || !hofBackdrop) return;
-    renderHallOfFame();
-    hofModal.style.display = 'block';
-    hofBackdrop.style.display = 'block';
-  };
-
-  const closeHofModal = () => {
-    if (!hofModal || !hofBackdrop) return;
-    hofModal.style.display = 'none';
-    hofBackdrop.style.display = 'none';
-  };
-
-  if (hallOfFameBtn) hallOfFameBtn.addEventListener('click', openHofModal);
-  if (closeHofModalBtn) closeHofModalBtn.addEventListener('click', closeHofModal);
-  if (hofBackdrop) hofBackdrop.addEventListener('click', closeHofModal);
 });
 
 // © 2025 Pablo Torrado, University of Hong Kong.
