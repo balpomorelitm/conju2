@@ -244,18 +244,28 @@
 }
 
 body {
-  font-family: 'VT323', monospace;
-  color: #00FF41;
-  background-color: #0d0d0d;
-  overflow: hidden; /* This MUST stay on the body */
-  margin: 0;
-}
-
-#app-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  font-family: var(--font-pixel);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  padding-bottom: 20px; /* espacio inferior */
+  font-size: 20px;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  text-shadow: 1px 2px #111;
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 60px rgba(0, 255, 128, 0.1),
+    inset 0 0 200px rgba(0, 255, 128, 0.05),
+    0 0 60px rgba(0, 255, 128, 0.2);
+  /* Preparar contenedor para efectos tipo CRT */
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  
 }
 
 body::before {
@@ -1245,8 +1255,6 @@ button:active {
     width: 100%;
     max-width: 100%;
     font-size: 17px;
-  }
-  #app-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
