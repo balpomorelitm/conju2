@@ -656,6 +656,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const resetSettingsButton = document.getElementById('reset-settings-button');
   const tooltip = document.getElementById('tooltip');
   const generalBackdrop = document.querySelector('.modal-backdrop');
+  const salonOverlay = document.getElementById('salon-overlay');
+  const salonCloseBtn = document.querySelector('#salon-overlay .hof-close-btn');
   const toggleReflexiveBtn = document.getElementById('toggle-reflexive');
   const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
   const titleElement = document.querySelector('.glitch-title');
@@ -704,19 +706,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   }
 
-  function openSalonTooltip() {
-    if (!tooltip || !generalBackdrop) return;
-    tooltip.textContent = 'BIENVENIDOS AL SALÓN';
-    tooltip.style.display = 'block';
-    generalBackdrop.style.display = 'block';
+  function openSalonOverlay() {
+    if (!salonOverlay) return;
+    if (salonOverlay.classList.contains('is-visible')) {
+      return;
+    }
+    salonOverlay.style.display = 'flex';
+    requestAnimationFrame(() => {
+      salonOverlay.classList.add('is-visible');
+    });
     document.body.classList.add('tooltip-open-no-scroll');
   }
 
-  function closeSalonTooltip() {
-    if (!tooltip || !generalBackdrop) return;
-    tooltip.style.display = 'none';
-    generalBackdrop.style.display = 'none';
-    document.body.classList.remove('tooltip-open-no-scroll');
+  function closeSalonOverlay() {
+    if (salonOverlay) {
+      salonOverlay.classList.remove('is-visible');
+      const cleanup = () => {
+        salonOverlay.style.display = 'none';
+        salonOverlay.removeEventListener('transitionend', cleanup);
+      };
+      salonOverlay.addEventListener('transitionend', cleanup);
+      document.body.classList.remove('tooltip-open-no-scroll');
+    }
   }
 
   if (hallOfFameBtn) {
@@ -735,11 +746,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   if (salonButton) {
-    salonButton.addEventListener('click', openSalonTooltip);
+    salonButton.addEventListener('click', openSalonOverlay);
+  }
+
+  if (salonCloseBtn) salonCloseBtn.addEventListener('click', closeSalonOverlay);
+
+  if (salonOverlay) {
+    salonOverlay.addEventListener('click', (event) => {
+      if (event.target === salonOverlay) {
+        closeSalonOverlay();
+      }
+    });
   }
 
   if (generalBackdrop) {
-    generalBackdrop.addEventListener('click', closeSalonTooltip);
+    generalBackdrop.addEventListener('click', closeSalonOverlay);
   }
   
   const container = document.getElementById('verb-buttons');
@@ -1241,7 +1262,7 @@ function navigateToStep(stepName) {
     // Ensure Hall of Fame tooltip is hidden outside the splash step
     if (stepName !== 'splash') {
         closeHallOfFame();
-        closeSalonTooltip();
+        closeSalonOverlay();
     }
     const allSteps = document.querySelectorAll('.config-step');
     const stepsOrder = ['splash', 'mode', 'difficulty', 'details'];
@@ -3441,7 +3462,7 @@ function fadeOutToMenu(callback) {
 finalStartGameButton.addEventListener('click', async () => {
     // Ensure Hall of Fame tooltip is closed when starting a game
     closeHallOfFame();
-    closeSalonTooltip();
+    closeSalonOverlay();
     const selTenses = Array.from(
         document.querySelectorAll('#tense-buttons .tense-button.selected')
     ).map(btn => btn.dataset.value);
