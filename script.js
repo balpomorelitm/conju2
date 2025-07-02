@@ -23,6 +23,10 @@ gameMusic.loop = true;
 let correctAnswersTotal = 0;
 let currentLevel = 0;
 
+// Temporary level goals for testing
+const LEVEL_GOAL_TIMER = 10;
+const LEVEL_GOAL_LIVES = 1; // Survival mode
+
 // Global settings defaults
 window.animationsEnabled = false;
 window.chuacheReactionsEnabled = true;
@@ -544,7 +548,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const levelText = document.getElementById('level-text');
     if (levelText) {
-      levelText.textContent = 'Level 1 (0/10)';
+      const goal = selectedGameMode === 'lives' ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
+      levelText.textContent = `Level 1 (0/${goal})`;
     }
   }
 
@@ -554,9 +559,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const livesMode = selectedGameMode === 'lives';
 
     if (timeMode) {
-      newLevel = Math.floor(correctAnswersTotal / 10);
+      newLevel = Math.floor(correctAnswersTotal / LEVEL_GOAL_TIMER);
     } else if (livesMode) {
-      newLevel = Math.floor(correctAnswersTotal / 10);
+      newLevel = Math.floor(correctAnswersTotal / LEVEL_GOAL_LIVES);
     }
 
     if (newLevel > currentLevel) {
@@ -585,7 +590,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       triggerLevelUpShake();
       playFromStart(soundLevelUp);
-      updateLevelText(`Level ${currentLevel + 1} (0/10)`);
+      const goal = livesMode ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
+      updateLevelText(`Level ${currentLevel + 1} (0/${goal})`);
       document.body.style.backgroundColor = newBodyColor;
       if (gameMainPanel) gameMainPanel.style.backgroundColor = newPanelColor;
       if (gameHeaderPanel) gameHeaderPanel.style.backgroundColor = newPanelColor;
@@ -601,7 +607,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const levelText = document.getElementById('level-text');
     if (!levelText) return;
 
-    const goal = 10;
+    const goal = selectedGameMode === 'lives' ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
     const progress = correctAnswersTotal % goal;
 
     const newText = `Level ${currentLevel + 1} (${progress}/${goal})`;
