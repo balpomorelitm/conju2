@@ -650,7 +650,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const hofOverlay = document.getElementById('hof-overlay');
   const hofCloseBtn = document.querySelector('#hof-overlay .hof-close-btn');
 
-  function openHallOfFame() {
+  async function openHallOfFame() {
     if (!hofOverlay) return;
     if (hofOverlay.classList.contains('is-visible')) {
       return;
@@ -658,7 +658,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('Opening Hall of Fame overlay');
 
     try {
-      renderSetupRecords();
+      await renderSetupRecords();
     } catch (err) {
       console.error('Error rendering records:', err);
       const setupContainer = document.getElementById('setup-records');
@@ -666,9 +666,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     // Ensure overlay is visible even if some style disabled it
     hofOverlay.style.display = 'flex';
-    // force reflow so transition applies
-    void hofOverlay.offsetWidth;
-    hofOverlay.classList.add('is-visible');
+    // Use requestAnimationFrame for smoother transition
+    requestAnimationFrame(() => {
+      hofOverlay.classList.add('is-visible');
+    });
     document.body.classList.add('tooltip-open-no-scroll');
     console.log('Hall of Fame opened');
   }
