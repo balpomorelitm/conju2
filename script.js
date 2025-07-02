@@ -642,11 +642,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function openHallOfFame() {
     if (!hofOverlay) {
-      console.warn('Hall of Fame overlay not found');
+      console.warn('Hall of Fame overlay element not found');
       return;
     }
-
-    console.log('Opening Hall of Fame');
+    console.log('Opening Hall of Fame overlay');
 
     try {
       renderSetupRecords();
@@ -655,23 +654,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       const setupContainer = document.getElementById('setup-records');
       if (setupContainer) setupContainer.innerHTML = '<p>No records available.</p>';
     }
+    hofOverlay.style.display = 'flex';
     hofOverlay.classList.add('is-visible');
     console.log('Hall of Fame opened');
   }
 
   function closeHallOfFame() {
     if (hofOverlay) {
+      console.log('Closing Hall of Fame overlay');
       hofOverlay.classList.remove('is-visible');
-      console.log('Hall of Fame closed');
+      hofOverlay.style.display = 'none';
+
     }
 
   }
 
   if (hallOfFameBtn) {
-    hallOfFameBtn.addEventListener('click', openHallOfFame);
     console.log('Hall of Fame button listener attached');
-  } else {
-    console.warn('Hall of Fame button not found');
+    hallOfFameBtn.addEventListener('click', openHallOfFame);
+
   }
   if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
 
