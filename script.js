@@ -678,8 +678,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     let content = '';
 
     for (const mode of modes) {
-      const modeTitle = mode === 'timer' ? '⏱️ Time attack ⏱️' : '❤️‍🩹 Survival ❤️‍🩹';
-      let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>${modeTitle}</h3>\n                    <ul class="record-list">`;
+      const modeTitle = mode === 'timer' ? 'Time Attackers ⏱️🧨' : 'Sulvivalistas ❤️‍🩹';
+      let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3 class="record-mode-title">${modeTitle}</h3>\n                    <ul class="record-list">`;
 
       try {
         if (typeof supabase === 'undefined') throw new Error('Supabase client not defined.');
@@ -779,8 +779,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       let content = '';
 
     for (const mode of modes) {
-      const modeTitle = mode === 'timer' ? '⏱️ Time attack ⏱️' : '❤️‍🩹 Survival ❤️‍🩹';
-      let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>${modeTitle}</h3>\n                    <ul class="record-list">`;
+      const modeTitle = mode === 'timer' ? 'Time Attackers ⏱️🧨' : 'Sulvivalistas ❤️‍🩹';
+      let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3 class="record-mode-title">${modeTitle}</h3>\n                    <ul class="record-list">`;
 
           try {
               const { data, error } = await supabase
