@@ -4131,16 +4131,23 @@ body.iridescent-level.level-up-shake {
 }
 
 /* --- Splash Screen Text Color Overrides --- */
-#splash-step .splash-footer span,
-#splash-step .splash-footer a {
+#splash-step .splash-footer span {
     color: #39FF14 !important;
 }
 
+#splash-step .splash-footer a.feedback-link {
+    color: #FFFFFF !important;
+}
+
+#splash-step .splash-footer a.coffee-link {
+    color: #000000 !important;
+}
+
 #splash-records-box .hof-header h1 {
-    color: #39FF14;
+    color: #FFFFFF;
 }
 
 #splash-records-box .record-item,
 #splash-records-box .record-item strong {
-    color: #39FF14;
+    color: #FFFFFF;
 }
