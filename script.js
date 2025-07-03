@@ -678,7 +678,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let content = '';
 
     for (const mode of modes) {
-      const modeTitle = mode === 'timer' ? 'Time Attackers⏱️🧨' : 'Survivalistas ❤️‍🩹';
+      const modeTitle = mode === 'timer' ? '⏱️ Time attack ⏱️' : '❤️‍🩹 Survival ❤️‍🩹';
       let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>${modeTitle}</h3>\n                    <ul class="record-list">`;
 
       try {
@@ -778,9 +778,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       const modes = ['timer', 'lives'];
       let content = '';
 
-      for (const mode of modes) {
-        const modeTitle = mode === 'timer' ? 'Time Attackers⏱️🧨' : 'Survivalistas ❤️‍🩹';
-          let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>${modeTitle}</h3>\n                    <ul class="record-list">`;
+    for (const mode of modes) {
+      const modeTitle = mode === 'timer' ? '⏱️ Time attack ⏱️' : '❤️‍🩹 Survival ❤️‍🩹';
+      let recordsHtml = `\n                <div class="hof-record-block" data-mode="${mode}">\n                    <h3>${modeTitle}</h3>\n                    <ul class="record-list">`;
 
           try {
               const { data, error } = await supabase
@@ -3982,8 +3982,9 @@ function openNameModal(message, callback) {
 
 function updateGameTitle() {
   const modeLabels = {
-    'timer':      'Time Attackers⏱️🧨',
-    'lives':      'Survivalistas ❤️‍🩹',
+    'timer':      '⏱️ Time attack ⏱️',
+    'lives':      '❤️‍🩹 Survival ❤️‍🩹',
+    'study':      '📚 Study Mode ✏️',
     'receptive':  '💭ReCall: Easy (Spanish to English)💭',
     'productive_easy': '⚙️ConjugaATE: Normal (Spanish to Spanish)⚙️',
     'productive': '⌨️Pr0duc€: Difficult (English to Spanish)⌨️'

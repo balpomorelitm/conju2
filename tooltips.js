@@ -1,6 +1,6 @@
 const specificInfoData = {
   timerMode: {
-    title: "⏱️ Timer Mode (4 Minutes)",
+    title: "⏱️ Time attack ⏱️ (4 Minutes)",
     html: `You have <strong>4 minutes</strong> to score as many points as possible.<br>
            <strong class="modal-subtitle">Time Mechanics:</strong><br>
            - Start with 4:00 minutes.<br>
@@ -19,7 +19,7 @@ const specificInfoData = {
            <strong class="modal-subtitle">Goal:</strong> Maximize your score before time runs out!`
   },
   livesMode: {
-    title: "💖 Lives Mode",
+    title: "❤️‍🩹 Survival ❤️‍🩹",
     html: `Survive as long as you can! You start with <strong>5 lives</strong> (❤️).<br>
            Each incorrect or skipped answer costs one life.<br><br>
            <strong class="modal-subtitle">Gaining Extra Lives:</strong><br>
@@ -35,7 +35,7 @@ const specificInfoData = {
           <strong class="modal-subtitle">Goal:</strong> Stay alive and get the highest score!`
   },
   studyMode: {
-    title: "📚 Study Mode",
+    title: "📚 Study Mode ✏️",
     html: `<p>A minimalist mode for focused practice without distractions.</p>
          <strong class="modal-subtitle">Features:</strong>
          <ul>
@@ -73,7 +73,7 @@ const specificInfoData = {
            <div class="typing-animation-container"><div class="typing-animation" id="conjugate-example-anim"></div></div>
            <strong>Base Points:</strong> <span class="points-value">+10</span> per correct answer.<br>
            <span class="points-value">+2</span> for each extra tense selected.<br>
-           <strong class="emphasis-mechanic">💖 Lives Mode Bonus:</strong> When playing in "Lives Mode", irregular or reflexive verbs in "Conjugate" have a <span class="emphasis-mechanic">~1 in 30</span> chance of being a 🎁 Prize Verb for an extra life!`
+           <strong class="emphasis-mechanic">❤️‍🩹 Survival Bonus:</strong> When playing in "Survival Mode", irregular or reflexive verbs in "Conjugate" have a <span class="emphasis-mechanic">~1 in 30</span> chance of being a 🎁 Prize Verb for an extra life!`
   },
   productiveConfig: {
     title: "⌨️ Produce Mode",
@@ -88,7 +88,7 @@ const specificInfoData = {
            <div class="typing-animation-container"><div class="typing-animation" id="produce-example-anim"></div></div>
            <strong>Base Points:</strong> <span class="points-value">+15</span> per correct answer.<br>
            <span class="points-value">+2</span> for each extra tense selected.<br>
-          <strong class="emphasis-mechanic">💖 Lives Mode Bonus:</strong> When playing in "Lives Mode", irregular or reflexive verbs in "Produce" have a <span class="emphasis-mechanic">~1 in 20</span> chance of being a 🎁 Prize Verb for an extra life!`
+          <strong class="emphasis-mechanic">❤️‍🩹 Survival Bonus:</strong> When playing in "Survival Mode", irregular or reflexive verbs in "Produce" have a <span class="emphasis-mechanic">~1 in 20</span> chance of being a 🎁 Prize Verb for an extra life!`
   },
   accentHelp: {
     title: "Ignore Accents",

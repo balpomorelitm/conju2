@@ -3774,7 +3774,7 @@ td.irregular-highlight {
   /* El #bottom-panel fluirá naturalmente debajo de #game-layout, no necesita cambios aquí. */
 }
 
-/* --- Lives Mode Visual Tweaks --- */
+/* --- Survival Mode Visual Tweaks --- */
 #lives-mechanics-display {
   display: flex;
   justify-content: center;
