@@ -1084,6 +1084,15 @@ button:active {
   text-align: left;
 }
 
+/* Titulo de cada modalidad de record */
+.record-mode-title {
+  font-family: var(--font-pixel);
+  color: var(--title-color);
+  font-size: 1.1em;
+  margin: 0 0 10px;
+  text-shadow: 2px 2px #000;
+}
+
 /* Opcional: fondo distinto por modo */
 .mode-records[data-mode="timer"]    { background-color: #ee3c30; }
 .mode-records[data-mode="lives"]    { background-color: #0b5ac8; }
