@@ -3981,21 +3981,21 @@ function openNameModal(message, callback) {
 }
 
 function updateGameTitle() {
-  const modeLabels = {
-    'timer':      '⏱️ Time attack ⏱️',
-    'lives':      '❤️‍🩹 Survival ❤️‍🩹',
-    'study':      '📚 Study Mode ✏️',
-    'receptive':  '💭ReCall: Easy (Spanish to English)💭',
-    'productive_easy': '⚙️ConjugaATE: Normal (Spanish to Spanish)⚙️',
-    'productive': '⌨️Pr0duc€: Difficult (English to Spanish)⌨️'
+  // Use short labels for the in-game display
+  const shortModeLabels = {
+    'timer': 'Time Attack',
+    'lives': 'Survival',
+    'receptive': 'ReCall',
+    'productive_easy': 'ConjugaATE',
+    'productive': 'Pr0duc€'
   };
+  const displayMode = shortModeLabels[currentOptions.mode] || currentOptions.mode;
 
   const tenseObjs = currentOptions.tenses.map(tKey => {
     const obj = tenses.find(t => t.value === tKey);
     return { key: tKey, name: obj ? obj.name : tKey.replace('_', ' '), infoKey: obj?.infoKey || '' };
   });
   const tenseNames = tenseObjs.map(o => o.name);
-  const displayMode = modeLabels[currentOptions.mode] || currentOptions.mode;
 
   const modeInfoKey = configButtonsData[currentOptions.mode]?.infoKey || '';
   const modeBtn = `<span class="mode-badge ${currentOptions.mode}" data-info-key="${modeInfoKey}">${displayMode}<span class="context-info-icon" data-info-key="${modeInfoKey}"></span></span>`;
