@@ -2498,8 +2498,8 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     if (selectedGameMode === 'study') return;
 
     scoreDisplay.innerHTML =
-      `<strong>🎯 Score:</strong> ${score}`
-      + `  <strong>🔥 Streak:</strong> ${streak}`
+      `<strong>Score:</strong> ${score}`
+      + ` | <strong>Streak:</strong> ${streak}`
       + ` = <strong>×${multiplier.toFixed(1)}</strong>`;
     
     const maxStreakForFullFire = 15;
