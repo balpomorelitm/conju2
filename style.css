@@ -1098,12 +1098,15 @@ button:active {
 .mode-records[data-mode="lives"]    { background-color: #0b5ac8; }
 
 /* Ajustes de lista: sin viñetas y sin padding extra */
-.mode-records .record-list {
+/* Remove bullets from lists inside both .mode-records and .hof-record-block */
+.mode-records .record-list,
+.hof-record-block .record-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.mode-records .record-list li {
+.mode-records .record-list li,
+.hof-record-block .record-list li {
   margin: 6px 0;
 }
 
