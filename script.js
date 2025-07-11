@@ -2553,6 +2553,7 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     }
     */
     updateProgressUI();
+    updateStreakBar();
   }
 
 let usedVerbs = [];  
