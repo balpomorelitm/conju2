@@ -4193,14 +4193,13 @@ body.iridescent-level.level-up-shake {
 
 #streak-fire {
   position: absolute;
-  bottom: 0;
+  bottom: -50%;
   left: 0;
   width: 100%;
+  height: 50%;
   background-color: transparent;
 
-  /* Core logic for progressive growth */
-  height: 0; /* Starts at 0 height */
-  transition: height 0.3s ease-out; /* Smoothly animates the height change */
+  transition: bottom 0.3s ease-out;
 
   filter: blur(0.02em);
   -webkit-filter: blur(0.02em);
