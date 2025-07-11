@@ -3466,7 +3466,7 @@ td.irregular-highlight {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 15px;
+  gap: 20px;
 }
 
 #game-main {
@@ -3618,7 +3618,7 @@ td.irregular-highlight {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 15px;
+  gap: 20px;
 }
 
 /* --- Right Panel: Main Game Board (70%) --- */
@@ -3960,7 +3960,7 @@ td.irregular-highlight {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    gap: 15px;
+    gap: 20px;
 }
 
 #question-prompt,
@@ -4163,63 +4163,4 @@ body.iridescent-level.level-up-shake {
 #splash-records-box .record-item,
 #splash-records-box .record-item strong {
     color: #FFFFFF;
-}
-
-/* ==========================================================================
-   ====== VERTICAL STREAK BAR & FIRE ANIMATION ======
-   ========================================================================== */
-
-#streak-bar {
-  position: relative;
-  width: 50px;
-  height: 350px; /* Adjust height to fit your layout */
-  background-color: #1a1a1a;
-  border: 2px solid var(--border-color);
-  border-radius: 15px; /* Curved borders */
-  overflow: hidden;    /* Crucial to contain the fire animation */
-  flex-shrink: 0;      /* Prevent the bar from shrinking */
-}
-
-#streak-fire {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: transparent;
-
-  /* Core logic: Initially hidden and with no height */
-  height: 0;
-  opacity: 0;
-
-  /* Smooth transition for growth and visibility */
-  transition: height 0.5s ease-out, opacity 0.5s ease-out;
-
-  filter: blur(0.02em);
-  -webkit-filter: blur(0.02em);
-}
-
-.particle {
-  animation: rise 1s ease-in infinite;
-  background-image: radial-gradient(rgb(255, 80, 0) 20%, rgba(255, 80, 0, 0) 70%);
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  opacity: 0;
-  position: absolute;
-  bottom: 0;
-  width: 5em;
-  height: 5em;
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(0) scale(1);
-  }
-  25% {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10em) scale(0);
-  }
 }

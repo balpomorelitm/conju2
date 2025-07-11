@@ -358,27 +358,6 @@ function handleIgnoreAccentsToggle() {
 let openFilterDropdownMenu = null;
 let tenseDropdownInitialized = false;
 
-/**
- * Creates and appends fire particles to the streak bar container.
- */
-function createFireParticles() {
-  const fireContainer = document.getElementById('streak-fire');
-  if (!fireContainer) return;
-
-  fireContainer.innerHTML = '';
-  const particleCount = 50;
-
-  for (let i = 0; i < particleCount; i++) {
-    const particle = document.createElement('div');
-    particle.classList.add('particle');
-
-    particle.style.animationDelay = `${Math.random()}s`;
-    particle.style.left = `calc((100% - 5em) * ${i / particleCount})`;
-
-    fireContainer.appendChild(particle);
-  }
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   let selectedGameMode = null;
   let allVerbData = [];
@@ -656,9 +635,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const scoreDisplay = document.getElementById('score-display');
   const rankingBox   = document.getElementById('ranking-box');
   const flameEl      = document.getElementById('flames');
-  const streakFireEl = document.getElementById('streak-fire');
   const gameTitle    = document.getElementById('game-title');
-  createFireParticles();
   const qPrompt      = document.getElementById('question-prompt');
   const esContainer  = document.getElementById('input-es-container');
   const enContainer  = document.getElementById('input-en-container');
@@ -2521,39 +2498,27 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     if (selectedGameMode === 'study') return;
 
     scoreDisplay.innerHTML =
-      `<strong>Score:</strong> ${score}` +
-      ` | <strong>Streak:</strong> ${streak}` +
-      ` = <strong>×${multiplier.toFixed(1)}</strong>`;
-
-    // --- START: New Fire Streak Bar Logic ---
-    const streakFireEl = document.getElementById('streak-fire');
-    if (streakFireEl) {
-      const maxStreakForFullFire = 15;
-      const streakBar = document.getElementById('streak-bar');
-
-      if (streakBar) {
-        const containerHeight = streakBar.clientHeight;
-
-        // Formula for gradual growth: (current streak / max streak)
-        const streakPercentage = Math.min(streak / maxStreakForFullFire, 1);
-        const fireHeight = containerHeight * streakPercentage;
-
-        // Apply the calculated height
-        streakFireEl.style.height = `${fireHeight}px`;
-
-        // Make fire visible only when streak is greater than 0
-        streakFireEl.style.opacity = streak > 0 ? '1' : '0';
-      }
-    }
-    // --- END: New Fire Streak Bar Logic ---
+      `<strong>Score:</strong> ${score}`
+      + ` | <strong>Streak:</strong> ${streak}`
+      + ` = <strong>×${multiplier.toFixed(1)}</strong>`;
+    
+    const maxStreakForFullFire = 15;
+    const container = document.getElementById('score-container');
+    const containerHeight = container.clientHeight;  // altura real incluyendo padding
+    const fireHeight = Math.min(
+      (streak / maxStreakForFullFire) * containerHeight,
+      containerHeight
+    );
+    flameEl.style.height = `${fireHeight}px`;
+    flameEl.style.opacity = streak > 0 ? '1' : '0';
 
     const streakElement = document.getElementById('streak-display');
     if (streak >= 2 && streak <= 8) {
-      streakElement.classList.add('vibrate');
+        streakElement.classList.add('vibrate');
     } else {
-      streakElement.classList.remove('vibrate');
+        streakElement.classList.remove('vibrate');
     }
-  }
+}
 
 let usedVerbs = [];  
 
@@ -3516,13 +3481,6 @@ function quitToSettings() {
   }
   musicToggle.style.display = 'none';
   volumeSlider.disabled = false;
-
-  // Add this block to reset the fire animation
-  const streakFireEl = document.getElementById('streak-fire');
-  if (streakFireEl) {
-    streakFireEl.style.height = '0px';
-    streakFireEl.style.opacity = '0';
-  }
 
   // Restore header character visibility for the next game
   const headerChar = document.querySelector('.header-char');
