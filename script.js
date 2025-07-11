@@ -2525,27 +2525,24 @@ function applyIrregularityAndTenseFiltersToVerbList() {
       ` | <strong>Streak:</strong> ${streak}` +
       ` = <strong>×${multiplier.toFixed(1)}</strong>`;
 
-    // --- START: New Fire Streak Bar Logic ---
+    // --- START: Progressive Fire Streak Logic ---
     const streakFireEl = document.getElementById('streak-fire');
-    if (streakFireEl) {
-      const maxStreakForFullFire = 15;
-      const streakBar = document.getElementById('streak-bar');
+    const streakBar = document.getElementById('streak-bar');
 
-      if (streakBar) {
-        const containerHeight = streakBar.clientHeight;
+    if (streakFireEl && streakBar) {
+      const maxStreak = 10; // The streak needed to fill the bar
+      const containerHeight = streakBar.clientHeight;
 
-        // Formula for gradual growth: (current streak / max streak)
-        const streakPercentage = Math.min(streak / maxStreakForFullFire, 1);
-        const fireHeight = containerHeight * streakPercentage;
+      // Calculate the growth percentage. Clamp value between 0 and 1.
+      const streakPercentage = Math.min(streak / maxStreak, 1);
 
-        // Apply the calculated height
-        streakFireEl.style.height = `${fireHeight}px`;
+      // Calculate the target height based on the percentage
+      const fireHeight = containerHeight * streakPercentage;
 
-        // Make fire visible only when streak is greater than 0
-        streakFireEl.style.opacity = streak > 0 ? '1' : '0';
-      }
+      // Set the new height. The CSS transition will animate the change.
+      streakFireEl.style.height = `${fireHeight}px`;
     }
-    // --- END: New Fire Streak Bar Logic ---
+    // --- END: Progressive Fire Streak Logic ---
 
     const streakElement = document.getElementById('streak-display');
     if (streak >= 2 && streak <= 8) {
@@ -3522,7 +3519,6 @@ function quitToSettings() {
   const streakFireEl = document.getElementById('streak-fire');
   if (streakFireEl) {
     streakFireEl.style.height = '0px';
-    streakFireEl.style.opacity = '0';
   }
 
   // Restore header character visibility for the next game
