@@ -2987,8 +2987,7 @@ function checkAnswer() {
     );
 	
     score += pts;
-    let feedbackText = `✅<br><span class="feedback-time">Time: ${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span>`;
-    feedbackText += `<br><span class="feedback-streak">🔥x${multiplier.toFixed(1)}</span>`;
+    let feedbackText = `✅<br><span class="feedback-time">⏱️${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span> |<span class="feedback-streak">🔥x${multiplier.toFixed(1)}</span>`;
     if (accentBonus > 0) {
        feedbackText += ` +${accentBonus} accent bonus!`; 
     }
@@ -3086,7 +3085,8 @@ function checkAnswer() {
   	  feedbackText += `<br>+${reflexiveBonus} 🧩reflexive bonus!`;
     }
 	
-        feedbackText += `<br><span class="feedback-points">Points: ${pts}</span>`;
+        const sign = pts > 0 ? '+' : '';
+        feedbackText += `<br><span class="feedback-points">Points: ${sign}${pts}</span>`;
     feedback.innerHTML = feedbackText;
     feedback.classList.add('vibrate'); 
 	
