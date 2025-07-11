@@ -3877,6 +3877,7 @@ td.irregular-highlight {
     background: none;
     padding: 0;
     margin-top: 0;
+    margin-left: auto;
   }
 
   #game-main-panel, #bottom-panel, #ranking-box, .game-footer {
