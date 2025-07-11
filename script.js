@@ -2990,6 +2990,7 @@ function checkAnswer() {
 	
     score += pts;
     let feedbackText = `✅<br><span class="feedback-time">Time: ${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span>`;
+    feedbackText += `<br><span class="feedback-streak">🔥x${multiplier.toFixed(1)}</span>`;
     if (accentBonus > 0) {
        feedbackText += ` +${accentBonus} accent bonus!`; 
     }
