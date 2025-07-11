@@ -653,9 +653,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   let initialRawVerbData = [];  
   const gameScreen   = document.getElementById('game-screen');
   const quitButton   = document.getElementById('quit-button');
-  const scoreDisplay = document.getElementById('score-display');
+  /*const scoreDisplay = document.getElementById('score-display');*/
   const rankingBox   = document.getElementById('ranking-box');
-  const flameEl      = document.getElementById('flames');
+  /*const flameEl      = document.getElementById('flames');*/
   const streakFireEl = document.getElementById('streak-fire');
   const gameTitle    = document.getElementById('game-title');
   createFireParticles();
@@ -2520,6 +2520,7 @@ function applyIrregularityAndTenseFiltersToVerbList() {
   function updateScore() {
     if (selectedGameMode === 'study') return;
 
+    /*
     scoreDisplay.innerHTML =
       `<strong>Score:</strong> ${score}` +
       ` | <strong>Streak:</strong> ${streak}` +
@@ -2550,6 +2551,7 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     } else {
       streakElement.classList.remove('vibrate');
     }
+    */
     updateProgressUI();
   }
 
