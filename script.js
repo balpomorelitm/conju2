@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const levelText = document.getElementById('level-text');
     if (levelText) {
       const goal = selectedGameMode === 'lives' ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
-      levelText.textContent = `Level 1 (0/${goal})`;
+      levelText.textContent = `Level 1 (0/${goal}) | Total Score: ${score}`;
     }
   }
 
@@ -625,7 +625,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       triggerLevelUpShake();
       playFromStart(soundLevelUp);
       const goal = livesMode ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
-      updateLevelText(`Level ${currentLevel + 1} (0/${goal})`);
+      updateLevelText(`Level ${currentLevel + 1} (0/${goal}) | Total Score: ${score}`);
       document.body.style.backgroundColor = newBodyColor;
       if (gameMainPanel) gameMainPanel.style.backgroundColor = newPanelColor;
       if (gameHeaderPanel) gameHeaderPanel.style.backgroundColor = newPanelColor;
@@ -644,7 +644,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const goal = selectedGameMode === 'lives' ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
     const progress = correctAnswersTotal % goal;
 
-    const newText = `Level ${currentLevel + 1} (${progress}/${goal})`;
+    const newText = `Level ${currentLevel + 1} (${progress}/${goal}) | Total Score: ${score}`;
     updateLevelText(newText);
   }
   let totalPlayedSeconds = 0;
@@ -2553,6 +2553,7 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     } else {
       streakElement.classList.remove('vibrate');
     }
+    updateProgressUI();
   }
 
 let usedVerbs = [];  
