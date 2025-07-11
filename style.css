@@ -3151,6 +3151,7 @@ body,
 .points-value { color: #FFF176; font-weight: bold; } /* Amarillo */
 .feedback-time { color: #90CAF9; }
 .feedback-points { color: #FFF176; }
+.feedback-streak { color: #FFB74D; }
 .text-red { color: #E57373; }
 .text-green { color: #81C784; }
 .modal-subtitle { /* Nueva clase para subtítulos como "Goal:", "Time Mechanics:" */
