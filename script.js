@@ -659,6 +659,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const streakFireEl = document.getElementById('streak-fire');
   const gameTitle    = document.getElementById('game-title');
   createFireParticles();
+  updateStreakFireVisual();
   const qPrompt      = document.getElementById('question-prompt');
   const esContainer  = document.getElementById('input-es-container');
   const enContainer  = document.getElementById('input-en-container');
@@ -2517,41 +2518,26 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     }
   }
 
-  function updateScore() {
-    if (selectedGameMode === 'study') return;
-
-    /*
-    scoreDisplay.innerHTML =
-      `<strong>Score:</strong> ${score}` +
-      ` | <strong>Streak:</strong> ${streak}` +
-      ` = <strong>×${multiplier.toFixed(1)}</strong>`;
-
-    // --- START: Progressive Fire Streak Logic ---
+  function updateStreakFireVisual() {
     const streakFireEl = document.getElementById('streak-fire');
     const streakBar = document.getElementById('streak-bar');
 
-    if (streakFireEl && streakBar) {
-      const maxStreak = 10; // The streak needed to fill the bar
-      const containerHeight = streakBar.clientHeight;
+    if (!streakFireEl || !streakBar) return;
 
-      // Calculate the growth percentage. Clamp value between 0 and 1.
-      const streakPercentage = Math.min(streak / maxStreak, 1);
+    const maxStreak = 10;
+    const containerHeight = streakBar.clientHeight;
+    const flameHeight = containerHeight / 2;
+    const streakRatio = Math.min(streak / maxStreak, 1);
 
-      // Calculate the target height based on the percentage
-      const fireHeight = containerHeight * streakPercentage;
+    streakFireEl.style.height = `${flameHeight}px`;
+    const bottomOffset = -flameHeight * (1 - streakRatio);
+    streakFireEl.style.bottom = `${bottomOffset}px`;
+  }
 
-      // Set the new height. The CSS transition will animate the change.
-      streakFireEl.style.height = `${fireHeight}px`;
-    }
-    // --- END: Progressive Fire Streak Logic ---
+  function updateScore() {
+    if (selectedGameMode === 'study') return;
 
-    const streakElement = document.getElementById('streak-display');
-    if (streak >= 2 && streak <= 8) {
-      streakElement.classList.add('vibrate');
-    } else {
-      streakElement.classList.remove('vibrate');
-    }
-    */
+    updateStreakFireVisual();
     updateProgressUI();
   }
 
@@ -3521,7 +3507,7 @@ function quitToSettings() {
   // Add this block to reset the fire animation
   const streakFireEl = document.getElementById('streak-fire');
   if (streakFireEl) {
-    streakFireEl.style.height = '0px';
+    streakFireEl.style.bottom = '-50%';
   }
 
   // Restore header character visibility for the next game
