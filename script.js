@@ -353,6 +353,22 @@ function handleIgnoreAccentsToggle() {
     if (typeof soundClick !== 'undefined') soundClick.play();
 }
 
+function createFireParticles() {
+  const fireContainer = document.getElementById('streak-fire');
+  if (!fireContainer) return;
+  fireContainer.innerHTML = '';
+  const parts = 50;
+  const partSize = 5;
+
+  for (let i = 0; i < parts; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    particle.style.animationDelay = `${Math.random()}s`;
+    particle.style.left = `calc((100% - ${partSize}em) * ${i / parts})`;
+    fireContainer.appendChild(particle);
+  }
+}
+
 
 
 let openFilterDropdownMenu = null;
@@ -635,6 +651,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const scoreDisplay = document.getElementById('score-display');
   const rankingBox   = document.getElementById('ranking-box');
   const flameEl      = document.getElementById('flames');
+  const streakFireEl = document.getElementById('streak-fire');
   const gameTitle    = document.getElementById('game-title');
   const qPrompt      = document.getElementById('question-prompt');
   const esContainer  = document.getElementById('input-es-container');
@@ -663,6 +680,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
   const titleElement = document.querySelector('.glitch-title');
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
+
+  createFireParticles();
 
   // --- Automatically load records into the splash screen box ---
   const recordsContainer = document.getElementById('records-display-container');
@@ -2501,16 +2520,30 @@ function applyIrregularityAndTenseFiltersToVerbList() {
       `<strong>Score:</strong> ${score}`
       + ` | <strong>Streak:</strong> ${streak}`
       + ` = <strong>×${multiplier.toFixed(1)}</strong>`;
-    
+
+    // NEW Fire streak bar logic
+    if (streakFireEl) {
+      const maxStreakForFullFire = 15;
+      const streakBar = document.getElementById('streak-bar');
+      if (streakBar) {
+        const containerHeight = streakBar.clientHeight;
+        const streakPercentage = Math.min(streak / maxStreakForFullFire, 1);
+        const fireHeight = containerHeight * streakPercentage;
+        streakFireEl.style.height = `${fireHeight}px`;
+      }
+    }
+
+    /*
     const maxStreakForFullFire = 15;
     const container = document.getElementById('score-container');
-    const containerHeight = container.clientHeight;  // altura real incluyendo padding
+    const containerHeight = container.clientHeight;
     const fireHeight = Math.min(
       (streak / maxStreakForFullFire) * containerHeight,
       containerHeight
     );
     flameEl.style.height = `${fireHeight}px`;
     flameEl.style.opacity = streak > 0 ? '1' : '0';
+    */
 
     const streakElement = document.getElementById('streak-display');
     if (streak >= 2 && streak <= 8) {
@@ -3481,6 +3514,10 @@ function quitToSettings() {
   }
   musicToggle.style.display = 'none';
   volumeSlider.disabled = false;
+
+  if (streakFireEl) {
+    streakFireEl.style.height = '0px';
+  }
 
   // Restore header character visibility for the next game
   const headerChar = document.querySelector('.header-char');
