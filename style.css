@@ -738,6 +738,8 @@ button:active {
   justify-content: center;
   line-height: 1.4; /* Improve line spacing for multiline messages */
   margin-top: 4px;
+  position: relative;
+  z-index: 2; /* ensures fire stays behind the clues */
 }
 #feedback-fixed { margin-bottom: 4px; }
 #feedback-area:empty { /* Ocultar borde si está vacío */
@@ -756,6 +758,23 @@ button:active {
   font-size: 1.2em;
   font-weight: bold;
   margin: 10px auto;
+}
+
+/* Container wrapping clue box and fire bar */
+#feedback-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#streak-bar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 
@@ -4058,15 +4077,12 @@ body.iridescent-level.level-up-shake {
 /* New Fire Effect Styles */
 /* 1. Add styles for the new container */
 .fire-bar-container {
-  position: absolute;
-  left: 30px;
-  bottom: 80px;
+  position: relative;
   width: 40px;
   height: 180px;
   background-color: #A90000;
   border: 3px solid #E52020;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.7);
-  position: relative;
   overflow: hidden;
 }
 
