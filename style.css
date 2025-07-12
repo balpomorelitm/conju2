@@ -4167,7 +4167,7 @@ body.iridescent-level.level-up-shake {
 }
 
 /* ==========================================================================
-   ====== PROGRESSIVE FIRE STREAK BAR ======
+   ====== VERTICAL STREAK BAR & FIRE ANIMATION ======
    ========================================================================== */
 
 #streak-bar {
@@ -4177,8 +4177,8 @@ body.iridescent-level.level-up-shake {
   background-color: #1a1a1a;
   border: 2px solid var(--border-color);
   border-radius: 15px; /* Curved borders */
-  overflow: hidden;    /* This is crucial to contain the fire animation */
-  flex-shrink: 0;
+  overflow: hidden;    /* Crucial to contain the fire animation */
+  flex-shrink: 0;      /* Prevent the bar from shrinking */
 }
 
 #streak-fire {
@@ -4188,9 +4188,12 @@ body.iridescent-level.level-up-shake {
   width: 100%;
   background-color: transparent;
 
-  /* Core logic for progressive growth */
-  height: 0; /* Starts at 0 height */
-  transition: height 0.3s ease-out; /* Smoothly animates the height change */
+  /* Core logic: Initially hidden and with no height */
+  height: 0;
+  opacity: 0;
+
+  /* Smooth transition for growth and visibility */
+  transition: height 0.5s ease-out, opacity 0.5s ease-out;
 
   filter: blur(0.02em);
   -webkit-filter: blur(0.02em);
