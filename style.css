@@ -751,9 +751,7 @@ button:active {
 /* .feedback-correct { color: var(--feedback-correct); border-color: var(--feedback-correct); } */
 /* .feedback-incorrect { color: var(--feedback-incorrect); border-color: var(--feedback-incorrect); } */
 
-/*
- * Área de Puntuación (ya no se muestra)
- *
+/* Área de Puntuación */
 #score-display {
   margin-top: 20px;
   font-size: 1.2em;
@@ -764,7 +762,6 @@ button:active {
 #streak-display {
   font-size: 1em;
 }
-*/
 
 #level-text {
   text-align: center;
@@ -951,13 +948,13 @@ button:active {
   margin-right: 0.2em;
 }
 /*--- contenedor relativo para score+llamas ---*/
-/*
 #score-container {
   position: relative;
   display: inline-block;
   background-color: #0e1f0e;  /* Para que el ancho sea el justo */
   margin: 0 auto;           /* Centra horizontalmente */
   overflow: hidden;          /* Oculta el fuego que sobresale */
+  /* Aumenta el padding para que la caja sea más grande */
   padding: 15px;
   font-size: 1.1em;         /* Igual que #score-display */
   min-height: 40px;       /* suficiente para el texto */
@@ -982,6 +979,7 @@ button:active {
   z-index: 0;                         /* Detrás del texto */
 }
 
+
 #score-display {
   position: relative;
   z-index: 1;
@@ -990,6 +988,7 @@ button:active {
   color: white;
   text-shadow: 1px 1px 0 #111; /* Sombra más pequeña y nítida */
   -webkit-text-stroke: 0.5px rgba(0,0,0,0.6); /* Borde más fino y suave */
+  /* Aumenta el tamaño de la fuente para mayor visibilidad */
   font-size: 1.4em;
   font-weight: bold;
 }
@@ -1001,7 +1000,6 @@ button:active {
   text-align: center;
   margin-top: 15px;
 }
-*/
 
 #question-prompt,
 #feedback-area,
@@ -1385,7 +1383,6 @@ button:active {
     margin-bottom: 15px;
   }
 
-  /*
   #score-container {
     padding: 15px;
     width: 90%;
@@ -1399,7 +1396,6 @@ button:active {
   #streak-display {
     font-size: 0.8em;
   }
-  */
   #music-toggle {
     display: inline-block;
     position: fixed;
@@ -3670,12 +3666,10 @@ td.irregular-highlight {
     align-items: center;
 }
 
-#bottom-panel #action-buttons {
+#bottom-panel #action-buttons,
+#bottom-panel #score-section {
     width: 100%;
 }
-/*#bottom-panel #score-section {
-    width: 100%;
-}*/
 
 #input-es-container,
 #input-en-container {
@@ -3761,23 +3755,19 @@ td.irregular-highlight {
 }
 
 /* --- Hijos del Panel Inferior --- */
-#bottom-panel #action-buttons {
+#bottom-panel #action-buttons,
+#bottom-panel #score-section {
     width: 100%;
     max-width: 500px; /* Un ancho máximo para que no se vea demasiado estirado en pantallas grandes */
     text-align: center; /* Centra el contenido de texto y los botones inline */
 }
-/*#bottom-panel #score-section {
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-}*/
 
 
-/*#bottom-panel #score-section {
+#bottom-panel #score-section {
     width: 100%;
     max-width: 600px; /* Aumenta el ancho máximo para que sea más prominente. */
     margin-top: 10px; /* Separación visual superior */
-}*/
+}
 
 /* --- Ajuste Responsive para Móvil --- */
 @media (max-width: 768px) {
@@ -3914,7 +3904,7 @@ td.irregular-highlight {
   } 
   
   #interaction-panel { order: 6; }    /* Sexto: Los botones (Get Clue, Skip, End Game) */
-  /*#score-section { order: 7; }*/     /* Séptimo: La barra de puntuación */
+  #score-section { order: 7; }        /* Séptimo: La barra de puntuación */
   #chuache-box { order: 8; }          /* Octavo: El personaje Chuache, ahora en la parte inferior */
   #ranking-box { order: 9; }          /* Noveno: El ranking Top 5 */
   .game-footer { order: 10; }         /* Décimo: El pie de página final */
@@ -3928,7 +3918,7 @@ td.irregular-highlight {
   /* Nos aseguramos de que los demás paneles ocupen el ancho y tengan un margen adecuado */
   #input-panel,
   #interaction-panel,
-  /*#score-section,*/
+  #score-section,
   #feedback-area {
     width: 100%;
     max-width: 100%; /* This is important to override any max-width set for desktop. */
@@ -3937,12 +3927,12 @@ td.irregular-highlight {
 
   #answer-row,
   #action-buttons,
-  /*#score-container {
+  #score-container {
     width: 100%;
     max-width: 95%; /* Use 95% width with auto margin to center them nicely. */
     margin-left: auto;
     margin-right: auto;
-  }*/
+  }
 }
 
 /* === Unified Panel Styles === */
@@ -4012,16 +4002,16 @@ td.irregular-highlight {
     gap: 10px;
 }
 
-/*#score-section {
+#score-section {
     margin-top: 15px;
     border-top: 1px dashed var(--border-color);
     padding-top: 15px;
-}*/
+}
 
-/*#score-container {
+#score-container {
     border: none;
     background-color: transparent;
-}*/
+}
 
 @media (max-width: 768px) {
     #game-layout {
