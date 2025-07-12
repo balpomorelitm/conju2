@@ -2526,7 +2526,7 @@ function applyIrregularityAndTenseFiltersToVerbList() {
 
     const maxStreak = 10;
     const containerHeight = streakBar.clientHeight;
-    const flameHeight = containerHeight * 0.45;
+    const flameHeight = containerHeight / 2;
     const streakRatio = Math.min(streak / maxStreak, 1);
 
     streakFireEl.style.height = `${flameHeight}px`;
@@ -3507,7 +3507,7 @@ function quitToSettings() {
   // Add this block to reset the fire animation
   const streakFireEl = document.getElementById('streak-fire');
   if (streakFireEl) {
-    streakFireEl.style.bottom = '-60%';
+    streakFireEl.style.bottom = '-50%';
   }
 
   // Restore header character visibility for the next game
