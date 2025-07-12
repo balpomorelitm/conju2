@@ -3003,7 +3003,7 @@ function checkAnswer() {
     );
 	
     score += pts;
-    let feedbackText = `✅<br><span class="feedback-time">⏱️${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span> |<span class="feedback-streak">🔥x${multiplier.toFixed(1)}</span>`;
+    let feedbackText = `✅<br><span class="feedback-time">⏱️${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span> |<span class="feedback-streak">${streak}🔥x${multiplier.toFixed(1)}</span>`;
     if (accentBonus > 0) {
        feedbackText += ` +${accentBonus} accent bonus!`; 
     }
