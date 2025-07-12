@@ -686,7 +686,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const quitButton   = document.getElementById('quit-button');
   const scoreDisplay = document.getElementById('score-display');
   const rankingBox   = document.getElementById('ranking-box');
-  const flameEl      = document.getElementById('flames');
   const streakFireEl = document.getElementById('streak-fire');
   const gameTitle    = document.getElementById('game-title');
   createFireParticles();
@@ -2551,20 +2550,24 @@ function applyIrregularityAndTenseFiltersToVerbList() {
   function updateScore() {
     if (selectedGameMode === 'study') return;
 
-    scoreDisplay.innerHTML =
-      `<strong>Score:</strong> ${score}` +
-      ` | <strong>Streak:</strong> ${streak}` +
-      ` = <strong>×${multiplier.toFixed(1)}</strong>`;
+    if (scoreDisplay) {
+      scoreDisplay.innerHTML =
+        `<strong>Score:</strong> ${score}` +
+        ` | <strong>Streak:</strong> ${streak}` +
+        ` = <strong>×${multiplier.toFixed(1)}</strong>`;
+    }
 
     // --- START: New Fire Streak Animation Logic ---
     updateStreakFire(streak);
     // --- END: New Fire Streak Animation Logic ---
 
     const streakElement = document.getElementById('streak-display');
-    if (streak >= 2 && streak <= 8) {
-      streakElement.classList.add('vibrate');
-    } else {
-      streakElement.classList.remove('vibrate');
+    if (streakElement) {
+      if (streak >= 2 && streak <= 8) {
+        streakElement.classList.add('vibrate');
+      } else {
+        streakElement.classList.remove('vibrate');
+      }
     }
     updateProgressUI();
   }
