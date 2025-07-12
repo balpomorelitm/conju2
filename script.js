@@ -379,6 +379,37 @@ function createFireParticles() {
   }
 }
 
+/**
+ * Updates the height of the streak fire animation based on the current streak.
+ * The fire grows in steps until it reaches a maximum height.
+ * @param {number} currentStreak - The player's current consecutive correct answers.
+ */
+function updateStreakFire(currentStreak) {
+  const fireElement = document.getElementById('streak-fire');
+  if (!fireElement) return;
+
+  const MAX_STREAK_FOR_GROWTH = 12; // The streak count at which the fire is at its maximum height.
+  const MAX_RISE_HEIGHT = -35;      // The maximum vertical travel in 'em' units.
+  const INITIAL_RISE_HEIGHT = -5;   // The base height when streak is 1.
+
+  // Make the fire visible as soon as the streak starts.
+  fireElement.style.opacity = currentStreak > 0 ? '1' : '0';
+
+  if (currentStreak > 0) {
+    // Calculate the growth progress as a percentage (0 to 1).
+    const progress = Math.min(currentStreak / MAX_STREAK_FOR_GROWTH, 1);
+
+    // Linearly interpolate the height from initial to max based on progress.
+    const newHeight = INITIAL_RISE_HEIGHT + progress * (MAX_RISE_HEIGHT - INITIAL_RISE_HEIGHT);
+
+    // Apply the new height to the CSS custom property.
+    fireElement.style.setProperty('--fire-rise-height', `${newHeight}em`);
+  } else {
+    // Reset to initial state when streak is 0.
+    fireElement.style.setProperty('--fire-rise-height', `${INITIAL_RISE_HEIGHT}em`);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   let selectedGameMode = null;
   let allVerbData = [];
@@ -2525,27 +2556,9 @@ function applyIrregularityAndTenseFiltersToVerbList() {
       ` | <strong>Streak:</strong> ${streak}` +
       ` = <strong>×${multiplier.toFixed(1)}</strong>`;
 
-    // --- START: New Fire Streak Bar Logic ---
-    const streakFireEl = document.getElementById('streak-fire');
-    if (streakFireEl) {
-      const maxStreakForFullFire = 15;
-      const streakBar = document.getElementById('streak-bar');
-
-      if (streakBar) {
-        const containerHeight = streakBar.clientHeight;
-
-        // Formula for gradual growth: (current streak / max streak)
-        const streakPercentage = Math.min(streak / maxStreakForFullFire, 1);
-        const fireHeight = containerHeight * streakPercentage;
-
-        // Apply the calculated height
-        streakFireEl.style.height = `${fireHeight}px`;
-
-        // Make fire visible only when streak is greater than 0
-        streakFireEl.style.opacity = streak > 0 ? '1' : '0';
-      }
-    }
-    // --- END: New Fire Streak Bar Logic ---
+    // --- START: New Fire Streak Animation Logic ---
+    updateStreakFire(streak);
+    // --- END: New Fire Streak Animation Logic ---
 
     const streakElement = document.getElementById('streak-display');
     if (streak >= 2 && streak <= 8) {
