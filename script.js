@@ -659,7 +659,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const streakFireEl = document.getElementById('streak-fire');
   const gameTitle    = document.getElementById('game-title');
   createFireParticles();
-  updateStreakFireVisual();
   const qPrompt      = document.getElementById('question-prompt');
   const esContainer  = document.getElementById('input-es-container');
   const enContainer  = document.getElementById('input-en-container');
@@ -2518,26 +2517,41 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     }
   }
 
-  function updateStreakFireVisual() {
-    const streakFireEl = document.getElementById('streak-fire');
-    const streakBar = document.getElementById('streak-bar');
-
-    if (!streakFireEl || !streakBar) return;
-
-    const maxStreak = 10;
-    const containerHeight = streakBar.clientHeight;
-    const flameHeight = containerHeight / 2;
-    const streakRatio = Math.min(streak / maxStreak, 1);
-
-    streakFireEl.style.height = `${flameHeight}px`;
-    const bottomOffset = -flameHeight * (1 - streakRatio);
-    streakFireEl.style.bottom = `${bottomOffset}px`;
-  }
-
   function updateScore() {
     if (selectedGameMode === 'study') return;
 
-    updateStreakFireVisual();
+    /*
+    scoreDisplay.innerHTML =
+      `<strong>Score:</strong> ${score}` +
+      ` | <strong>Streak:</strong> ${streak}` +
+      ` = <strong>×${multiplier.toFixed(1)}</strong>`;
+
+    // --- START: Progressive Fire Streak Logic ---
+    const streakFireEl = document.getElementById('streak-fire');
+    const streakBar = document.getElementById('streak-bar');
+
+    if (streakFireEl && streakBar) {
+      const maxStreak = 10; // The streak needed to fill the bar
+      const containerHeight = streakBar.clientHeight;
+
+      // Calculate the growth percentage. Clamp value between 0 and 1.
+      const streakPercentage = Math.min(streak / maxStreak, 1);
+
+      // Calculate the target height based on the percentage
+      const fireHeight = containerHeight * streakPercentage;
+
+      // Set the new height. The CSS transition will animate the change.
+      streakFireEl.style.height = `${fireHeight}px`;
+    }
+    // --- END: Progressive Fire Streak Logic ---
+
+    const streakElement = document.getElementById('streak-display');
+    if (streak >= 2 && streak <= 8) {
+      streakElement.classList.add('vibrate');
+    } else {
+      streakElement.classList.remove('vibrate');
+    }
+    */
     updateProgressUI();
   }
 
@@ -3507,7 +3521,7 @@ function quitToSettings() {
   // Add this block to reset the fire animation
   const streakFireEl = document.getElementById('streak-fire');
   if (streakFireEl) {
-    streakFireEl.style.bottom = '-50%';
+    streakFireEl.style.height = '0px';
   }
 
   // Restore header character visibility for the next game
