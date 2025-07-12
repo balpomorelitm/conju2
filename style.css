@@ -210,7 +210,6 @@
 
 /* 1. Hide all non-essential UI elements */
 .study-mode-active #chuache-box,
-.study-mode-active #score-section,
 .study-mode-active #game-mechanics-bar,
 .study-mode-active #interaction-panel {
   display: none !important;
@@ -751,17 +750,6 @@ button:active {
 /* .feedback-correct { color: var(--feedback-correct); border-color: var(--feedback-correct); } */
 /* .feedback-incorrect { color: var(--feedback-incorrect); border-color: var(--feedback-incorrect); } */
 
-/* Área de Puntuación */
-#score-display {
-  margin-top: 20px;
-  font-size: 1.2em;
-  background-color: transparent;
-  padding: 10px;
-}
-
-#streak-display {
-  font-size: 1em;
-}
 
 #level-text {
   text-align: center;
@@ -948,62 +936,8 @@ button:active {
   margin-right: 0.2em;
 }
 /*--- contenedor relativo para score+llamas ---*/
-#score-container {
-  position: relative;
-  display: inline-block;
-  background-color: #0e1f0e;  /* Para que el ancho sea el justo */
-  margin: 0 auto;           /* Centra horizontalmente */
-  overflow: hidden;          /* Oculta el fuego que sobresale */
-  /* Aumenta el padding para que la caja sea más grande */
-  padding: 15px;
-  font-size: 1.1em;         /* Igual que #score-display */
-  min-height: 40px;       /* suficiente para el texto */
-  border: 2px dashed #7f461a;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/*--- llamas en loop horizontal al fondo ---*/
-#flames {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;                        /* Ocupa todo el ancho del contenedor */
-  height: 0;                          /* Se animará según racha */
-  background-image: url('flames.gif');
-  background-repeat: repeat-x;        /* Se repite en X */
-  background-position: bottom left;   /* Empieza desde la esquina */
-  background-size: auto 100%;         /* Escala cada tile para 100% de altura */
-  pointer-events: none;
-  transition: height 0.4s ease;       /* Animación suave al subir */
-  z-index: 0;                         /* Detrás del texto */
-}
-
-
-#score-display {
-  position: relative;
-  z-index: 1;
-}
-#score-container #score-display {
-  color: white;
-  text-shadow: 1px 1px 0 #111; /* Sombra más pequeña y nítida */
-  -webkit-text-stroke: 0.5px rgba(0,0,0,0.6); /* Borde más fino y suave */
-  /* Aumenta el tamaño de la fuente para mayor visibilidad */
-  font-size: 1.4em;
-  font-weight: bold;
-}
-.screen {
-  text-align: center;      /* centra títulos, botones inline, etc. */
-}
-
-#score-section {
-  text-align: center;
-  margin-top: 15px;
-}
-
 #question-prompt,
 #feedback-area,
-#score-container,
 #ranking-box {
   margin: 0 auto 10px;     /* margen automático a los lados, menor espacio abajo */
 }
@@ -1138,13 +1072,6 @@ button:active {
   100% { transform: translate(0); }
 }
 
-#streak-display.vibrate {
-  animation: vibrate 0.3s infinite;
-}
-
-#streak-display.vibrate-strong {
-  animation: vibrate-strong 0.2s infinite;
-}
 /* Pronoun color styling */
 .pronoun#yo {
   color: #ffbe0b;
@@ -1383,19 +1310,7 @@ button:active {
     margin-bottom: 15px;
   }
 
-  #score-container {
-    padding: 15px;
-    width: 90%;
-    box-sizing: border-box;
-  }
 
-  #score-display {
-    font-size: 1em;
-  }
-
-  #streak-display {
-    font-size: 0.8em;
-  }
   #music-toggle {
     display: inline-block;
     position: fixed;
@@ -3666,8 +3581,7 @@ td.irregular-highlight {
     align-items: center;
 }
 
-#bottom-panel #action-buttons,
-#bottom-panel #score-section {
+#bottom-panel #action-buttons {
     width: 100%;
 }
 
@@ -3698,12 +3612,6 @@ td.irregular-highlight {
   opacity: 1;
 }
 
-/* Estilo destacado para la puntuación */
-#score-container #score-display {
-  /* Tamaño de fuente mayor para destacar la puntuación */
-  font-size: 1.4em;
-  font-weight: bold;
-}
 
 /* Ensure ranking box is centered and has space */
 #ranking-box {
@@ -3755,19 +3663,13 @@ td.irregular-highlight {
 }
 
 /* --- Hijos del Panel Inferior --- */
-#bottom-panel #action-buttons,
-#bottom-panel #score-section {
+#bottom-panel #action-buttons {
     width: 100%;
     max-width: 500px; /* Un ancho máximo para que no se vea demasiado estirado en pantallas grandes */
     text-align: center; /* Centra el contenido de texto y los botones inline */
 }
 
 
-#bottom-panel #score-section {
-    width: 100%;
-    max-width: 600px; /* Aumenta el ancho máximo para que sea más prominente. */
-    margin-top: 10px; /* Separación visual superior */
-}
 
 /* --- Ajuste Responsive para Móvil --- */
 @media (max-width: 768px) {
@@ -3904,7 +3806,6 @@ td.irregular-highlight {
   } 
   
   #interaction-panel { order: 6; }    /* Sexto: Los botones (Get Clue, Skip, End Game) */
-  #score-section { order: 7; }        /* Séptimo: La barra de puntuación */
   #chuache-box { order: 8; }          /* Octavo: El personaje Chuache, ahora en la parte inferior */
   #ranking-box { order: 9; }          /* Noveno: El ranking Top 5 */
   .game-footer { order: 10; }         /* Décimo: El pie de página final */
@@ -3918,7 +3819,6 @@ td.irregular-highlight {
   /* Nos aseguramos de que los demás paneles ocupen el ancho y tengan un margen adecuado */
   #input-panel,
   #interaction-panel,
-  #score-section,
   #feedback-area {
     width: 100%;
     max-width: 100%; /* This is important to override any max-width set for desktop. */
@@ -3926,8 +3826,7 @@ td.irregular-highlight {
   }
 
   #answer-row,
-  #action-buttons,
-  #score-container {
+  #action-buttons {
     width: 100%;
     max-width: 95%; /* Use 95% width with auto margin to center them nicely. */
     margin-left: auto;
@@ -4002,16 +3901,6 @@ td.irregular-highlight {
     gap: 10px;
 }
 
-#score-section {
-    margin-top: 15px;
-    border-top: 1px dashed var(--border-color);
-    padding-top: 15px;
-}
-
-#score-container {
-    border: none;
-    background-color: transparent;
-}
 
 @media (max-width: 768px) {
     #game-layout {
