@@ -3755,16 +3755,7 @@ td.irregular-highlight {
   /* Hacemos que la pantalla principal del juego sea un contenedor flexible vertical.
      Esto nos permite usar la propiedad 'order' en sus hijos directos. */
   #game-screen {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-        "title     title"
-        "mechanics character"
-        "main      main"
-        "bottom    bottom"
-        "ranking   ranking"
-        "footer    footer";
-    gap: 4px;
+    display: block;
     position: relative;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -3774,15 +3765,9 @@ td.irregular-highlight {
      layout de escritorio (#game-layout y #game-main) "desaparezcan" visualmente,
      permitiéndonos reordenar a sus hijos como si fueran directos de #game-screen. */
   #game-header-panel, #game-layout {
-    display: contents;
+    display: block;
   }
 
-  #game-title { grid-area: title; }
-  #game-mechanics-bar { grid-area: mechanics; }
-  #chuache-box { grid-area: character; }
-  #game-main-panel { grid-area: main; }
-  #bottom-panel { grid-area: bottom; }
-  .game-footer { grid-area: footer; }
 
   #game-mechanics-bar {
     justify-self: start;
@@ -3813,20 +3798,10 @@ td.irregular-highlight {
   /* Asignamos un número de orden a cada componente principal. 
      Se mostrarán en pantalla de menor a mayor, creando el flujo vertical deseado. */
   
-  #game-title { order: 1; }          /* Primero: Título (Modo y Tenses) */
-  #game-mechanics-bar { order: 2; }   /* Segundo: Barra de Vidas o Reloj */
-  #question-area { order: 3; }        /* Tercero: La pregunta del juego */
-  #input-panel { order: 4; }          /* Cuarto: El panel para que el jugador escriba */
+  /* Ordenamiento heredado del flujo natural */
   
-  /* Quinto: El panel de feedback, colocado ANTES que los botones de acción. */
-  #feedback-area { 
-    order: 5;
-    margin-top: 8px; /* Le damos un margen para separarlo del input */
-  } 
-  
-  #interaction-panel { order: 6; }    /* Sexto: Los botones (Get Clue, Skip, End Game) */
-  #chuache-box { order: 8; }          /* Octavo: El personaje Chuache, ahora en la parte inferior */
-  .game-footer { order: 9; }         /* Noveno: El pie de página final */
+  /* Alineación sencilla para seguir el orden natural del DOM */
+  #feedback-container { margin-top: 8px; }
 
 
   /* --- 3. AJUSTES DE ESTILO PARA LOS COMPONENTES EN MODO MÓVIL --- */
@@ -3835,7 +3810,7 @@ td.irregular-highlight {
   /* Aseguramos que el contenedor de la imagen esté centrado dentro de su nueva posición */
 
   /* Nos aseguramos de que los demás paneles ocupen el ancho y tengan un margen adecuado */
-  #input-panel,
+  #answer-row,
   #interaction-panel,
   #feedback-area {
     width: 100%;
@@ -3933,7 +3908,7 @@ td.irregular-highlight {
     /* --- Mobile Game Screen Layout Overhaul --- */
 
     #game-header-panel {
-        display: contents;
+        display: block;
     }
 
     #game-mechanics-bar {
@@ -3955,9 +3930,9 @@ td.irregular-highlight {
         padding: 5px;
     }
 
-    #question-area { order: 1; }
-    #answer-row { order: 2; margin-top: 4px; }
-    #feedback-area { order: 3; margin-top: 4px; }
+    /* Mantén el orden natural de los elementos */
+    #answer-row { margin-top: 4px; }
+    #feedback-container { margin-top: 4px; }
 
     #bottom-panel {
         margin-top: 5px;
