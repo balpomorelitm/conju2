@@ -41,7 +41,9 @@ const LEVEL_GOAL_LIVES = 10; // Survival mode
 
 // Global settings defaults
 window.animationsEnabled = false;
-window.chuacheReactionsEnabled = true;
+const storedNemesis = localStorage.getItem('chuacheReactionsEnabled');
+window.chuacheReactionsEnabled = storedNemesis !== null ? storedNemesis === 'true' : true;
+applyChuacheVisibility();
 window.defaultVosEnabled = false;
 
 // ---------------- Level Up Visual Effects -----------------
@@ -134,6 +136,20 @@ function loadSettings() {
   if (chuacheChk) chuacheChk.checked = window.chuacheReactionsEnabled;
   const vosChk = document.getElementById('default-enable-vos-setting');
   if (vosChk) vosChk.checked = window.defaultVosEnabled;
+
+  applyChuacheVisibility();
+}
+
+function applyChuacheVisibility() {
+  const box = document.getElementById('chuache-box');
+  const headerChar = document.querySelector('.header-char');
+  if (window.chuacheReactionsEnabled) {
+    if (box) box.style.display = '';
+    if (headerChar) headerChar.style.display = '';
+  } else {
+    if (box) box.style.display = 'none';
+    if (headerChar) headerChar.style.display = 'none';
+  }
 }
 // Begin fetching verb data as early as possible to utilize the preload
 const verbosJsonPromise = fetch('verbos.json')
@@ -983,6 +999,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     chChk.addEventListener('change', () => {
       window.chuacheReactionsEnabled = chChk.checked;
       saveSetting('chuacheReactionsEnabled', chChk.checked);
+      applyChuacheVisibility();
     });
   }
   const vosChk = document.getElementById('default-enable-vos-setting');
@@ -3521,9 +3538,9 @@ function quitToSettings() {
   // Restore header character visibility for the next game
   const headerChar = document.querySelector('.header-char');
   if (headerChar) {
-    headerChar.style.display = '';
     headerChar.style.visibility = 'visible';
   }
+  applyChuacheVisibility();
 
     gameScreen.style.display = 'none';
     configFlowScreen.style.display = 'flex'; // Mostrar la nueva pantalla de flujo
@@ -3642,8 +3659,10 @@ finalStartGameButton.addEventListener('click', async () => {
     if (selectedGameMode === 'study') {
         gameScreen.classList.add('study-mode-active');
     }
-    ensureChuachePosition();
-    animateChuacheToGame();
+    if (window.chuacheReactionsEnabled) {
+        ensureChuachePosition();
+        animateChuacheToGame();
+    }
     if (window.innerWidth > 1200) startBubbles();
     // El resto de tu lógica de inicio de juego (setupScreen.style.display = 'none'; gameScreen.style.display = 'block'; etc.)
     // ...
