@@ -957,8 +957,7 @@ button:active {
 }
 /*--- contenedor relativo para score+llamas ---*/
 #question-prompt,
-#feedback-area,
-#ranking-box {
+#feedback-area {
   margin: 0 auto 10px;     /* margen automático a los lados, menor espacio abajo */
 }
 
@@ -3637,13 +3636,6 @@ td.irregular-highlight {
 }
 
 
-/* Ensure ranking box is centered and has space */
-#ranking-box {
-  margin: 25px auto;
-  width: 90%;
-  max-width: 600px;
-}
-
 /* --- Responsive Design for Mobile --- */
 @media (max-width: 768px) {
   #game-layout {
@@ -3790,7 +3782,6 @@ td.irregular-highlight {
   #chuache-box { grid-area: character; }
   #game-main-panel { grid-area: main; }
   #bottom-panel { grid-area: bottom; }
-  #ranking-box { grid-area: ranking; }
   .game-footer { grid-area: footer; }
 
   #game-mechanics-bar {
@@ -3811,7 +3802,7 @@ td.irregular-highlight {
     margin-left: auto;
   }
 
-  #game-main-panel, #bottom-panel, #ranking-box, .game-footer {
+  #game-main-panel, #bottom-panel, .game-footer {
      width: 100%;
      max-width: 100%;
   }
@@ -3835,8 +3826,7 @@ td.irregular-highlight {
   
   #interaction-panel { order: 6; }    /* Sexto: Los botones (Get Clue, Skip, End Game) */
   #chuache-box { order: 8; }          /* Octavo: El personaje Chuache, ahora en la parte inferior */
-  #ranking-box { order: 9; }          /* Noveno: El ranking Top 5 */
-  .game-footer { order: 10; }         /* Décimo: El pie de página final */
+  .game-footer { order: 9; }         /* Noveno: El pie de página final */
 
 
   /* --- 3. AJUSTES DE ESTILO PARA LOS COMPONENTES EN MODO MÓVIL --- */
