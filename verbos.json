@@ -3666,35 +3666,6 @@
 },
 
 {
-  "infinitive_es": "ocurrir",
-  "infinitive_en": "to occur",
-  "types": {
-    "present": ["regular"],
-    "present_perfect": ["regular"],
-    "past_simple": ["regular"],
-    "future_simple": ["regular"],
-    "condicional_simple": ["regular"],
-    "imperfect_indicative": ["regular"]
-  },
-  "conjugations": {
-    "present": {"yo": "ocurro", "tú": "ocurres", "vos": "ocurrís", "él": "ocurre", "nosotros": "ocurrimos", "vosotros": "ocurrís", "ellos": "ocurren"},
-    "past_simple": {"yo": "ocurrí", "tú": "ocurriste", "vos": "ocurriste", "él": "ocurrió", "nosotros": "ocurrimos", "vosotros": "ocurristeis", "ellos": "ocurrieron"},
-    "present_perfect": {"yo": "he ocurrido", "tú": "has ocurrido", "vos": "has ocurrido", "él": "ha ocurrido", "nosotros": "hemos ocurrido", "vosotros": "habéis ocurrido", "ellos": "han ocurrido"},
-    "future_simple": {"yo": "ocurriré", "tú": "ocurrirás", "vos": "ocurrirás", "él": "ocurrirá", "nosotros": "ocurriremos", "vosotros": "ocurriréis", "ellos": "ocurrirán"},
-    "condicional_simple": {"yo": "ocurriría", "tú": "ocurrirías", "vos": "ocurrirías", "él": "ocurriría", "nosotros": "ocurriríamos", "vosotros": "ocurriríais", "ellos": "ocurrirían"},
-    "imperfect_indicative": {"yo": "ocurría", "tú": "ocurrías", "vos": "ocurrías", "él": "ocurría", "nosotros": "ocurríamos", "vosotros": "ocurríais", "ellos": "ocurrían"}
-  },
-  "conjugations_en": {
-    "present": {"I": "occur", "you": "occur", "he": "occurs", "she": "occurs", "it": "occurs", "we": "occur", "they": "occur"},
-    "past_simple": {"I": "occurred", "you": "occurred", "he": "occurred", "she": "occurred", "it": "occurred", "we": "occurred", "they": "occurred"},
-    "present_perfect": {"I": "have occurred", "you": "have occurred", "he": "has occurred", "she": "has occurred", "it": "has occurred", "we": "have occurred", "they": "have occurred"},
-    "future_simple": {"I": "will occur", "you": "will occur", "he": "will occur", "she": "will occur", "it": "will occur", "we": "will occur", "they": "will occur"},
-    "condicional_simple": {"I": "would occur", "you": "would occur", "he": "would occur", "she": "would occur", "it": "would occur", "we": "would occur", "they": "would occur"},
-    "imperfect_indicative": {"I": "was occurring", "you": "were occurring", "he": "was occurring", "she": "was occurring", "it": "was occurring", "we": "were occurring", "they": "were occurring"}
-  }
-},
-
-{
   "infinitive_es": "nacer",
   "infinitive_en": "to be born",
   "types": {
