@@ -975,6 +975,11 @@ button:active {
   gap: 10px;
 }
 
+#input-es-container {
+  position: relative;
+  left: 10px; /* slight right shift to center under question */
+}
+
 #answer-area button,
 #game-modes .mode-button {
   display: inline-block;
@@ -3664,6 +3669,10 @@ td.irregular-highlight {
     flex-direction: column;
     align-items: center;
     gap: 5px;
+  }
+  #input-es-container {
+    position: relative;
+    left: 10px; /* match desktop offset */
   }
 }
 
