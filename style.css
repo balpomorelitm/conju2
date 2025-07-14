@@ -736,6 +736,7 @@ button:active {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center; /* Center feedback text */
   line-height: 1.4; /* Improve line spacing for multiline messages */
   margin-top: 4px;
   position: relative;
@@ -4078,13 +4079,12 @@ body.iridescent-level.level-up-shake {
 /* 1. Add styles for the new container */
 .fire-bar-container {
   position: relative;
-  width: 60px; /* Slightly slimmer for a finer look */
+  width: 60px; /* Increased from 40px to give the fire more space */
   height: 180px;
-  /* Visible border to frame the streak fire */
   background-color: transparent;
-  border: 1px solid var(--border-color);
+  border: 1px solid #f39c12; /* Example border, user can adjust */
   box-shadow: none;
-  overflow: hidden;
+  overflow: visible; /* Change from hidden to visible to ensure fire is not clipped */
 }
 
 /* 2. Modify the existing .fire element's styles */
@@ -4095,9 +4095,10 @@ body.iridescent-level.level-up-shake {
   margin: 0;
   position: absolute;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  width: 40px; /* Give the animation a fixed width, not 100% */
   height: 100%;
+  left: 50%; /* Center the animation horizontally */
+  transform: translateX(-50%); /* Fine-tune the centering */
 }
 
 #streak-fire .particle {
