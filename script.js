@@ -2789,7 +2789,7 @@ function prepareNextQuestion() {
 }
 
 function checkAnswer() {
-  feedback.innerHTML = '';
+  // feedback.innerHTML is NO LONGER cleared here.
   const isStudyMode = (selectedGameMode === 'study');
   let possibleCorrectAnswers = [];
   const rt    = (Date.now() - startTime) / 1000;
@@ -2828,7 +2828,7 @@ function checkAnswer() {
     const tense = currentQuestion.tenseKey;        // p.ej. 'present'
     const spanishForm = currentQuestion.answer;    
     const verbData = currentQuestion.verb;
-	
+
 
     const allForms = verbData.conjugations[tense];
     if (!allForms) {
@@ -2845,21 +2845,21 @@ function checkAnswer() {
         pronouns.includes(p) && form === spanishForm
       )
       .map(([p]) => p);         
-	const pronounGroupMap = {
-	  yo:       ['I'],
-	  tú:       ['you'],
-	  él:       ['he','she','you'],
-	  ella:     ['he','she','you'],
-	  usted:    ['you'],      
-	  nosotros: ['we'],
-	  nosotras: ['we'],
+const pronounGroupMap = {
+  yo:       ['I'],
+  tú:       ['you'],
+  él:       ['he','she','you'],
+  ella:     ['he','she','you'],
+  usted:    ['you'],      
+  nosotros: ['we'],
+  nosotras: ['we'],
 
-	  vosotros: ['you all'],
-	  vosotras: ['you all'],
-	  ellos:    ['they','you all'],
-	  ellas:    ['they','you all'],
-	  ustedes:  ['you all']
-	};
+  vosotros: ['you all'],
+  vosotras: ['you all'],
+  ellos:    ['they','you all'],
+  ellas:    ['they','you all'],
+  ustedes:  ['you all']
+};
 
     const engProns = Array.from(new Set(
         spPronouns.flatMap(sp => pronounGroupMap[sp] || [])
@@ -2877,7 +2877,7 @@ function checkAnswer() {
         }
         return;
     } else if (engProns.length === 0 && spPronouns.length === 0) {
-       console.error(`Modo Receptivo: No se encontraron pronombres en español para la forma '<span class="math-inline">\{spanishForm\}' del verbo '</span>{verbData.infinitive_es}'.`);
+       console.error(`Modo Receptivo: No se encontraron pronombres en español para la forma '<span class="math-inline">{spanishForm}' del verbo '{verbData.infinitive_es}'.`);
        feedback.innerHTML = `Error: No se pudo procesar la pregunta. La pista es el infinitivo: <strong>${verbData.infinitive_en}</strong>.`;
        playFromStart(soundElectricShock);
        currentQuestion.hintLevel = 1;
@@ -2886,63 +2886,67 @@ function checkAnswer() {
        return;
     }
 
-	const formsForCurrentTenseEN = verbData.conjugations_en[tense];
+const formsForCurrentTenseEN = verbData.conjugations_en[tense];
 
-	if (!formsForCurrentTenseEN) {
-		console.error(`Receptive Mode: Missing ENGLISH conjugations for ${verbData.infinitive_en} in tense ${tense}`);
-		feedback.innerHTML = `Error: English conjugation data is missing for the tense '${tense}'.`; // English
-		return;
-	}
+if (!formsForCurrentTenseEN) {
+console.error(`Receptive Mode: Missing ENGLISH conjugations for ${verbData.infinitive_en} in tense ${tense}`);
+feedback.innerHTML = `Error: English conjugation data is missing for the tense '${tense}'.`; // English
+return;
+}
 
-	possibleCorrectAnswers = engProns.flatMap(englishPronoun => {
-	  // 1) Determinamos la clave para indexar el JSON de EN:
-	  let formKey;
-	  if (englishPronoun === 'I') {
-		formKey = 'I';
-	  } else if (englishPronoun === 'you all') {
-		formKey = 'you';
-	  } else {
-		formKey = englishPronoun.toLowerCase();
-	  }
+possibleCorrectAnswers = engProns.flatMap(englishPronoun => {
+  // 1) Determinamos la clave para indexar el JSON de EN:
+  let formKey;
+  if (englishPronoun === 'I') {
+formKey = 'I';
+  } else if (englishPronoun === 'you all') {
+formKey = 'you';
+  } else {
+formKey = englishPronoun.toLowerCase();
+  }
 
-	  // 2) Recuperamos la forma conjugada en inglés
-	  const verbEN = formsForCurrentTenseEN[formKey];
-	  if (!verbEN) return [];
+  // 2) Recuperamos la forma conjugada en inglés
+  const verbEN = formsForCurrentTenseEN[formKey];
+  if (!verbEN) return [];
 
-	  const base = verbEN.toLowerCase();
+  const base = verbEN.toLowerCase();
 
-	  // 3) Para cada infinitivo (sinónimos) en expectedEN:
-	  return currentQuestion.expectedEN.flatMap(inf => {
-		// inf es p.ej. "remember" o "recall" o "be at"
-		const parts = inf.split(' ');
-		const suffix = parts.length > 1
-		  ? ' ' + parts.slice(1).join(' ')
-		  : '';
-		// 4) Construir la respuesta según el pronombre
-		if (englishPronoun === 'I') {
-		  return [
-			`I ${base}${suffix}`,
-			`i ${base}${suffix}`
-		  ];
-		}
-		if (englishPronoun === 'you all') {
-		  return [`you all ${base}${suffix}`];
-		}
-		const pronLower = englishPronoun.toLowerCase();
-		return [`${pronLower} ${base}${suffix}`];
-	  });
-	});
+  // 3) Para cada infinitivo (sinónimos) en expectedEN:
+  return currentQuestion.expectedEN.flatMap(inf => {
+// inf es p.ej. "remember" o "recall" o "be at"
+const parts = inf.split(' ');
+const suffix = parts.length > 1
+  ? ' ' + parts.slice(1).join(' ')
+  : '';
+// 4) Construir la respuesta según el pronombre
+if (englishPronoun === 'I') {
+  return [
+`I ${base}${suffix}`,
+`i ${base}${suffix}`
+  ];
+}
+if (englishPronoun === 'you all') {
+  return [`you all ${base}${suffix}`];
+}
+const pronLower = englishPronoun.toLowerCase();
+return [`${pronLower} ${base}${suffix}`];
+  });
+});
 
-	if (possibleCorrectAnswers.length === 0 && engProns.length > 0) {
-		console.error(`Receptive Mode: Could not form any English answers for ${verbData.infinitive_en} (tense: ${tense}) with English pronouns: ${engProns.join(', ')}. Check conjugations_en in verbos.json.`);
-		feedback.innerHTML = `Error: No English conjugated forms found for the tense '${tense}'.`; // English
-		return;
-	}
+if (possibleCorrectAnswers.length === 0 && engProns.length > 0) {
+console.error(`Receptive Mode: Could not form any English answers for ${verbData.infinitive_en} (tense: ${tense}) with English pronouns: ${engProns.join(', ')}. Check conjugations_en in verbos.json.`);
+feedback.innerHTML = `Error: No English conjugated forms found for the tense '${tense}'.`; // English
+return;
+}
 
-	correct = possibleCorrectAnswers.includes(ans);
+correct = possibleCorrectAnswers.includes(ans);
 }
 
   if (correct) {
+    // *** MODIFICATION START ***
+    feedback.innerHTML = ''; // Clear feedback area ONLY on correct answer.
+    // *** MODIFICATION END ***
+
     // Manejo del sonido
     if (soundCorrect) {
       soundCorrect.pause();
@@ -3002,20 +3006,20 @@ function checkAnswer() {
       pronounBonus +
       verbBonus
     );
-	
+
     score += pts;
     let feedbackText = `✅<br><span class="feedback-time">⏱️${rt.toFixed(1)}s ×${bonus.toFixed(1)}</span> |<span class="feedback-streak">${streak}🔥x${multiplier.toFixed(1)}</span>`;
     if (accentBonus > 0) {
        feedbackText += ` +${accentBonus} accent bonus!`; 
     }
-	
-	let timeBonus;
-	if (streak <= 2)       timeBonus = 5;
-	else if (streak <= 4)  timeBonus = 6;
-	else if (streak <= 6)  timeBonus = 7;
-	else if (streak <= 8)  timeBonus = 8;
-	else if (streak <= 10) timeBonus = 9;
-	else                   timeBonus = 10;
+
+let timeBonus;
+if (streak <= 2)       timeBonus = 5;
+else if (streak <= 4)  timeBonus = 6;
+else if (streak <= 6)  timeBonus = 7;
+else if (streak <= 8)  timeBonus = 8;
+else if (streak <= 10) timeBonus = 9;
+else                   timeBonus = 10;
         // add time without an upper limit
         timerTimeLeft += timeBonus;
         checkTickingSound();
@@ -3023,7 +3027,7 @@ function checkAnswer() {
 
     updateScore();
     setTimeout(prepareNextQuestion, 200);
-	
+
     const irregularityEmojis = {
       "first_person_irregular": "🧏‍♀️",
       "stem_changing": "🌱",
@@ -3057,7 +3061,7 @@ function checkAnswer() {
     if (totalCorrectAnswersForLife >= correctAnswersToNextLife) {
       remainingLives++;
       // TODO: Llamar a función para animación/sonido de ganar vida
-	  // refrescar UI de vidas y título ANTES de la animación
+  // refrescar UI de vidas y título ANTES de la animación
       updateTotalCorrectForLifeDisplay();
       updateGameTitle();
       showLifeGainedAnimation(); // Implementar esta función más adelante
@@ -3070,15 +3074,15 @@ function checkAnswer() {
     currentStreakForLife++;
     if (currentStreakForLife >= streakGoalForLife) {
       remainingLives++;
-	  updateGameTitle();
-	  updateStreakForLifeDisplay();
-	  updateTotalCorrectForLifeDisplay();
+  updateGameTitle();
+  updateStreakForLifeDisplay();
+  updateTotalCorrectForLifeDisplay();
       showLifeGainedAnimation();
 
       lastStreakGoalAchieved = streakGoalForLife; // Guardar el objetivo que acabamos de alcanzar
       streakGoalForLife += 2; // Siguiente objetivo
       currentStreakForLife = 0;
-	  updateGameTitle();
+  updateGameTitle();
       updateStreakForLifeDisplay();
     }
     updateStreakForLifeDisplay();
@@ -3093,22 +3097,23 @@ function checkAnswer() {
     }
     }
 
-	if (irregularBonus > 0) {
+if (irregularBonus > 0) {
        feedbackText += `<br>+${irregularBonus} irregularity bonus!`;
        feedbackText += `<br><small>${irregularityDescriptions}</small>`;
     }
-	
-	if (reflexiveBonus > 0) {
-  	  feedbackText += `<br>+${reflexiveBonus} 🧩reflexive bonus!`;
+
+if (reflexiveBonus > 0) {
+    feedbackText += `<br>+${reflexiveBonus} 🧩reflexive bonus!`;
     }
-	
+
         const sign = pts > 0 ? '+' : '';
         feedbackText += `<br><span class="feedback-points">Points: ${sign}${pts}</span>`;
     feedback.innerHTML = feedbackText;
     feedback.classList.add('vibrate'); 
-	
+
     return;   
   } else {
+    // --- INCORRECT ANSWER ---
     if (isStudyMode) {
       soundWrongStudy.play();
     } else {
@@ -3117,10 +3122,10 @@ function checkAnswer() {
     chuacheSpeaks('wrong');
     streak = 0;
     multiplier = 1.0;
-	
+
     if (isPrizeVerbActive) {
-      isPrizeVerbActive = false; // Se pierde la oportunidad del verbo premio
-      qPrompt.classList.remove('prize-verb-active'); // Quitar estilo
+      isPrizeVerbActive = false;
+      qPrompt.classList.remove('prize-verb-active');
     }
 
     if (selectedGameMode === 'timer') {
@@ -3135,110 +3140,105 @@ function checkAnswer() {
     }
 
     if (selectedGameMode === 'lives') {
-      const penalty = 1 + currentLevel;
-      remainingLives -= penalty;
+        const penalty = 1 + currentLevel;
+        remainingLives -= penalty;
+        currentStreakForLife = 0;
+        isPrizeVerbActive = false;
+        updateTotalCorrectForLifeDisplay();
+        updateStreakForLifeDisplay();
+        currentStreakForLife = 0;
+        updateStreakForLifeDisplay();
+        updateGameTitle();              
+        if (remainingLives <= 0) {
+            soundGameOver.play();
+            chuacheSpeaks('gameover');
+            gameTitle.textContent = '💀 ¡Estás MUERTO!';
+            checkAnswerButton.disabled = true;
+            clueButton.disabled = true;
+            skipButton.disabled  = true;
+            ansEN.disabled = true;
+            ansES.disabled = true;
 
-	  currentStreakForLife = 0;
-
-
-	  isPrizeVerbActive = false;
-	  // Actualizar los contadores visuales a su estado inicial
-	  updateTotalCorrectForLifeDisplay();
-	  updateStreakForLifeDisplay();
-	  // ---> FIN RESETEO <---
-	  currentStreakForLife = 0;
-      updateStreakForLifeDisplay();
-    // ---> FIN RESETEO MECÁNICA 2 <---
-
-	
-
-       updateGameTitle();              
-      if (remainingLives <= 0) {
-        soundGameOver.play();
-        chuacheSpeaks('gameover');
-		gameTitle.textContent = '💀 ¡Estás MUERTO!';
-                checkAnswerButton.disabled = true;
-                clueButton.disabled = true;
-        skipButton.disabled  = true;
-		ansEN.disabled = true;
-		ansES.disabled = true;
-
-        if (name) {
+            if (name) {
                 const recordData = {
-        name: name,
-        score: score,
-        mode: selectedGameMode,
-        streak: bestStreak,
-        level: (selectedGameMode === 'timer' || selectedGameMode === 'lives') ? currentLevel + 1 : null
-      };
-      (async () => {
-        try {
-                const { error } = await supabase.from('records').insert([recordData]);
-                if (error) throw error;
-                renderSetupRecords();
-        } catch (error) {
-                console.error("Error saving record:", error.message);
-        } finally {
-                fadeOutToMenu(quitToSettings);
+                    name: name,
+                    score: score,
+                    mode: selectedGameMode,
+                    streak: bestStreak,
+                    level: (selectedGameMode === 'timer' || selectedGameMode === 'lives') ? currentLevel + 1 : null
+                };
+                (async () => {
+                    try {
+                        const { error } = await supabase.from('records').insert([recordData]);
+                        if (error) throw error;
+                        renderSetupRecords();
+                    } catch (error) {
+                        console.error("Error saving record:", error.message);
+                    } finally {
+                        fadeOutToMenu(quitToSettings);
+                    }
+                })();
+            }
+            return; 
         }
-      })();
-        }
-	   return; 
-
-        }
-      } else {
+    } else {
         updateGameTitle();
-      }
     }
     updateScore();
-		if (currentOptions.mode === 'receptive') {
-		let hintMessage = `💡 The English infinitive is <strong>${currentQuestion.verb.infinitive_en}</strong>.`;
-		if (possibleCorrectAnswers && possibleCorrectAnswers.length > 0) {
-			const exampleAnswers = possibleCorrectAnswers.slice(0, Math.min(possibleCorrectAnswers.length, 3)).map(a => `'${a}'`);
-		} else {
-			hintMessage += `<br>Could not determine specific example answers. Check verb data.`;
-		}
 
-		feedback.innerHTML = hintMessage;
-		ansEN.value = '';
-		setTimeout(() => ansEN.focus(), 0);
-		return;
+    // *** MODIFICATION START ***
+    // Check if a hint is already showing. If not, generate a new one.
+    const hintIsAlreadyShowing = feedback.innerHTML.includes('💡') || feedback.innerHTML.includes('❌') || feedback.innerHTML.includes('hint-btn');
+    if (!hintIsAlreadyShowing) {
+        if (currentOptions.mode === 'receptive') {
+            let hintMessage = `💡 The English infinitive is <strong>${currentQuestion.verb.infinitive_en}</strong>.`;
+            if (possibleCorrectAnswers && possibleCorrectAnswers.length > 0) {
+                const exampleAnswers = possibleCorrectAnswers.slice(0, Math.min(possibleCorrectAnswers.length, 3)).map(a => `'${a}'`);
+            } else {
+                hintMessage += `<br>Could not determine specific example answers. Check verb data.`;
+            }
+
+            feedback.innerHTML = hintMessage;
+            ansEN.value = '';
+            setTimeout(() => ansEN.focus(), 0);
+            return;
         } else if (currentOptions.mode === 'productive' || currentOptions.mode === 'productive_easy') {
-                if (currentOptions.mode === 'productive_easy') {
-                        if (currentQuestion.hintLevel === 0) {
-                                const conjTenseKey = currentQuestion.tenseKey;
-                                const conj = currentQuestion.verb.conjugations[conjTenseKey];
-                                const botones = Object.entries(conj || {})
-                                        .filter(([pr]) => pr !== currentQuestion.pronoun)
-                                        .map(([, form]) => `<span class="hint-btn">${form}</span>`)
-                                        .join('');
-                                feedback.innerHTML =
-                                        `❌ <em>Clue 1:</em> ` + botones;
-                                playFromStart(soundElectricShock);
-                                currentQuestion.hintLevel = 1;
-                        }
-                } else { // productive mode keeps two clues
-                        if (currentQuestion.hintLevel === 0) {
-                                feedback.innerHTML =
-                                  `❌ <em>Clue 1:</em> infinitive is <strong>${currentQuestion.verb.infinitive_es}</strong>.`;
-                                playFromStart(soundElectricShock);
-                                currentQuestion.hintLevel = 1;
-                        } else if (currentQuestion.hintLevel === 1) {
-                                const conjTenseKey = currentQuestion.tenseKey;
-                                const conj = currentQuestion.verb.conjugations[conjTenseKey];
-                                const botones = Object.entries(conj || {})
-                                        .filter(([pr]) => pr !== currentQuestion.pronoun)
-                                        .map(([, form]) => `<span class="hint-btn">${form}</span>`)
-                                        .join('');
-                                feedback.innerHTML =
-                                        `❌ <em>Clue 2:</em> ` + botones;
-                                playFromStart(soundElectricShock);
-                                currentQuestion.hintLevel = 2;
-                        }
+            if (currentOptions.mode === 'productive_easy') {
+                if (currentQuestion.hintLevel === 0) {
+                    const conjTenseKey = currentQuestion.tenseKey;
+                    const conj = currentQuestion.verb.conjugations[conjTenseKey];
+                    const botones = Object.entries(conj || {})
+                        .filter(([pr]) => pr !== currentQuestion.pronoun)
+                        .map(([, form]) => `<span class="hint-btn">${form}</span>`)
+                        .join('');
+                    feedback.innerHTML = `❌ <em>Clue 1:</em> ` + botones;
+                    playFromStart(soundElectricShock);
+                    currentQuestion.hintLevel = 1;
                 }
-		ansES.value = '';
-		setTimeout(() => ansES.focus(), 0);
-	}
+            } else {
+                if (currentQuestion.hintLevel === 0) {
+                    feedback.innerHTML = `❌ <em>Clue 1:</em> infinitive is <strong>${currentQuestion.verb.infinitive_es}</strong>.`;
+                    playFromStart(soundElectricShock);
+                    currentQuestion.hintLevel = 1;
+                } else if (currentQuestion.hintLevel === 1) {
+                    const conjTenseKey = currentQuestion.tenseKey;
+                    const conj = currentQuestion.verb.conjugations[conjTenseKey];
+                    const botones = Object.entries(conj || {})
+                        .filter(([pr]) => pr !== currentQuestion.pronoun)
+                        .map(([, form]) => `<span class="hint-btn">${form}</span>`)
+                        .join('');
+                    feedback.innerHTML = `❌ <em>Clue 2:</em> ` + botones;
+                    playFromStart(soundElectricShock);
+                    currentQuestion.hintLevel = 2;
+                }
+            }
+            ansES.value = '';
+            setTimeout(() => ansES.focus(), 0);
+        }
+    }
+    // If hintIsAlreadyShowing is true, this block is skipped, preserving the existing hint.
+    // *** MODIFICATION END ***
+  }
 }
 function startTimerMode() {
   document.getElementById('timer-container').style.display = 'flex';
