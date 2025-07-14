@@ -4078,7 +4078,7 @@ body.iridescent-level.level-up-shake {
 /* 1. Add styles for the new container */
 .fire-bar-container {
   position: relative;
-  width: 40px;
+  width: 70px; /* Increased from 40px to allow full streak animation */
   height: 180px;
   /* Make container invisible so only the fire is visible */
   background-color: transparent;
