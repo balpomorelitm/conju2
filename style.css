@@ -727,13 +727,12 @@ button:active {
   width: 100%;
   max-width: 500px;
   /* Increase height so hints and messages fit comfortably on two lines */
-  min-height: 100px;
+  min-height: 70px;
   padding: 12px;
   border: 1px solid var(--border-color);
   background-color: var(--input-bg);
   box-sizing: border-box;
   display: flex;
-  flex-grow: 1;      /* Allows the box to expand and fill the available space */
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -763,20 +762,19 @@ button:active {
 
 /* Container wrapping clue box and fire bar */
 #feedback-container {
-    position: relative;
-    width: 100%;
-    max-width: 550px; /* Increased max-width to comfortably fit both elements */
-    display: flex;
-    justify-content: center; /* This will center the fire + feedback box group */
-    align-items: center;     /* This will vertically align them */
-    gap: 10px;               /* Adds a small space between the fire and the box */
-    margin: 0 auto;          /* Ensures the container itself is centered */
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
+
 #streak-bar {
-    position: static; /* IMPORTANT: Remove absolute positioning */
-    order: -1;        /* This places the fire to the left of the feedback box */
-    flex-shrink: 0;   /* Prevents the fire container from shrinking */
-    /* The 'right' and 'bottom' properties are no longer needed */
+  position: absolute;
+  right: 10px; /* move slightly left so fire isn't cut off */
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 
@@ -3909,9 +3907,8 @@ td.irregular-highlight {
 
 #feedback-area {
     font-size: 1.1em;
-    min-height: 100px;
+    min-height: 50px;
     width: 100%;
-    flex-grow: 1;      /* Allows the box to expand and fill the available space */
     max-width: 450px;
     line-height: 1.5;
     color: #ccc;
