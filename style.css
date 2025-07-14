@@ -771,7 +771,7 @@ button:active {
 
 #streak-bar {
   position: absolute;
-  right: 30px; /* move slightly left so fire isn't cut off */
+  right: 10px; /* move slightly left so fire isn't cut off */
   bottom: 0;
   z-index: 1;
   pointer-events: none;
