@@ -4078,11 +4078,11 @@ body.iridescent-level.level-up-shake {
 /* 1. Add styles for the new container */
 .fire-bar-container {
   position: relative;
-  width: 70px; /* Increased from 40px to allow full streak animation */
+  width: 60px; /* Slightly slimmer for a finer look */
   height: 180px;
-  /* Make container invisible so only the fire is visible */
+  /* Visible border to frame the streak fire */
   background-color: transparent;
-  border: none;
+  border: 1px solid var(--border-color);
   box-shadow: none;
   overflow: hidden;
 }
