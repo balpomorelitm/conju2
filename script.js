@@ -2811,7 +2811,6 @@ function checkAnswer() {
 
   if (currentOptions.mode === 'productive' || currentOptions.mode === 'productive_easy') {
     let ans = ansES.value.trim().toLowerCase();
-    if (ans === '') return;
     let cor = currentQuestion.answer.toLowerCase();
     if (currentOptions.ignoreAccents) {
       ans = removeAccents(ans);
@@ -2826,7 +2825,6 @@ function checkAnswer() {
     }
   } else {
     const ans = ansEN.value.trim().toLowerCase();
-    if (ans === '') return;
     const tense = currentQuestion.tenseKey;        // p.ej. 'present'
     const spanishForm = currentQuestion.answer;    
     const verbData = currentQuestion.verb;
