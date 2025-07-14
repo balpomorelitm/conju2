@@ -976,7 +976,7 @@ button:active {
 
 #input-es-container {
   position: relative;
-  left: 10px; /* slight right shift to center under question */
+  left: 25px; /* shift further right under question */
 }
 
 #answer-area button,
@@ -3664,7 +3664,7 @@ td.irregular-highlight {
   }
   #input-es-container {
     position: relative;
-    left: 10px; /* match desktop offset */
+    left: 25px; /* match desktop offset */
   }
 }
 
