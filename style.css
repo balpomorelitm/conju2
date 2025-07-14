@@ -4055,7 +4055,7 @@ body.iridescent-level.level-up-shake {
   width: 50px; /* slightly thinner */
   height: 180px;
   background-color: transparent;
-  border: 1px solid #f39c12; /* Example border, user can adjust */
+  border: none; /* No border for transparent effect */
   box-shadow: none;
   overflow: visible; /* Change from hidden to visible to ensure fire is not clipped */
 }
