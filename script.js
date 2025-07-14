@@ -186,10 +186,6 @@ if (
   console.error(
     'Supabase client unavailable. Hall of Fame records will not load.'
   );
-  const rankingBox = document.getElementById('ranking-box');
-  if (rankingBox) {
-    rankingBox.innerHTML = '<p>Records are currently unavailable.</p>';
-  }
 }
 
 // Track last index used for each type of reaction
@@ -697,7 +693,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const gameScreen   = document.getElementById('game-screen');
   const quitButton   = document.getElementById('quit-button');
   const scoreDisplay = document.getElementById('score-display');
-  const rankingBox   = document.getElementById('ranking-box');
   const streakFireEl = document.getElementById('streak-fire');
   const gameTitle    = document.getElementById('game-title');
   createFireParticles();
@@ -1119,7 +1114,6 @@ confirmModeButton.addEventListener('click', () => {
         selectedMode = provisionallySelectedOption.dataset.mode;
         window.selectedGameMode = selectedMode;
         selectedGameMode = selectedMode; // Mantener sincronizado el modo seleccionado
-        updateRanking();
 
         gameModesContainer.querySelectorAll('.config-flow-button').forEach(btn => {
             btn.classList.remove('provisional-selection');
@@ -2530,34 +2524,6 @@ function applyIrregularityAndTenseFiltersToVerbList() {
     updateDeselectAllButton();
     updateGroupButtons();
 }
-  async function updateRanking() {
-    const mode = selectedGameMode || window.selectedGameMode;
-    if (!mode || mode === 'study') {
-        rankingBox.innerHTML = '';
-        return;
-    }
-
-    rankingBox.innerHTML = '<h3>🏆 Top 5</h3>';
-
-    try {
-        const { data, error } = await supabase
-            .from('records')
-            // Using '*' avoids errors if the 'level' column is missing
-            .select('*')
-            .eq('mode', mode)
-            .order('score', { ascending: false })
-            .limit(5);
-
-        if (error) throw error;
-
-        data.forEach(entry => {
-            const levelInfo = (mode === 'timer' || mode === 'lives') && entry.level ? ` lv${entry.level}` : '';
-            rankingBox.innerHTML += `<div>${entry.name}: ${entry.score}${levelInfo}</div>`;
-        });
-    } catch (error) {
-        console.error("Error loading rankings:", error.message);
-    }
-  }
 
   function updateScore() {
     if (selectedGameMode === 'study') return;
@@ -3609,7 +3575,6 @@ function fadeOutToMenu(callback) {
   };
   screen.addEventListener('animationend', handler);
 }
-    updateRanking();
     remainingLives = 5;
 
 
@@ -3687,7 +3652,6 @@ finalStartGameButton.addEventListener('click', async () => {
     score = 0; streak = 0; multiplier = 1.0; bestStreak = 0; // Resetear bestStreak también
     updateScore();
     // updateGameTitle(); // Ya debería tener selectedDifficulty y selTenses
-    updateRanking();
 
     const livesMechanicsDisplay = document.getElementById('lives-mechanics-display');
     if (window.selectedGameMode === 'lives') { // Usar window.selectedGameMode que se actualizó
@@ -3842,7 +3806,6 @@ if (irregularitiesContainer) {
                                     const { error } = await supabase.from('records').insert([recordData]);
                                     if (error) throw error;
                                     renderSetupRecords();
-                                    updateRanking();
                                 } catch (error) {
                                     console.error("Error saving record (endButton):", error.message);
                                 } finally {
