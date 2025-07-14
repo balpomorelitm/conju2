@@ -2546,5 +2546,201 @@
       "condicional_simple": {"I": "would get sick", "you": "would get sick", "he": "would get sick", "she": "would get sick", "it": "would get sick", "we": "would get sick", "they": "would get sick"},
       "imperfect_indicative": {"I": "was getting sick", "you": "were getting sick", "he": "was getting sick", "she": "was getting sick", "it": "was getting sick", "we": "were getting sick", "they": "were getting sick"}
     }
+  },
+  {
+  "infinitive_es": "preguntar",
+  "infinitive_en": "to ask",
+  "types": {
+    "present": ["regular"],
+    "present_perfect": ["regular"],
+    "past_simple": ["regular"],
+    "future_simple": ["regular"],
+    "condicional_simple": ["regular"],
+    "imperfect_indicative": ["regular"]
+  },
+  "conjugations": {
+    "present": {"yo": "pregunto", "tú": "preguntas", "vos": "preguntás", "él": "pregunta", "nosotros": "preguntamos", "vosotros": "preguntáis", "ellos": "preguntan"},
+    "past_simple": {"yo": "pregunté", "tú": "preguntaste", "vos": "preguntaste", "él": "preguntó", "nosotros": "preguntamos", "vosotros": "preguntasteis", "ellos": "preguntaron"},
+    "present_perfect": {"yo": "he preguntado", "tú": "has preguntado", "vos": "has preguntado", "él": "ha preguntado", "nosotros": "hemos preguntado", "vosotros": "habéis preguntado", "ellos": "han preguntado"},
+    "future_simple": {"yo": "preguntaré", "tú": "preguntarás", "vos": "preguntarás", "él": "preguntará", "nosotros": "preguntaremos", "vosotros": "preguntaréis", "ellos": "preguntarán"},
+    "condicional_simple": {"yo": "preguntaría", "tú": "preguntarías", "vos": "preguntarías", "él": "preguntaría", "nosotros": "preguntaríamos", "vosotros": "preguntaríais", "ellos": "preguntarían"},
+    "imperfect_indicative": {"yo": "preguntaba", "tú": "preguntabas", "vos": "preguntabas", "él": "preguntaba", "nosotros": "preguntábamos", "vosotros": "preguntabais", "ellos": "preguntaban"}
+  },
+  "conjugations_en": {
+    "present": {"I": "ask", "you": "ask", "he": "asks", "she": "asks", "it": "asks", "we": "ask", "they": "ask"},
+    "past_simple": {"I": "asked", "you": "asked", "he": "asked", "she": "asked", "it": "asked", "we": "asked", "they": "asked"},
+    "present_perfect": {"I": "have asked", "you": "have asked", "he": "has asked", "she": "has asked", "it": "has asked", "we": "have asked", "they": "have asked"},
+    "future_simple": {"I": "will ask", "you": "will ask", "he": "will ask", "she": "will ask", "it": "will ask", "we": "will ask", "they": "will ask"},
+    "condicional_simple": {"I": "would ask", "you": "would ask", "he": "would ask", "she": "would ask", "it": "would ask", "we": "would ask", "they": "would ask"},
+    "imperfect_indicative": {"I": "was asking", "you": "were asking", "he": "was asking", "she": "was asking", "it": "was asking", "we": "were asking", "they": "were asking"}
   }
+},
+{
+  "infinitive_es": "escuchar",
+  "infinitive_en": "to listen",
+  "types": {
+    "present": ["regular"],
+    "present_perfect": ["regular"],
+    "past_simple": ["regular"],
+    "future_simple": ["regular"],
+    "condicional_simple": ["regular"],
+    "imperfect_indicative": ["regular"]
+  },
+  "conjugations": {
+    "present": {"yo": "escucho", "tú": "escuchas", "vos": "escuchás", "él": "escucha", "nosotros": "escuchamos", "vosotros": "escucháis", "ellos": "escuchan"},
+    "past_simple": {"yo": "escuché", "tú": "escuchaste", "vos": "escuchaste", "él": "escuchó", "nosotros": "escuchamos", "vosotros": "escuchasteis", "ellos": "escucharon"},
+    "present_perfect": {"yo": "he escuchado", "tú": "has escuchado", "vos": "has escuchado", "él": "ha escuchado", "nosotros": "hemos escuchado", "vosotros": "habéis escuchado", "ellos": "han escuchado"},
+    "future_simple": {"yo": "escucharé", "tú": "escucharás", "vos": "escucharás", "él": "escuchará", "nosotros": "escucharemos", "vosotros": "escucharéis", "ellos": "escucharán"},
+    "condicional_simple": {"yo": "escucharía", "tú": "escucharías", "vos": "escucharías", "él": "escucharía", "nosotros": "escucharíamos", "vosotros": "escucharíais", "ellos": "escucharían"},
+    "imperfect_indicative": {"yo": "escuchaba", "tú": "escuchabas", "vos": "escuchabas", "él": "escuchaba", "nosotros": "escuchábamos", "vosotros": "escuchabais", "ellos": "escuchaban"}
+  },
+  "conjugations_en": {
+    "present": {"I": "listen", "you": "listen", "he": "listens", "she": "listens", "it": "listens", "we": "listen", "they": "listen"},
+    "past_simple": {"I": "listened", "you": "listened", "he": "listened", "she": "listened", "it": "listened", "we": "listened", "they": "listened"},
+    "present_perfect": {"I": "have listened", "you": "have listened", "he": "has listened", "she": "has listened", "it": "has listened", "we": "have listened", "they": "have listened"},
+    "future_simple": {"I": "will listen", "you": "will listen", "he": "will listen", "she": "will listen", "it": "will listen", "we": "will listen", "they": "will listen"},
+    "condicional_simple": {"I": "would listen", "you": "would listen", "he": "would listen", "she": "would listen", "it": "would listen", "we": "would listen", "they": "would listen"},
+    "imperfect_indicative": {"I": "was listening", "you": "were listening", "he": "was listening", "she": "was listening", "it": "was listening", "we": "were listening", "they": "were listening"}
+  }
+},
+{
+  "infinitive_es": "contestar",
+  "infinitive_en": "to answer",
+  "types": {
+    "present": ["regular"],
+    "present_perfect": ["regular"],
+    "past_simple": ["regular"],
+    "future_simple": ["regular"],
+    "condicional_simple": ["regular"],
+    "imperfect_indicative": ["regular"]
+  },
+  "conjugations": {
+    "present": {"yo": "contesto", "tú": "contestas", "vos": "contestás", "él": "contesta", "nosotros": "contestamos", "vosotros": "contestáis", "ellos": "contestan"},
+    "past_simple": {"yo": "contesté", "tú": "contestaste", "vos": "contestaste", "él": "contestó", "nosotros": "contestamos", "vosotros": "contestasteis", "ellos": "contestaron"},
+    "present_perfect": {"yo": "he contestado", "tú": "has contestado", "vos": "has contestado", "él": "ha contestado", "nosotros": "hemos contestado", "vosotros": "habéis contestado", "ellos": "han contestado"},
+    "future_simple": {"yo": "contestaré", "tú": "contestarás", "vos": "contestarás", "él": "contestará", "nosotros": "contestaremos", "vosotros": "contestaréis", "ellos": "contestarán"},
+    "condicional_simple": {"yo": "contestaría", "tú": "contestarías", "vos": "contestarías", "él": "contestaría", "nosotros": "contestaríamos", "vosotros": "contestaríais", "ellos": "contestarían"},
+    "imperfect_indicative": {"yo": "contestaba", "tú": "contestabas", "vos": "contestabas", "él": "contestaba", "nosotros": "contestábamos", "vosotros": "contestabais", "ellos": "contestaban"}
+  },
+  "conjugations_en": {
+    "present": {"I": "answer", "you": "answer", "he": "answers", "she": "answers", "it": "answers", "we": "answer", "they": "answer"},
+    "past_simple": {"I": "answered", "you": "answered", "he": "answered", "she": "answered", "it": "answered", "we": "answered", "they": "answered"},
+    "present_perfect": {"I": "have answered", "you": "have answered", "he": "has answered", "she": "has answered", "it": "has answered", "we": "have answered", "they": "have answered"},
+    "future_simple": {"I": "will answer", "you": "will answer", "he": "will answer", "she": "will answer", "it": "will answer", "we": "will answer", "they": "will answer"},
+    "condicional_simple": {"I": "would answer", "you": "would answer", "he": "would answer", "she": "would answer", "it": "would answer", "we": "would answer", "they": "would answer"},
+    "imperfect_indicative": {"I": "was answering", "you": "were answering", "he": "was answering", "she": "was answering", "it": "was answering", "we": "were answering", "they": "were answering"}
+  }
+},
+{
+  "infinitive_es": "llegar",
+  "infinitive_en": "to arrive",
+  "types": {
+    "present": ["regular"],
+    "present_perfect": ["regular"],
+    "past_simple": ["orthographic_change"],
+    "future_simple": ["regular"],
+    "condicional_simple": ["regular"],
+    "imperfect_indicative": ["regular"]
+  },
+  "conjugations": {
+    "present": {"yo": "llego", "tú": "llegas", "vos": "llegás", "él": "llega", "nosotros": "llegamos", "vosotros": "llegáis", "ellos": "llegan"},
+    "past_simple": {"yo": "llegué", "tú": "llegaste", "vos": "llegaste", "él": "llegó", "nosotros": "llegamos", "vosotros": "llegasteis", "ellos": "llegaron"},
+    "present_perfect": {"yo": "he llegado", "tú": "has llegado", "vos": "has llegado", "él": "ha llegado", "nosotros": "hemos llegado", "vosotros": "habéis llegado", "ellos": "han llegado"},
+    "future_simple": {"yo": "llegaré", "tú": "llegarás", "vos": "llegarás", "él": "llegará", "nosotros": "llegaremos", "vosotros": "llegaréis", "ellos": "llegarán"},
+    "condicional_simple": {"yo": "llegaría", "tú": "llegarías", "vos": "llegarías", "él": "llegaría", "nosotros": "llegaríamos", "vosotros": "llegaríais", "ellos": "llegarían"},
+    "imperfect_indicative": {"yo": "llegaba", "tú": "llegabas", "vos": "llegabas", "él": "llegaba", "nosotros": "llegábamos", "vosotros": "llegabais", "ellos": "llegaban"}
+  },
+  "conjugations_en": {
+    "present": {"I": "arrive", "you": "arrive", "he": "arrives", "she": "arrives", "it": "arrives", "we": "arrive", "they": "arrive"},
+    "past_simple": {"I": "arrived", "you": "arrived", "he": "arrived", "she": "arrived", "it": "arrived", "we": "arrived", "they": "arrived"},
+    "present_perfect": {"I": "have arrived", "you": "have arrived", "he": "has arrived", "she": "has arrived", "it": "has arrived", "we": "have arrived", "they": "have arrived"},
+    "future_simple": {"I": "will arrive", "you": "will arrive", "he": "will arrive", "she": "will arrive", "it": "will arrive", "we": "will arrive", "they": "will arrive"},
+    "condicional_simple": {"I": "would arrive", "you": "would arrive", "he": "would arrive", "she": "would arrive", "it": "would arrive", "we": "would arrive", "they": "would arrive"},
+    "imperfect_indicative": {"I": "was arriving", "you": "were arriving", "he": "was arriving", "she": "was arriving", "it": "was arriving", "we": "were arriving", "they": "were arriving"}
+  }
+},
+{
+  "infinitive_es": "preferir",
+  "infinitive_en": "to prefer",
+  "types": {
+    "present": ["stem_changing"],
+    "present_perfect": ["regular"],
+    "past_simple": ["stem_change_3rd_person"],
+    "future_simple": ["regular"],
+    "condicional_simple": ["regular"],
+    "imperfect_indicative": ["regular"]
+  },
+  "conjugations": {
+    "present": {"yo": "prefiero", "tú": "prefieres", "vos": "preferís", "él": "prefiere", "nosotros": "preferimos", "vosotros": "preferís", "ellos": "prefieren"},
+    "past_simple": {"yo": "preferí", "tú": "preferiste", "vos": "preferiste", "él": "prefirió", "nosotros": "preferimos", "vosotros": "preferisteis", "ellos": "prefirieron"},
+    "present_perfect": {"yo": "he preferido", "tú": "has preferido", "vos": "has preferido", "él": "ha preferido", "nosotros": "hemos preferido", "vosotros": "habéis preferido", "ellos": "han preferido"},
+    "future_simple": {"yo": "preferiré", "tú": "preferirás", "vos": "preferirás", "él": "preferirá", "nosotros": "preferiremos", "vosotros": "preferiréis", "ellos": "preferirán"},
+    "condicional_simple": {"yo": "preferiría", "tú": "preferirías", "vos": "preferirías", "él": "preferiría", "nosotros": "preferiríamos", "vosotros": "preferiríais", "ellos": "preferirían"},
+    "imperfect_indicative": {"yo": "prefería", "tú": "preferías", "vos": "preferías", "él": "prefería", "nosotros": "preferíamos", "vosotros": "preferíais", "ellos": "preferían"}
+  },
+  "conjugations_en": {
+    "present": {"I": "prefer", "you": "prefer", "he": "prefers", "she": "prefers", "it": "prefers", "we": "prefer", "they": "prefer"},
+    "past_simple": {"I": "preferred", "you": "preferred", "he": "preferred", "she": "preferred", "it": "preferred", "we": "preferred", "they": "preferred"},
+    "present_perfect": {"I": "have preferred", "you": "have preferred", "he": "has preferred", "she": "has preferred", "it": "has preferred", "we": "have preferred", "they": "have preferred"},
+    "future_simple": {"I": "will prefer", "you": "will prefer", "he": "will prefer", "she": "will prefer", "it": "will prefer", "we": "will prefer", "they": "will prefer"},
+    "condicional_simple": {"I": "would prefer", "you": "would prefer", "he": "would prefer", "she": "would prefer", "it": "would prefer", "we": "would prefer", "they": "would prefer"},
+    "imperfect_indicative": {"I": "was preferring", "you": "were preferring", "he": "was preferring", "she": "was preferring", "it": "was preferring", "we": "were preferring", "they": "were preferring"}
+  }
+},
+{
+  "infinitive_es": "costar",
+  "infinitive_en": "to cost",
+  "types": {
+    "present": ["stem_changing"],
+    "present_perfect": ["regular"],
+    "past_simple": ["regular"],
+    "future_simple": ["regular"],
+    "condicional_simple": ["regular"],
+    "imperfect_indicative": ["regular"]
+  },
+  "conjugations": {
+    "present": {"yo": "cuesto", "tú": "cuestas", "vos": "costás", "él": "cuesta", "nosotros": "costamos", "vosotros": "costáis", "ellos": "cuestan"},
+    "past_simple": {"yo": "costé", "tú": "costaste", "vos": "costaste", "él": "costó", "nosotros": "costamos", "vosotros": "costasteis", "ellos": "costaron"},
+    "present_perfect": {"yo": "he costado", "tú": "has costado", "vos": "has costado", "él": "ha costado", "nosotros": "hemos costado", "vosotros": "habéis costado", "ellos": "han costado"},
+    "future_simple": {"yo": "costaré", "tú": "costarás", "vos": "costarás", "él": "costará", "nosotros": "costaremos", "vosotros": "costaréis", "ellos": "costarán"},
+    "condicional_simple": {"yo": "costaría", "tú": "costarías", "vos": "costarías", "él": "costaría", "nosotros": "costaríamos", "vosotros": "costaríais", "ellos": "costarían"},
+    "imperfect_indicative": {"yo": "costaba", "tú": "costabas", "vos": "costabas", "él": "costaba", "nosotros": "costábamos", "vosotros": "costabais", "ellos": "costaban"}
+  },
+  "conjugations_en": {
+    "present": {"I": "cost", "you": "cost", "he": "costs", "she": "costs", "it": "costs", "we": "cost", "they": "cost"},
+    "past_simple": {"I": "cost", "you": "cost", "he": "cost", "she": "cost", "it": "cost", "we": "cost", "they": "cost"},
+    "present_perfect": {"I": "have cost", "you": "have cost", "he": "has cost", "she": "has cost", "it": "has cost", "we": "have cost", "they": "have cost"},
+    "future_simple": {"I": "will cost", "you": "will cost", "he": "will cost", "she": "will cost", "it": "will cost", "we": "will cost", "they": "will cost"},
+    "condicional_simple": {"I": "would cost", "you": "would cost", "he": "would cost", "she": "would cost", "it": "would cost", "we": "would cost", "they": "would cost"},
+    "imperfect_indicative": {"I": "was costing", "you": "were costing", "he": "was costing", "she": "was costing", "it": "was costing", "we": "were costing", "they": "were costing"}
+  }
+},
+{
+  "infinitive_es": "despertarse",
+  "infinitive_en": "to wake up",
+  "types": {
+    "present": ["stem_changing", "reflexive"],
+    "present_perfect": ["regular", "reflexive"],
+    "past_simple": ["regular", "reflexive"],
+    "future_simple": ["regular", "reflexive"],
+    "condicional_simple": ["regular", "reflexive"],
+    "imperfect_indicative": ["regular", "reflexive"]
+  },
+  "conjugations": {
+    "present": {"yo": "me despierto", "tú": "te despiertas", "vos": "te despertás", "él": "se despierta", "nosotros": "nos despertamos", "vosotros": "os despertáis", "ellos": "se despiertan"},
+    "past_simple": {"yo": "me desperté", "tú": "te despertaste", "vos": "te despertaste", "él": "se despertó", "nosotros": "nos despertamos", "vosotros": "os despertasteis", "ellos": "se despertaron"},
+    "present_perfect": {"yo": "me he despertado", "tú": "te has despertado", "vos": "te has despertado", "él": "se ha despertado", "nosotros": "nos hemos despertado", "vosotros": "os habéis despertado", "ellos": "se han despertado"},
+    "future_simple": {"yo": "me despertaré", "tú": "te despertarás", "vos": "te despertarás", "él": "se despertará", "nosotros": "nos despertaremos", "vosotros": "os despertaréis", "ellos": "se despertarán"},
+    "condicional_simple": {"yo": "me despertaría", "tú": "te despertarías", "vos": "te despertarías", "él": "se despertaría", "nosotros": "nos despertaríamos", "vosotros": "os despertaríais", "ellos": "se despertarían"},
+    "imperfect_indicative": {"yo": "me despertaba", "tú": "te despertabas", "vos": "te despertabas", "él": "se despertaba", "nosotros": "nos despertábamos", "vosotros": "os despertabais", "ellos": "se despertaban"}
+  },
+  "conjugations_en": {
+    "present": {"I": "wake up", "you": "wake up", "he": "wakes up", "she": "wakes up", "it": "wakes up", "we": "wake up", "they": "wake up"},
+    "past_simple": {"I": "woke up", "you": "woke up", "he": "woke up", "she": "woke up", "it": "woke up", "we": "woke up", "they": "woke up"},
+    "present_perfect": {"I": "have woken up", "you": "have woken up", "he": "has woken up", "she": "has woken up", "it": "has woken up", "we": "have woken up", "they": "have woken up"},
+    "future_simple": {"I": "will wake up", "you": "will wake up", "he": "will wake up", "she": "will wake up", "it": "will wake up", "we": "will wake up", "they": "will wake up"},
+    "condicional_simple": {"I": "would wake up", "you": "would wake up", "he": "would wake up", "she": "would wake up", "it": "would wake up", "we": "would wake up", "they": "would wake up"},
+    "imperfect_indicative": {"I": "was waking up", "you": "were waking up", "he": "was waking up", "she": "was waking up", "it": "was waking up", "we": "were waking up", "they": "were waking up"}
+  }
+}
 ]
