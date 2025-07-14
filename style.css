@@ -248,9 +248,9 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  padding-bottom: 20px; /* espacio inferior */
+  margin: 15px auto;
+  padding: 15px;
+  padding-bottom: 15px; /* espacio inferior */
   font-size: 20px;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
@@ -771,7 +771,7 @@ button:active {
 
 #streak-bar {
   position: absolute;
-  right: 0;
+  right: 10px; /* move slightly left so fire isn't cut off */
   bottom: 0;
   z-index: 1;
   pointer-events: none;
