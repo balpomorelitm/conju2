@@ -19,6 +19,18 @@ const soundLevelUp = new Audio('sounds/levelup.mp3');
 menuMusic.loop = true;
 gameMusic.loop = true;
 
+function safePlay(audio) {
+  if (!audio || typeof audio.play !== 'function') return;
+  const p = audio.play();
+  if (p && typeof p.catch === 'function') {
+    p.catch(err => {
+      if (err.name !== 'AbortError') {
+        console.error('Audio play failed:', err);
+      }
+    });
+  }
+}
+
 // Level progression state
 let correctAnswersTotal = 0;
 let currentLevel = 0;
@@ -263,7 +275,7 @@ function playFromStart(audio) {
   if (!audio) return;
   audio.pause();
   audio.currentTime = 0;
-  audio.play().catch(() => {});
+  safePlay(audio);
 }
 
 // Ensure antagonist container stays at the right of the game layout
@@ -350,7 +362,7 @@ function handleIgnoreAccentsToggle() {
     const btn = document.getElementById('toggle-ignore-accents');
     if (!btn) return;
     btn.classList.toggle('selected');
-    if (typeof soundClick !== 'undefined') soundClick.play();
+    if (typeof soundClick !== 'undefined') safePlay(soundClick);
 }
 
 
@@ -493,7 +505,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (timerTimeLeft <= 10) {
       if (!tickingSoundPlaying) {
         soundTicking.currentTime = 0;
-        soundTicking.play();
+        safePlay(soundTicking);
         tickingSoundPlaying = true;
       }
     } else if (tickingSoundPlaying) {
@@ -1035,7 +1047,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const stepTime = duration / steps;
     const volumeStep = target / steps;
     audio.volume = 0;
-    audio.play();
+    safePlay(audio);
     audio._fadeInterval = setInterval(() => {
       const newVol = Math.min(target, audio.volume + volumeStep);
       audio.volume = newVol;
@@ -1061,7 +1073,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateGroupButtons();
     updateVerbTypeButtonsVisualState();
 
-    if (typeof soundClick !== 'undefined') soundClick.play();
+    if (typeof soundClick !== 'undefined') safePlay(soundClick);
   }
 
   if (toggleReflexiveBtn) {
@@ -1160,7 +1172,7 @@ confirmDifficultyButton.addEventListener('click', () => {
     }
 });
 backButton.addEventListener('click', () => {
-    if (soundClick) soundClick.play();
+    if (soundClick) safePlay(soundClick);
     let targetStepToGoBackTo = '';
 
     if (currentConfigStep === 'details') {
@@ -1230,7 +1242,7 @@ backButton.addEventListener('click', () => {
     sessionStorage.setItem('musicStarted', 'true');
   } else {
     menuMusic.volume = targetVolume;
-    menuMusic.play();
+    safePlay(menuMusic);
   }
   currentMusic = menuMusic;
   setInterval(() => {
@@ -1583,7 +1595,7 @@ if (loaded) {
   document.querySelectorAll('input[type="checkbox"], input[type="radio"], select')
     .forEach(el => {
       el.addEventListener('change', () => {
-        soundClick.play();
+        safePlay(soundClick);
       });
     });
 	
@@ -1611,7 +1623,7 @@ if (loaded) {
       if (t.value === 'present') btn.classList.add('selected');
       btn.addEventListener('click', (e) => {
         if (e.target.closest('.context-info-icon')) return;
-        soundClick.play();
+        safePlay(soundClick);
         btn.classList.toggle('selected');
         document.querySelectorAll('.verb-type-button.selected').forEach(typeBtn => {
             typeBtn.classList.remove('selected'); // Desmarcar todos primero
@@ -1629,7 +1641,7 @@ if (loaded) {
       if (icon) {
         icon.addEventListener('click', (e) => {
           e.stopPropagation();
-          if (typeof soundClick !== 'undefined') soundClick.play();
+          if (typeof soundClick !== 'undefined') safePlay(soundClick);
           openSpecificModal(icon.dataset.infoKey);
         });
       }
@@ -1679,7 +1691,7 @@ function initTenseDropdown() {
   if (selectAllTensesEl) {
     selectAllTensesEl.addEventListener('click', () => {
       if (typeof soundClick !== 'undefined' && soundClick.play) {
-          soundClick.play();
+          safePlay(soundClick);
       }
       
       const currentTenseButtons = Array.from(document.querySelectorAll('#tense-buttons .tense-button'));
@@ -1746,7 +1758,7 @@ function filterVerbTypes() {
   gameModeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       selectedGameMode = btn.dataset.mode;
-      soundClick.play();
+      safePlay(soundClick);
       gameModeButtons.forEach(b => b.classList.remove('selected-mode'));
       btn.classList.add('selected-mode');
       document.getElementById('setup-screen').style.display = 'block';
@@ -1758,7 +1770,7 @@ function filterVerbTypes() {
   configButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       currentOptions.mode = btn.dataset.mode;
-      soundClick.play();
+      safePlay(soundClick);
       configButtons.forEach(b => b.classList.remove('selected-mode'));
       btn.classList.add('selected-mode');
     });
@@ -1779,7 +1791,7 @@ let musicPlaying = true;
 musicToggle.addEventListener('click', () => {
   if (currentMusic.paused) {
     currentMusic.volume = targetVolume;  // inicia directamente al 20%
-    currentMusic.play();
+    safePlay(currentMusic);
     if (musicIcon) {
       musicIcon.src = 'images/musicon.webp';
       musicIcon.alt = 'Music on';
@@ -1976,7 +1988,7 @@ function renderVerbButtons() {
 		groupsPanel.querySelectorAll('.group-button').forEach(gb => {
 		  gb.addEventListener('click', e => {
 			e.preventDefault();
-			if (soundClick) soundClick.play(); 
+			if (soundClick) safePlay(soundClick); 
 			const grp = gb.dataset.group; // "all" | "reflexive" | "ar" | "er" | "ir"
 
 			// ① Recoger solo los botones de verbo que pertenecen a este grupo
@@ -2043,7 +2055,7 @@ function renderVerbButtons() {
 		container.addEventListener('click', e => {
 		  const btn = e.target.closest('.verb-button');
 		  if (!btn) return;
-		  soundClick.play();
+		  safePlay(soundClick);
 		  btn.classList.toggle('selected');
 
 		  updateVerbDropdownCount();
@@ -2114,7 +2126,7 @@ function initPronounDropdown() {
   // 2) Lógica para el botón “Seleccionar Todo / Deseleccionar Todo” de Pronombres
   selectAll.addEventListener('click', () => {
     if (typeof soundClick !== 'undefined' && soundClick.play) {
-        soundClick.play();
+        safePlay(soundClick);
     }
     
     const currentPronounButtons = getAllPronounGroupButtons();
@@ -2137,7 +2149,7 @@ function initPronounDropdown() {
   getAllPronounGroupButtons().forEach(b => { // Itera sobre los botones obtenidos
     b.addEventListener('click', () => {
       if (typeof soundClick !== 'undefined' && soundClick.play) {
-          soundClick.play();
+          safePlay(soundClick);
       }
       b.classList.toggle('selected');
       updatePronounDropdownCount();
@@ -2229,7 +2241,7 @@ function initStepButtons(container, stepType) {
 }
 
 function handleOptionProvisionalSelection(buttonElement, stepType, infoKeyToDisplay) {
-    if (soundClick) soundClick.play();
+    if (soundClick) safePlay(soundClick);
     const container = buttonElement.parentElement;
     container.querySelectorAll('.config-flow-button').forEach(btn => {
         btn.classList.remove('provisional-selection');
@@ -2775,14 +2787,14 @@ function prepareNextQuestion() {
   const promptIcon = qPrompt.querySelector('.context-info-icon');
   if (promptBadge && promptBadge.dataset.infoKey) {
     promptBadge.addEventListener('click', () => {
-      if (typeof soundClick !== 'undefined') soundClick.play();
+      if (typeof soundClick !== 'undefined') safePlay(soundClick);
       openSpecificModal(promptBadge.dataset.infoKey);
     });
   }
   if (promptIcon && promptIcon.dataset.infoKey) {
     promptIcon.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (typeof soundClick !== 'undefined') soundClick.play();
+      if (typeof soundClick !== 'undefined') safePlay(soundClick);
       openSpecificModal(promptIcon.dataset.infoKey);
     });
   }
@@ -3115,9 +3127,9 @@ if (reflexiveBonus > 0) {
   } else {
     // --- INCORRECT ANSWER ---
     if (isStudyMode) {
-      soundWrongStudy.play();
+      safePlay(soundWrongStudy);
     } else {
-      soundWrong.play();
+      safePlay(soundWrong);
     }
     chuacheSpeaks('wrong');
     streak = 0;
@@ -3150,7 +3162,7 @@ if (reflexiveBonus > 0) {
         updateStreakForLifeDisplay();
         updateGameTitle();              
         if (remainingLives <= 0) {
-            soundGameOver.play();
+            safePlay(soundGameOver);
             chuacheSpeaks('gameover');
             gameTitle.textContent = '💀 ¡Estás MUERTO!';
             checkAnswerButton.disabled = true;
@@ -3263,13 +3275,13 @@ function startTimerMode() {
   configFlowScreen.style.display = 'none';
   gameScreen.style.display = 'block';
   updateGameTitle();
-  soundStart.play();
+  safePlay(soundStart);
   fadeOutAudio(menuMusic, 3000);
 
     setTimeout(() => {
       currentMusic = gameMusic;
       gameMusic.volume = targetVolume;    // reinicia con el volumen definido
-      gameMusic.play();
+      safePlay(gameMusic);
 
     musicToggle.style.display = 'block';
     volumeSlider.style.display = 'block';
@@ -3300,7 +3312,7 @@ function startTimerMode() {
           soundTicking.pause();
           soundTicking.currentTime = 0;
           tickingSoundPlaying = false;
-          soundGameOver.play();
+          safePlay(soundGameOver);
           chuacheSpeaks('gameover');
       clearInterval(countdownTimer);
   
@@ -3354,12 +3366,12 @@ function startLivesMode() {
   configFlowScreen.style.display = 'none';
   gameScreen.style.display = 'block';
   updateGameTitle();
-  soundStart.play();
+  safePlay(soundStart);
   fadeOutAudio(menuMusic, 1000);
   setTimeout(() => {
     currentMusic = gameMusic;
     gameMusic.volume = targetVolume;
-    gameMusic.play();
+    safePlay(gameMusic);
     musicToggle.style.display = 'block';
     volumeSlider.style.display = 'block';
     volumeSlider.value = targetVolume;
@@ -3464,7 +3476,7 @@ function skipQuestion() {
 
 		// 3) Comprobar GAME OVER
                 if (remainingLives <= 0) {
-                  soundGameOver.play();
+                  safePlay(soundGameOver);
                   chuacheSpeaks('gameover');
                   gameTitle.textContent   = '💀¡Estás MUERTO!💀';
                   checkAnswerButton.disabled    = true;
@@ -3524,7 +3536,7 @@ function quitToSettings() {
   currentMusic = menuMusic;
   if (musicPlaying) {
     menuMusic.volume = targetVolume;
-    menuMusic.play();
+    safePlay(menuMusic);
   }
   if (musicIcon) {
     musicIcon.src = musicPlaying ? 'images/musicon.webp' : 'images/musicoff.webp';
@@ -3701,7 +3713,7 @@ finalStartGameButton.addEventListener('click', async () => {
     } else {
         freeClues = 0;
         updateClueButtonUI();
-        soundStart.play();
+        safePlay(soundStart);
         fadeOutAudio(menuMusic, 1000);
         setTimeout(() => {
             if (currentMusic !== gameMusic) {
@@ -3709,7 +3721,7 @@ finalStartGameButton.addEventListener('click', async () => {
             }
             if (selectedGameMode !== 'study' && gameMusic.paused && musicPlaying) {
                 gameMusic.volume = targetVolume;
-                gameMusic.play();
+                safePlay(gameMusic);
             } else {
                 gameMusic.pause();
                 if (musicIcon) {
@@ -3803,7 +3815,7 @@ if (irregularitiesContainer) {
     if (endButton) {
         endButton.addEventListener('click', () => {
             playFromStart(soundElectricShock);
-            soundGameOver.play();
+            safePlay(soundGameOver);
             chuacheSpeaks('gameover');
             endButton.classList.add('electric-effect');
             setTimeout(() => endButton.classList.remove('electric-effect'), 1000);
@@ -3871,7 +3883,7 @@ function renderVerbTypeButtons() {
     if (icon) {
       icon.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (typeof soundClick !== 'undefined') soundClick.play();
+        if (typeof soundClick !== 'undefined') safePlay(soundClick);
         openSpecificModal(icon.dataset.infoKey);
       });
     }
@@ -3883,7 +3895,7 @@ function renderVerbTypeButtons() {
 
     // --- LISTENER DE CLIC COMPLETO Y CORRECTO ---
     button.addEventListener('click', () => { // (el listener permanece como estaba en tu código original)
-      if (soundClick) soundClick.play();
+      if (soundClick) safePlay(soundClick);
       
       button.classList.toggle('selected'); 
       const isNowSelected = button.classList.contains('selected');
@@ -3953,7 +3965,7 @@ function closeSpecificModal() {
 const infoIcons = document.querySelectorAll('.context-info-icon');
 infoIcons.forEach(icon => {
   icon.addEventListener('click', function() {
-    if (typeof soundClick !== 'undefined') soundClick.play();
+    if (typeof soundClick !== 'undefined') safePlay(soundClick);
     const infoKey = this.dataset.infoKey;
     openSpecificModal(infoKey);
   });
@@ -4092,7 +4104,7 @@ function updateGameTitle() {
   const modeBadgeEl = gameTitle.querySelector('.mode-badge');
   if (modeBadgeEl && modeBadgeEl.dataset.infoKey) {
     modeBadgeEl.addEventListener('click', () => {
-      if (typeof soundClick !== 'undefined') soundClick.play();
+      if (typeof soundClick !== 'undefined') safePlay(soundClick);
       openSpecificModal(modeBadgeEl.dataset.infoKey);
     });
   }
@@ -4102,7 +4114,7 @@ function updateGameTitle() {
     const key = tb.dataset.infoKey;
     if (key) {
       tb.addEventListener('click', () => {
-        if (typeof soundClick !== 'undefined') soundClick.play();
+        if (typeof soundClick !== 'undefined') safePlay(soundClick);
         openSpecificModal(key);
       });
     }
@@ -4138,7 +4150,7 @@ function showLifeGainedAnimation() {
   if (soundLifeGained) {
     try {
       soundLifeGained.currentTime = 0;
-      soundLifeGained.play();
+      safePlay(soundLifeGained);
     } catch (e) {
       console.error('⚠️ Excepción al reproducir sonido:', e);
     }
@@ -4277,7 +4289,7 @@ function createBubble(side) {
   bubble.addEventListener('click', () => {
   // 1) Reproducir solo el sonido
   soundbubblepop.currentTime = 0;
-  soundbubblepop.play();
+  safePlay(soundbubblepop);
 
   // 2) Quitar la burbuja
   bubble.remove();
