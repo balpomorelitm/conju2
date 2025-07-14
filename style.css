@@ -3564,8 +3564,7 @@ td.irregular-highlight {
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  padding-right: 25px;
+  /* padding-right has been removed */
   box-sizing: border-box;
 }
 
