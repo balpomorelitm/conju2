@@ -966,7 +966,7 @@ button:active {
 }
 #input-es-container,
 #input-en-container {
-  width: 80%;
+  width: 75%;
   margin: 0 auto 8px;
   display: flex;
   align-items: center;
