@@ -3551,35 +3551,6 @@
 },
 
 {
-  "infinitive_es": "encantar",
-  "infinitive_en": "to love / to enchant",
-  "types": {
-    "present": ["regular"],
-    "present_perfect": ["regular"],
-    "past_simple": ["regular"],
-    "future_simple": ["regular"],
-    "condicional_simple": ["regular"],
-    "imperfect_indicative": ["regular"]
-  },
-  "conjugations": {
-    "present": {"yo": "encanto", "tú": "encantas", "vos": "encantás", "él": "encanta", "nosotros": "encantamos", "vosotros": "encantáis", "ellos": "encantan"},
-    "past_simple": {"yo": "encanté", "tú": "encantaste", "vos": "encantaste", "él": "encantó", "nosotros": "encantamos", "vosotros": "encantasteis", "ellos": "encantaron"},
-    "present_perfect": {"yo": "he encantado", "tú": "has encantado", "vos": "has encantado", "él": "ha encantado", "nosotros": "hemos encantado", "vosotros": "habéis encantado", "ellos": "han encantado"},
-    "future_simple": {"yo": "encantaré", "tú": "encantarás", "vos": "encantarás", "él": "encantará", "nosotros": "encantaremos", "vosotros": "encantaréis", "ellos": "encantarán"},
-    "condicional_simple": {"yo": "encantaría", "tú": "encantarías", "vos": "encantarías", "él": "encantaría", "nosotros": "encantaríamos", "vosotros": "encantaríais", "ellos": "encantarían"},
-    "imperfect_indicative": {"yo": "encantaba", "tú": "encantabas", "vos": "encantabas", "él": "encantaba", "nosotros": "encantábamos", "vosotros": "encantabais", "ellos": "encantaban"}
-  },
-  "conjugations_en": {
-    "present": {"I": "love", "you": "love", "he": "loves", "she": "loves", "it": "loves", "we": "love", "they": "love"},
-    "past_simple": {"I": "loved", "you": "loved", "he": "loved", "she": "loved", "it": "loved", "we": "loved", "they": "loved"},
-    "present_perfect": {"I": "have loved", "you": "have loved", "he": "has loved", "she": "has loved", "it": "has loved", "we": "have loved", "they": "have loved"},
-    "future_simple": {"I": "will love", "you": "will love", "he": "will love", "she": "will love", "it": "will love", "we": "will love", "they": "will love"},
-    "condicional_simple": {"I": "would love", "you": "would love", "he": "would love", "she": "would love", "it": "would love", "we": "would love", "they": "would love"},
-    "imperfect_indicative": {"I": "was loving", "you": "were loving", "he": "was loving", "she": "was loving", "it": "was loving", "we": "were loving", "they": "were loving"}
-  }
-},
-
-{
   "infinitive_es": "sufrir",
   "infinitive_en": "to suffer",
   "types": {
