@@ -457,8 +457,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const chuacheImage = document.getElementById('chuache-image');
   const bossImage = document.getElementById('boss-image');
   const progressContainer = document.getElementById('level-text');
-  const clueButton = document.getElementById('clue-button');
-  const skipButton = document.getElementById('skip-button');
 
   const game = {
     score: 0,
@@ -482,21 +480,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           id: 'skynetGlitch',
           verbsCompleted: 0,
           challengeVerbs: selectBossVerbs(this.verbsToComplete)
-        };
-        displayNextBossVerb();
-      }
-    },
-    t800Disruptor: {
-      name: 'T-800 Disruptor',
-      description: 'El Terminator ha desactivado tus botones.',
-      verbsToComplete: 3,
-      init: function () {
-        if (clueButton) clueButton.disabled = true;
-        if (skipButton) skipButton.disabled = true;
-        game.boss = {
-          id: 't800Disruptor',
-          verbsCompleted: 0,
-          challengeVerbs: game.currentVerbs.sort(() => 0.5 - Math.random()).slice(0, this.verbsToComplete)
         };
         displayNextBossVerb();
       }
@@ -558,13 +541,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const correctConjugation = verbData.conjugations[0];
 
-    if (qPrompt) {
-      if (game.boss.id === 'skynetGlitch') {
-        qPrompt.textContent = glitchVerb(correctConjugation);
-      } else {
-        qPrompt.textContent = correctConjugation;
-      }
-    }
+    if (qPrompt) qPrompt.textContent = glitchVerb(correctConjugation);
     const tenseEl = document.getElementById('tense-label');
     if (tenseEl) tenseEl.textContent = `(${verbData.tense})`;
     if (ansES) ansES.value = '';
@@ -576,14 +553,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const tenseEl = document.getElementById('tense-label');
 
     if (playerWon) {
-      game.score += 500;
-      score = game.score;
-      const prizeText = game.boss.id === 't800Disruptor' ? "+500 Puntos y 3 Pistas" : "+500 Puntos!";
+      score += 500;
       if (qPrompt) qPrompt.textContent = 'SYSTEM RESTORED';
-      if (tenseEl) tenseEl.textContent = prizeText;
-      if (game.boss.id === 't800Disruptor') {
-        freeClues += 3;
-      }
+      if (tenseEl) tenseEl.textContent = '+500 Points!';
       updateScore();
     } else {
       if (qPrompt) qPrompt.textContent = 'SYSTEM FAILURE';
@@ -599,9 +571,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         progressContainer.style.color = '';
         updateLevelText(`Level ${game.level + 1} (0/9) | Total Score: ${score}`);
       }
-
-      if (clueButton) clueButton.disabled = false;
-      if (skipButton) skipButton.disabled = false;
 
       game.level++;
       game.verbsInPhaseCount = 0;
@@ -2962,9 +2931,7 @@ function startBossBattle() {
   }
 
   if (qPrompt) qPrompt.textContent = '';
-  const bossKeys = Object.keys(bosses);
-  const randomBossKey = bossKeys[Math.floor(Math.random() * bossKeys.length)];
-  const currentBoss = bosses[randomBossKey];
+  const currentBoss = bosses.skynetGlitch; // Only boss for now
   const tenseEl = document.getElementById('tense-label');
   if (tenseEl) tenseEl.textContent = currentBoss.description;
   if (ansES) {
@@ -4008,6 +3975,8 @@ if (irregularitiesContainer) {
     //prepareNextQuestion(); // Mantenla comentada por ahora hasta que todo el flujo funcione
     // <<<< INICIO DE LAS LÍNEAS MOVIDAS >>>>
     const checkAnswerButton = document.getElementById('check-answer-button');
+    const clueButton        = document.getElementById('clue-button');
+    const skipButton        = document.getElementById('skip-button');   // dentro de DOMContentLoaded si no son globales
     const endButton         = document.getElementById('end-button');
     const ansES             = document.getElementById('answer-input-es');
     const ansEN             = document.getElementById('answer-input-en');
