@@ -487,50 +487,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   /**
-   * Selects a specified number of long, regular verbs for the boss battle.
+   * Selects a specified number of verbs for the boss battle,
+   * respecting the currently active filters from the main game.
    */
   function selectBossVerbs(count) {
-    // Helper to determine if a verb is regular across all tenses
-    const isRegular = verb =>
-      Object.values(verb.types || {}).every(arr =>
-        Array.isArray(arr) && arr.length === 1 && arr[0] === 'regular'
-      );
+    // We use game.currentVerbs because it's already filtered by the main game settings.
+    // This ensures we only get verbs from the correct tense, mood, etc.
+    const availableVerbs = [...game.currentVerbs];
 
-    const longVerbs = allVerbData.filter(
-      v => v.infinitive_es.length > 5 && isRegular(v)
-    );
-
-    return longVerbs
-      .sort(() => 0.5 - Math.random())
-      .slice(0, count)
-      .map(verb => {
-        const tenses = Object.keys(verb.conjugations);
-        const tense = tenses[Math.floor(Math.random() * tenses.length)];
-        const conjObj = verb.conjugations[tense];
-        const pronouns = Object.keys(conjObj);
-        const pronoun = pronouns[Math.floor(Math.random() * pronouns.length)];
-        return { tense, conjugations: [conjObj[pronoun]] };
-      });
+    // Shuffle the array and pick the amount needed
+    return availableVerbs.sort(() => 0.5 - Math.random()).slice(0, count);
   }
 
   /**
-   * Applies a "glitch" effect to a word.
-   * Hides one random letter and reverses a small part of the string.
+   * Applies a simple "glitch" effect to a word by hiding one random letter.
    */
   function glitchVerb(word) {
-    if (word.length < 4) return word;
+    if (word.length < 2) return word; // Avoid glitching very short words
 
+    // Select a random index to hide a character
     const hideIndex = Math.floor(Math.random() * word.length);
-    let glitchedWord = word.substring(0, hideIndex) + '_' + word.substring(hideIndex + 1);
 
-    const reverseStartIndex = Math.floor(Math.random() * (glitchedWord.length - 2));
-    const chunkToReverse = glitchedWord.substring(reverseStartIndex, reverseStartIndex + 3);
-    const reversedChunk = chunkToReverse.split('').reverse().join('');
-
-    glitchedWord =
-      glitchedWord.substring(0, reverseStartIndex) +
-      reversedChunk +
-      glitchedWord.substring(reverseStartIndex + 3);
+    // Build the new string with the hidden character
+    const glitchedWord = word.substring(0, hideIndex) + '_' + word.substring(hideIndex + 1);
 
     return glitchedWord;
   }
@@ -2959,8 +2938,15 @@ function checkAnswer() {
         displayNextBossVerb();
       }
     } else {
-      score = Math.max(0, score - 20);
+      // Player guessed wrong
+      game.score = Math.max(0, game.score - 20); // Penalize score
+      score = game.score; // keep legacy score in sync
       updateScore();
+
+      // Provide visual feedback for wrong answer (e.g., shake the screen)
+      gameContainer.classList.add('shake');
+      // Remove the shake effect after it finishes
+      setTimeout(() => gameContainer.classList.remove('shake'), 500);
     }
     if (ansES) ansES.value = '';
     return;
