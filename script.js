@@ -465,8 +465,121 @@ document.addEventListener('DOMContentLoaded', async () => {
     gameState: 'PLAYING', // Possible states: PLAYING, BOSS_BATTLE
     currentVerbs: [],
     currentVerbIndex: 0,
-    isGameOver: false
+    isGameOver: false,
+    boss: null // Will hold the current boss battle state
   };
+
+  // Bosses definition
+  const bosses = {
+    skynetGlitch: {
+      name: 'Skynet Glitch',
+      description: 'Una interferencia digital ha dañado los verbos.',
+      verbsToComplete: 3,
+      init: function () {
+        game.boss = {
+          id: 'skynetGlitch',
+          verbsCompleted: 0,
+          challengeVerbs: selectBossVerbs(this.verbsToComplete)
+        };
+        displayNextBossVerb();
+      }
+    }
+  };
+
+  /**
+   * Selects a specified number of long, regular verbs for the boss battle.
+   */
+  function selectBossVerbs(count) {
+    // Helper to determine if a verb is regular across all tenses
+    const isRegular = verb =>
+      Object.values(verb.types || {}).every(arr =>
+        Array.isArray(arr) && arr.length === 1 && arr[0] === 'regular'
+      );
+
+    const longVerbs = allVerbData.filter(
+      v => v.infinitive_es.length > 5 && isRegular(v)
+    );
+
+    return longVerbs
+      .sort(() => 0.5 - Math.random())
+      .slice(0, count)
+      .map(verb => {
+        const tenses = Object.keys(verb.conjugations);
+        const tense = tenses[Math.floor(Math.random() * tenses.length)];
+        const conjObj = verb.conjugations[tense];
+        const pronouns = Object.keys(conjObj);
+        const pronoun = pronouns[Math.floor(Math.random() * pronouns.length)];
+        return { tense, conjugations: [conjObj[pronoun]] };
+      });
+  }
+
+  /**
+   * Applies a "glitch" effect to a word.
+   * Hides one random letter and reverses a small part of the string.
+   */
+  function glitchVerb(word) {
+    if (word.length < 4) return word;
+
+    const hideIndex = Math.floor(Math.random() * word.length);
+    let glitchedWord = word.substring(0, hideIndex) + '_' + word.substring(hideIndex + 1);
+
+    const reverseStartIndex = Math.floor(Math.random() * (glitchedWord.length - 2));
+    const chunkToReverse = glitchedWord.substring(reverseStartIndex, reverseStartIndex + 3);
+    const reversedChunk = chunkToReverse.split('').reverse().join('');
+
+    glitchedWord =
+      glitchedWord.substring(0, reverseStartIndex) +
+      reversedChunk +
+      glitchedWord.substring(reverseStartIndex + 3);
+
+    return glitchedWord;
+  }
+
+  function displayNextBossVerb() {
+    const verbIndex = game.boss.verbsCompleted;
+    const verbData = game.boss.challengeVerbs[verbIndex];
+
+    const correctConjugation = verbData.conjugations[0];
+
+    if (qPrompt) qPrompt.textContent = glitchVerb(correctConjugation);
+    const tenseEl = document.getElementById('tense-label');
+    if (tenseEl) tenseEl.textContent = `(${verbData.tense})`;
+    if (ansES) ansES.value = '';
+  }
+
+  function endBossBattle(playerWon) {
+    if (ansES) ansES.disabled = true;
+
+    const tenseEl = document.getElementById('tense-label');
+
+    if (playerWon) {
+      score += 500;
+      if (qPrompt) qPrompt.textContent = 'SYSTEM RESTORED';
+      if (tenseEl) tenseEl.textContent = '+500 Points!';
+      updateScore();
+    } else {
+      if (qPrompt) qPrompt.textContent = 'SYSTEM FAILURE';
+      if (tenseEl) tenseEl.textContent = 'Try again next time.';
+    }
+
+    setTimeout(() => {
+      document.body.classList.remove('boss-battle-bg');
+      if (gameContainer) gameContainer.classList.remove('boss-battle-bg');
+      if (bossImage) bossImage.classList.add('hidden');
+      if (chuacheImage) chuacheImage.classList.remove('hidden', 'fade-out');
+      if (progressContainer) {
+        progressContainer.style.color = '';
+        updateLevelText(`Level ${game.level + 1} (0/9) | Total Score: ${score}`);
+      }
+
+      game.level++;
+      game.verbsInPhaseCount = 0;
+      game.gameState = 'PLAYING';
+      game.boss = null;
+
+      prepareNextQuestion();
+    }, 3000);
+  }
 
 
   function resetBackgroundColor() {
@@ -2801,13 +2914,14 @@ function prepareNextQuestion() {
 }
 
 function startBossBattle() {
-  if (gameContainer) {
-    gameContainer.classList.add('boss-battle-bg');
-  }
+  document.body.classList.add('boss-battle-bg');
+  if (gameContainer) gameContainer.classList.add('boss-battle-bg');
+
   if (progressContainer) {
     progressContainer.textContent = 'LEVEL BOSS';
     progressContainer.style.color = '#FF0000';
   }
+
   if (chuacheImage) {
     chuacheImage.classList.add('fade-out');
     setTimeout(() => {
@@ -2815,19 +2929,48 @@ function startBossBattle() {
       if (bossImage) bossImage.classList.remove('hidden');
     }, 500);
   }
+
   if (qPrompt) qPrompt.textContent = '';
+  const currentBoss = bosses.skynetGlitch; // Only boss for now
   const tenseEl = document.getElementById('tense-label');
-  if (tenseEl) tenseEl.textContent = 'A new challenger appears...';
-  if (ansES) ansES.disabled = true;
+  if (tenseEl) tenseEl.textContent = currentBoss.description;
+  if (ansES) {
+    ansES.disabled = false;
+    setTimeout(() => ansES.focus(), 0);
+  }
   if (ansEN) ansEN.disabled = true;
+
+  currentBoss.init();
 }
 
 function checkAnswer() {
+  // --- Boss Battle Logic ---
+  if (game.gameState === 'BOSS_BATTLE') {
+    const userInput = ansES.value.trim().toLowerCase();
+    const verbIndex = game.boss.verbsCompleted;
+    const currentChallengeVerb = game.boss.challengeVerbs[verbIndex];
+    const correctAnswers = currentChallengeVerb.conjugations.map(c => c.toLowerCase());
+
+    if (correctAnswers.includes(userInput)) {
+      game.boss.verbsCompleted++;
+      if (game.boss.verbsCompleted >= bosses[game.boss.id].verbsToComplete) {
+        endBossBattle(true);
+      } else {
+        displayNextBossVerb();
+      }
+    } else {
+      score = Math.max(0, score - 20);
+      updateScore();
+    }
+    if (ansES) ansES.value = '';
+    return;
+  }
+
   // feedback.innerHTML is NO LONGER cleared here.
   const isStudyMode = (selectedGameMode === 'study');
   let possibleCorrectAnswers = [];
   const rt    = (Date.now() - startTime) / 1000;
-  const bonus = Math.max(1, 2 - Math.max(0, rt - 5) * 0.1); 
+  const bonus = Math.max(1, 2 - Math.max(0, rt - 5) * 0.1);
   const irregularities = currentQuestion.verb.types[currentQuestion.tenseKey] || [];
   let correct  = false;
   let accentBonus = 0;
