@@ -452,6 +452,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const defaultBackgroundColor = getComputedStyle(document.documentElement)
     .getPropertyValue('--bg-color').trim();
 
+  // Elements for Boss Battle transitions
+  const gameContainer = document.getElementById('game-container');
+  const chuacheImage = document.getElementById('chuache-image');
+  const bossImage = document.getElementById('boss-image');
+  const progressContainer = document.getElementById('level-text');
+
+  const game = {
+    score: 0,
+    level: 1,
+    verbsInPhaseCount: 0,
+    gameState: 'PLAYING', // Possible states: PLAYING, BOSS_BATTLE
+    currentVerbs: [],
+    currentVerbIndex: 0,
+    isGameOver: false
+  };
+
 
   function resetBackgroundColor() {
     const gameMainPanel = document.getElementById('game-main-panel');
@@ -693,7 +709,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function updateProgressUI() {
-    const levelText = document.getElementById('level-text');
+    if (game.gameState !== 'PLAYING') return;
+    const levelText = progressContainer;
     if (!levelText) return;
 
     const goal = selectedGameMode === 'lives' ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
@@ -2783,6 +2800,28 @@ function prepareNextQuestion() {
   }
 }
 
+function startBossBattle() {
+  if (gameContainer) {
+    gameContainer.classList.add('boss-battle-bg');
+  }
+  if (progressContainer) {
+    progressContainer.textContent = 'LEVEL BOSS';
+    progressContainer.style.color = '#FF0000';
+  }
+  if (chuacheImage) {
+    chuacheImage.classList.add('fade-out');
+    setTimeout(() => {
+      chuacheImage.classList.add('hidden');
+      if (bossImage) bossImage.classList.remove('hidden');
+    }, 500);
+  }
+  if (qPrompt) qPrompt.textContent = '';
+  const tenseEl = document.getElementById('tense-label');
+  if (tenseEl) tenseEl.textContent = 'A new challenger appears...';
+  if (ansES) ansES.disabled = true;
+  if (ansEN) ansEN.disabled = true;
+}
+
 function checkAnswer() {
   // feedback.innerHTML is NO LONGER cleared here.
   const isStudyMode = (selectedGameMode === 'study');
@@ -3021,6 +3060,14 @@ else                   timeBonus = 10;
         showTimeChange(timeBonus);
 
     updateScore();
+
+    game.verbsInPhaseCount++;
+    if (game.verbsInPhaseCount === 9) {
+      game.gameState = 'BOSS_BATTLE';
+      startBossBattle();
+      return;
+    }
+
     setTimeout(prepareNextQuestion, 200);
 
     const irregularityEmojis = {
