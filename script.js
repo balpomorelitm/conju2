@@ -475,29 +475,32 @@ document.addEventListener('DOMContentLoaded', async () => {
       name: 'Skynet Glitch',
       description: 'Una interferencia digital ha dañado los verbos.',
       verbsToComplete: 3,
-      init: function () {
+      init: function() {
+        // Step 1: Filter the current verb list for this boss's specific needs.
+        const filteredVerbs = game.currentVerbs.filter(v => v.infinitive.length > 5 && v.is_regular);
+
+        // Step 2: Shuffle and select the challenge verbs from the filtered list.
+        const challengeVerbs = filteredVerbs.sort(() => 0.5 - Math.random()).slice(0, this.verbsToComplete);
+
+        // Step 3: Handle the case where not enough specific verbs are found.
+        if (challengeVerbs.length < this.verbsToComplete) {
+          console.error("Not enough long/regular verbs to start Skynet Glitch boss.");
+          endBossBattle(false, "ERROR: No hay verbos compatibles."); // End battle gracefully
+          return;
+        }
+
+        // Step 4: Set up the boss state
         game.boss = {
           id: 'skynetGlitch',
           verbsCompleted: 0,
-          challengeVerbs: selectBossVerbs(this.verbsToComplete)
+          challengeVerbs: challengeVerbs
         };
+
+        // Step 5: Display the first glitched verb
         displayNextBossVerb();
       }
     }
   };
-
-  /**
-   * Selects a specified number of verbs for the boss battle,
-   * respecting the currently active filters from the main game.
-   */
-  function selectBossVerbs(count) {
-    // We use game.currentVerbs because it's already filtered by the main game settings.
-    // This ensures we only get verbs from the correct tense, mood, etc.
-    const availableVerbs = [...game.currentVerbs];
-
-    // Shuffle the array and pick the amount needed
-    return availableVerbs.sort(() => 0.5 - Math.random()).slice(0, count);
-  }
 
   /**
    * Applies a simple "glitch" effect to a word by hiding one random letter.
@@ -526,19 +529,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (ansES) ansES.value = '';
   }
 
-  function endBossBattle(playerWon) {
+  function endBossBattle(playerWon, message = "") {
     if (ansES) ansES.disabled = true;
 
     const tenseEl = document.getElementById('tense-label');
 
     if (playerWon) {
-      score += 500;
+      game.score += 500;
+      score = game.score; // keep legacy score in sync
+      const prizeText = "+500 Puntos!";
       if (qPrompt) qPrompt.textContent = 'SYSTEM RESTORED';
-      if (tenseEl) tenseEl.textContent = '+500 Points!';
+      if (tenseEl) tenseEl.textContent = prizeText;
       updateScore();
     } else {
-      if (qPrompt) qPrompt.textContent = 'SYSTEM FAILURE';
-      if (tenseEl) tenseEl.textContent = 'Try again next time.';
+      if (qPrompt) qPrompt.textContent = message || 'SYSTEM FAILURE';
+      if (tenseEl) tenseEl.textContent = message ? '' : 'Try again next time.';
     }
 
     setTimeout(() => {
