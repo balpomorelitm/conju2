@@ -21,7 +21,7 @@
 <link  rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="is-loading">
+<body id="game-container" class="is-loading">
   <div id="specific-modal-backdrop" class="specific-modal-backdrop" style="display:none;"></div>
   <div id="specific-info-modal" class="specific-modal" style="display:none;">
     <div class="specific-modal-content">
@@ -290,9 +290,10 @@
       </div>
 
       <div id="chuache-box">
-        <div id="chuache-container">
+        <div id="character-container">
           <div id="speech-bubble" class="speech-bubble hidden">You just got lucky.</div>
           <img id="chuache-image" src="images/conjuchuache.webp" alt="Chuache">
+          <img id="boss-image" src="images/boss_placeholder.png" alt="Boss" class="hidden">
         </div>
       </div>
     </div>
