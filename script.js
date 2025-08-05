@@ -465,8 +465,54 @@ document.addEventListener('DOMContentLoaded', async () => {
     gameState: 'PLAYING', // Possible states: PLAYING, BOSS_BATTLE
     currentVerbs: [],
     currentVerbIndex: 0,
-    isGameOver: false
+    isGameOver: false,
+    boss: null
   };
+
+  // New Boss Data Structure
+  const bosses = {
+    skynetGlitch: {
+      name: 'Skynet Glitch',
+      description: 'Una interferencia digital ha dañado los verbos.',
+      verbsToComplete: 3,
+      init: function () {
+        game.boss = {
+          id: 'skynetGlitch',
+          verbsCompleted: 0,
+          challengeVerbs: selectBossVerbs(this.verbsToComplete)
+        };
+        displayNextBossVerb();
+      }
+    }
+  };
+
+  /**
+   * Selects a specified number of long, regular verbs for the boss battle.
+   */
+  function selectBossVerbs(count) {
+    const verbs = game.currentVerbs || [];
+    const longVerbs = verbs.filter(v => {
+      const inf = v.infinitive || v.infinitive_es || '';
+      const isRegular = v.is_regular !== undefined ? v.is_regular : true;
+      return inf.length > 5 && isRegular;
+    });
+    return longVerbs.sort(() => 0.5 - Math.random()).slice(0, count);
+  }
+
+  /**
+   * Applies a "glitch" effect to a word.
+   * Hides one random letter and reverses a small part of the string.
+   */
+  function glitchVerb(word) {
+    if (!word || word.length < 4) return word;
+    const hideIndex = Math.floor(Math.random() * word.length);
+    let glitchedWord = word.substring(0, hideIndex) + '_' + word.substring(hideIndex + 1);
+    const reverseStartIndex = Math.floor(Math.random() * (glitchedWord.length - 2));
+    const chunkToReverse = glitchedWord.substring(reverseStartIndex, reverseStartIndex + 3);
+    const reversedChunk = chunkToReverse.split('').reverse().join('');
+    glitchedWord = glitchedWord.substring(0, reverseStartIndex) + reversedChunk + glitchedWord.substring(reverseStartIndex + 3);
+    return glitchedWord;
+  }
 
 
   function resetBackgroundColor() {
@@ -732,6 +778,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const qPrompt      = document.getElementById('question-prompt');
   const esContainer  = document.getElementById('input-es-container');
   const enContainer  = document.getElementById('input-en-container');
+  const ansES             = document.getElementById('answer-input-es');
+  const ansEN             = document.getElementById('answer-input-en');
   const feedback     = document.getElementById('feedback-message');
   const settingsButton = document.getElementById('settings-button');
   const salonButton = document.getElementById('salon-button');
@@ -756,6 +804,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const toggleIgnoreAccentsBtn = document.getElementById('toggle-ignore-accents');
   const titleElement = document.querySelector('.glitch-title');
   const verbTypeLabels = Array.from(document.querySelectorAll('label[data-times]'));
+
+  // Elements used in boss battles
+  const verbContainer = qPrompt;
+  const tenseContainer = document.getElementById('tense-label');
+  let verbInput = ansES;
+  const scoreContainer = scoreDisplay;
 
   // --- Automatically load records into the splash screen box ---
   const recordsContainer = document.getElementById('records-display-container');
@@ -2801,9 +2855,9 @@ function prepareNextQuestion() {
 }
 
 function startBossBattle() {
-  if (gameContainer) {
-    gameContainer.classList.add('boss-battle-bg');
-  }
+  // --- UI Transition ---
+  document.body.classList.add('boss-battle-bg');
+  if (gameContainer) gameContainer.classList.add('boss-battle-bg');
   if (progressContainer) {
     progressContainer.textContent = 'LEVEL BOSS';
     progressContainer.style.color = '#FF0000';
@@ -2815,19 +2869,82 @@ function startBossBattle() {
       if (bossImage) bossImage.classList.remove('hidden');
     }, 500);
   }
-  if (qPrompt) qPrompt.textContent = '';
-  const tenseEl = document.getElementById('tense-label');
-  if (tenseEl) tenseEl.textContent = 'A new challenger appears...';
-  if (ansES) ansES.disabled = true;
+
+  // --- Boss Initialization Logic ---
+  const currentBoss = bosses.skynetGlitch;
+  if (tenseContainer) tenseContainer.textContent = currentBoss.description;
+  if (verbInput) {
+    verbInput.disabled = false;
+    verbInput.focus();
+  }
   if (ansEN) ansEN.disabled = true;
+  currentBoss.init();
+}
+
+function displayNextBossVerb() {
+  const verbIndex = game.boss.verbsCompleted;
+  const verbData = game.boss.challengeVerbs[verbIndex];
+  const correctConjugation = verbData.conjugations[0];
+  if (verbContainer) verbContainer.textContent = glitchVerb(correctConjugation);
+  if (tenseContainer) tenseContainer.textContent = `(${verbData.tense})`;
+  if (verbInput) verbInput.value = '';
+}
+
+function endBossBattle(playerWon) {
+  if (verbInput) verbInput.disabled = true;
+
+  if (playerWon) {
+    score += 500;
+    if (verbContainer) verbContainer.textContent = "SYSTEM RESTORED";
+    if (tenseContainer) tenseContainer.textContent = "+500 Points!";
+  } else {
+    if (verbContainer) verbContainer.textContent = "SYSTEM FAILURE";
+    if (tenseContainer) tenseContainer.textContent = "Try again next time.";
+  }
+  updateScore();
+
+  setTimeout(() => {
+    document.body.classList.remove('boss-battle-bg');
+    if (gameContainer) gameContainer.classList.remove('boss-battle-bg');
+    if (bossImage) bossImage.classList.add('hidden');
+    if (chuacheImage) chuacheImage.classList.remove('hidden', 'fade-out');
+    if (progressContainer) progressContainer.style.color = '';
+
+    game.level++;
+    game.verbsInPhaseCount = 0;
+    game.gameState = 'PLAYING';
+    game.boss = null;
+    prepareNextQuestion();
+  }, 3000);
 }
 
 function checkAnswer() {
+  if (game.gameState === 'BOSS_BATTLE') {
+    const userInput = verbInput ? verbInput.value.trim().toLowerCase() : '';
+    const verbIndex = game.boss.verbsCompleted;
+    const currentChallengeVerb = game.boss.challengeVerbs[verbIndex];
+    const correctAnswers = currentChallengeVerb.conjugations.map(c => c.toLowerCase());
+
+    if (correctAnswers.includes(userInput)) {
+      game.boss.verbsCompleted++;
+      if (game.boss.verbsCompleted >= bosses[game.boss.id].verbsToComplete) {
+        endBossBattle(true);
+      } else {
+        displayNextBossVerb();
+      }
+    } else {
+      score = Math.max(0, score - 20);
+      updateScore();
+    }
+    if (verbInput) verbInput.value = '';
+    return;
+  }
+
   // feedback.innerHTML is NO LONGER cleared here.
   const isStudyMode = (selectedGameMode === 'study');
   let possibleCorrectAnswers = [];
   const rt    = (Date.now() - startTime) / 1000;
-  const bonus = Math.max(1, 2 - Math.max(0, rt - 5) * 0.1); 
+  const bonus = Math.max(1, 2 - Math.max(0, rt - 5) * 0.1);
   const irregularities = currentQuestion.verb.types[currentQuestion.tenseKey] || [];
   let correct  = false;
   let accentBonus = 0;
@@ -3835,8 +3952,6 @@ if (irregularitiesContainer) {
     const clueButton        = document.getElementById('clue-button');
     const skipButton        = document.getElementById('skip-button');   // dentro de DOMContentLoaded si no son globales
     const endButton         = document.getElementById('end-button');
-    const ansES             = document.getElementById('answer-input-es');
-    const ansEN             = document.getElementById('answer-input-en');
     // (Estas ya las tienes definidas más arriba, así que no necesitas redeclararlas, solo asegúrate de que su ámbito sea accesible aquí)
 
     if (checkAnswerButton) checkAnswerButton.addEventListener('click', checkAnswer);
