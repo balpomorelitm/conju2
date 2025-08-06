@@ -51,3 +51,13 @@ self.addEventListener('fetch', event => {
     caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
+
+// Respond to recorder state requests so callers don't hang waiting for a reply
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'request-get-recorder-state') {
+    const port = event.ports && event.ports[0];
+    if (port) {
+      port.postMessage({ supported: false });
+    }
+  }
+});
