@@ -467,7 +467,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentVerbs: [],
     currentVerbIndex: 0,
     isGameOver: false,
-    boss: null // Will hold the current boss battle state
+    boss: null, // Will hold the current boss battle state
+    lastBossUsed: null // Track the previously selected boss
   };
 
   // Bosses definition
@@ -526,12 +527,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Step 5: Set up the boss state
         game.boss = {
-          id: 'skynetGlitch',
+          id: game.lastBossUsed,
           verbsCompleted: 0,
-          challengeVerbs
+          challengeVerbs,
+          totalVerbsNeeded: this.verbsToComplete
         };
 
-        console.log('Skynet Glitch challenge verbs:', game.boss.challengeVerbs);
+        console.log(`${this.name} challenge verbs:`, game.boss.challengeVerbs);
 
         // Step 6: Display the first glitched verb
         displayNextBossVerb();
@@ -2952,17 +2954,21 @@ function startBossBattle() {
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
-  const currentBoss = bosses.skynetGlitch; // Only boss for now
-  if (bossImage) bossImage.src = 'images/bosssg.webp';
-  game.boss = {
-    id: 'skynetGlitch',
-    verbsCompleted: 0,
-    challengeVerbs: [],
-    totalVerbsNeeded: currentBoss.verbsToComplete
-  };
+  const bossKeys = Object.keys(bosses);
+  let bossKey = bossKeys[Math.floor(Math.random() * bossKeys.length)];
+  if (bossKeys.length > 1 && bossKey === game.lastBossUsed) {
+    const remaining = bossKeys.filter(k => k !== game.lastBossUsed);
+    bossKey = remaining[Math.floor(Math.random() * remaining.length)];
+  }
+  game.lastBossUsed = bossKey;
+  const currentBoss = bosses[bossKey];
+
+  if (bossImage) {
+    if (bossKey === 'skynetGlitch') bossImage.src = 'images/bosssg.webp';
+  }
 
   if (progressContainer) {
-    progressContainer.textContent = 'BOSS BATTLE - SKYNET GLITCH';
+    progressContainer.textContent = `BOSS BATTLE - ${currentBoss.name.toUpperCase()}`;
     progressContainer.style.color = '#FF0000';
   }
 
