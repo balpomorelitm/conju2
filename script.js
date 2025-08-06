@@ -3033,6 +3033,7 @@ function startBossBattle() {
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
+
   let bossKeys = Object.keys(bosses);
   if (bossKeys.length > 1 && game.lastBossUsed) {
     bossKeys = bossKeys.filter(key => key !== game.lastBossUsed);
@@ -3046,6 +3047,7 @@ function startBossBattle() {
       ? 'images/bossrepairer.webp'
       : 'images/bosssg.webp';
   }
+
   game.boss = {
     id: selectedBossKey,
     verbsCompleted: 0,
