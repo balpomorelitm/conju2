@@ -521,11 +521,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const verbIndex = game.boss.verbsCompleted;
     const verbData = game.boss.challengeVerbs[verbIndex];
 
-    const correctConjugation = verbData.conjugations[0];
+    const glitchedInfinitive = glitchVerb(verbData.infinitive);
 
-    if (qPrompt) qPrompt.textContent = glitchVerb(correctConjugation);
+    if (qPrompt) qPrompt.textContent = glitchedInfinitive;
     const tenseEl = document.getElementById('tense-label');
-    if (tenseEl) tenseEl.textContent = `(${verbData.tense})`;
+    if (tenseEl) tenseEl.textContent = `${verbData.tense} - ${verbData.pronoun}`;
     if (ansES) ansES.value = '';
   }
 
