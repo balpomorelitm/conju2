@@ -630,8 +630,9 @@ function displayNextBossVerb() {
       console.error("No current boss challenge found.");
       return;
     }
+    const tenseEl = document.getElementById('tense-label');
     if (qPrompt) {
-seEl.textContent = `Repair the verb (${currentChallenge.tense})`;
+      if (tenseEl) tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
 
       let displayText;
       if (game.boss.id === 'verbRepairer') {
@@ -641,7 +642,6 @@ seEl.textContent = `Repair the verb (${currentChallenge.tense})`;
       }
       qPrompt.innerHTML = `<span class="boss-challenge">${displayText}</span>`;
     }
-    const tenseEl = document.getElementById('tense-label');
     if (tenseEl) {
       if (game.boss.id === 'verbRepairer') {
         tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
@@ -653,7 +653,7 @@ seEl.textContent = `Repair the verb (${currentChallenge.tense})`;
       ansES.value = '';
       ansES.focus();
     }
-}
+  }
 
   function endBossBattle(playerWon, message = "") {
     if (ansES) ansES.disabled = false;
