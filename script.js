@@ -34,6 +34,7 @@ function safePlay(audio) {
 // Level progression state
 let correctAnswersTotal = 0;
 let currentLevel = 0;
+let lastBossUsed = null;
 
 // Temporary level goals for testing
 const LEVEL_GOAL_TIMER = 10;
