@@ -632,7 +632,7 @@ function displayNextBossVerb() {
     }
     if (qPrompt) {
 seEl.textContent = `Repair the verb (${currentChallenge.tense})`;
-=======
+
       let displayText;
       if (game.boss.id === 'verbRepairer') {
         displayText = currentChallenge.glitchedForm;
