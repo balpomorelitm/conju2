@@ -3635,6 +3635,7 @@ function updateTotalCorrectForLifeDisplay() {
 }
 
 function skipQuestion() {
+  if (game.gameState === 'BOSS_BATTLE') return;
   feedback.innerHTML = '';
         if (soundSkip) {
           soundSkip
