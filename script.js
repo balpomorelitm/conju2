@@ -2945,6 +2945,7 @@ function startBossBattle() {
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
   const currentBoss = bosses.skynetGlitch; // Only boss for now
+  if (bossImage) bossImage.src = 'images/bosssg.webp';
   game.boss = {
     id: 'skynetGlitch',
     verbsCompleted: 0,
