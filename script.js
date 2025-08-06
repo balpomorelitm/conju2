@@ -759,6 +759,7 @@ function displayNextBossVerb() {
   }
 
   function onClueButtonClick() {
+    if (game.gameState === 'BOSS_BATTLE') return;
     feedback.innerHTML = '';
     if (selectedGameMode !== 'timer' && selectedGameMode !== 'lives') {
       timerTimeLeft = Math.max(0, timerTimeLeft - 3);
@@ -2780,6 +2781,7 @@ let usedVerbs = [];
 
 	navigateToStep('splash'); // Empezar en el splash screen  
 function prepareNextQuestion() {
+  if (game.gameState === 'BOSS_BATTLE') return;
   const feedback = document.getElementById('feedback-message');
   // feedback.innerHTML = '';
   feedback.classList.remove('vibrate');
