@@ -518,15 +518,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function displayNextBossVerb() {
-    const verbIndex = game.boss.verbsCompleted;
-    const verbData = game.boss.challengeVerbs[verbIndex];
+    if (!game.boss || !game.boss.challengeVerbs) {
+      console.error("Boss battle state is missing.");
+      return;
+    }
 
-    const glitchedInfinitive = glitchVerb(verbData.infinitive);
+    const currentChallenge = game.boss.challengeVerbs[game.boss.verbsCompleted];
+    if (!currentChallenge) {
+      console.error("No current boss challenge found.");
+      return;
+    }
 
-    if (qPrompt) qPrompt.textContent = glitchedInfinitive;
+    if (qPrompt)
+      qPrompt.innerHTML = `<span class="boss-challenge">${currentChallenge.glitchedForm}</span>`;
     const tenseEl = document.getElementById('tense-label');
-    if (tenseEl) tenseEl.textContent = `${verbData.tense} - ${verbData.pronoun}`;
-    if (ansES) ansES.value = '';
+    if (tenseEl) tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
+    if (ansES) {
+      ansES.value = '';
+      ansES.focus();
+    }
   }
 
   function endBossBattle(playerWon, message = "") {
