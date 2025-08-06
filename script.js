@@ -34,6 +34,7 @@ function safePlay(audio) {
 // Level progression state
 let correctAnswersTotal = 0;
 let currentLevel = 0;
+let lastBossUsed = null;
 
 // Temporary level goals for testing
 const LEVEL_GOAL_TIMER = 10;
@@ -467,14 +468,80 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentVerbIndex: 0,
     isGameOver: false,
     boss: null, // Will hold the current boss battle state
-    lastBossUsed: null
+
+    lastBossUsed: null // Track the previously selected boss
   };
 
   // Bosses definition
   const bosses = {
+    verbRepairer: {
+      name: 'Digital Corrupted',
+      description: 'Una interferencia digital ha dañado los verbos.',
+      verbsToComplete: 3,
+      init: function() {
+        // Step 1: Filter all verbs to those with long infinitives and at least one regular tense.
+        const filteredVerbs = allVerbData.filter(v => {
+          if (!v.infinitive_es || v.infinitive_es.length <= 5) return false;
+          return currentOptions.tenses.some(t => Array.isArray(v.types?.[t]) && v.types[t].includes('regular'));
+        });
+
+        // Step 2: Randomly select the verbs for this battle.
+        const shuffled = filteredVerbs.sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, this.verbsToComplete);
+
+        // Step 3: Handle the case where not enough verbs are available.
+        if (selected.length < this.verbsToComplete) {
+          console.error('Not enough compatible verbs to start Digital Corrupted boss.');
+          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
+          return;
+        }
+
+        // Step 4: Build the challenge verbs with random tense and pronoun.
+        const pronounList = window.pronouns || pronouns;
+        const challengeVerbs = [];
+
+        selected.forEach(verb => {
+          const possibleTenses = currentOptions.tenses.filter(t => Array.isArray(verb.types?.[t]) && verb.types[t].includes('regular'));
+          const tense = possibleTenses[Math.floor(Math.random() * possibleTenses.length)];
+          const pronoun = pronounList[Math.floor(Math.random() * pronounList.length)];
+          const correctAnswer = verb.conjugations?.[tense]?.[pronoun];
+          if (!correctAnswer) {
+            console.error(`Missing conjugation for ${verb.infinitive_es} in ${tense} (${pronoun}).`);
+            return;
+          }
+          const glitchedForm = glitchVerb(correctAnswer);
+          challengeVerbs.push({
+            infinitive: verb.infinitive_es,
+            tense,
+            pronoun,
+            correctAnswer,
+            conjugations: [correctAnswer],
+            glitchedForm
+          });
+        });
+
+        if (challengeVerbs.length < this.verbsToComplete) {
+          console.error('Not enough challenge verbs after processing for Digital Corrupted.');
+          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
+          return;
+        }
+
+        // Step 5: Set up the boss state
+        game.boss = {
+          id: 'verbRepairer',
+          verbsCompleted: 0,
+          challengeVerbs
+        };
+
+        console.log('Digital Corrupted challenge verbs:', game.boss.challengeVerbs);
+
+        // Step 6: Display the first glitched verb
+        displayNextBossVerb();
+      }
+    },
     skynetGlitch: {
       name: 'Skynet Glitch',
-      description: 'Una interferencia digital ha dañado los verbos.',
+      description: 'Skynet demands accurate conjugations.',
       verbsToComplete: 3,
       init: function() {
         // Step 1: Filter all verbs to those with long infinitives and at least one regular tense.
@@ -507,14 +574,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error(`Missing conjugation for ${verb.infinitive_es} in ${tense} (${pronoun}).`);
             return;
           }
-          const glitchedForm = glitchVerb(correctAnswer);
           challengeVerbs.push({
             infinitive: verb.infinitive_es,
             tense,
             pronoun,
             correctAnswer,
-            conjugations: [correctAnswer],
-            glitchedForm
+            conjugations: [correctAnswer]
           });
         });
 
@@ -526,14 +591,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Step 5: Set up the boss state
         game.boss = {
-          id: 'skynetGlitch',
+          id: game.lastBossUsed,
           verbsCompleted: 0,
-          challengeVerbs
+          challengeVerbs,
+          totalVerbsNeeded: this.verbsToComplete
         };
 
-        console.log('Skynet Glitch challenge verbs:', game.boss.challengeVerbs);
+        console.log(`${this.name} challenge verbs:`, game.boss.challengeVerbs);
 
-        // Step 6: Display the first glitched verb
+        // Step 6: Display the first verb
         displayNextBossVerb();
       }
     }
@@ -564,10 +630,23 @@ function displayNextBossVerb() {
       console.error("No current boss challenge found.");
       return;
     }
-    if (qPrompt)
-      qPrompt.innerHTML = `<span class="boss-challenge">${currentChallenge.glitchedForm}</span>`;
+    if (qPrompt) {
+      let displayText;
+      if (game.boss.id === 'verbRepairer') {
+        displayText = currentChallenge.glitchedForm;
+      } else {
+        displayText = `${currentChallenge.infinitive} - ${currentChallenge.pronoun}`;
+      }
+      qPrompt.innerHTML = `<span class="boss-challenge">${displayText}</span>`;
+    }
     const tenseEl = document.getElementById('tense-label');
-    if (tenseEl) tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
+    if (tenseEl) {
+      if (game.boss.id === 'verbRepairer') {
+        tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
+      } else {
+        tenseEl.textContent = `Conjugate (${currentChallenge.tense})`;
+      }
+    }
     if (ansES) {
       ansES.value = '';
       ansES.focus();
@@ -2972,6 +3051,7 @@ function startBossBattle() {
     totalVerbsNeeded: currentBoss.verbsToComplete
   };
 
+
   if (progressContainer) {
     progressContainer.textContent = `BOSS BATTLE - ${currentBoss.name.toUpperCase()}`;
     progressContainer.style.color = '#FF0000';
@@ -3019,13 +3099,17 @@ function checkAnswer() {
     const userInput = ansES.value.trim().toLowerCase();
     const correctAnswer = currentChallenge.correctAnswer.trim().toLowerCase();
 
+    const challengeDisplay = game.boss.id === 'verbRepairer'
+      ? currentChallenge.glitchedForm
+      : `${currentChallenge.infinitive} - ${currentChallenge.pronoun} (${currentChallenge.tense})`;
+
     if (userInput === correctAnswer) {
       game.boss.verbsCompleted++;
       game.score += 50;
       score = game.score; // keep legacy score in sync
       updateScore();
       if (feedback)
-        feedback.textContent = `✅ Correct! "${currentChallenge.glitchedForm}" → "${currentChallenge.correctAnswer}" (+50 points)`;
+        feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${currentChallenge.correctAnswer}" (+50 points)`;
 
       if (game.boss.verbsCompleted >= bosses[game.boss.id].verbsToComplete) {
         endBossBattle(true);
@@ -3036,8 +3120,12 @@ function checkAnswer() {
       game.score = Math.max(0, game.score - 20);
       score = game.score; // keep legacy score in sync
       updateScore();
-      if (feedback)
-        feedback.textContent = `❌ Incorrect. Try to repair: "${currentChallenge.glitchedForm}"`;
+      if (feedback) {
+        const msg = game.boss.id === 'verbRepairer'
+          ? `❌ Incorrect. Try to repair: "${challengeDisplay}"`
+          : `❌ Incorrect. "${challengeDisplay}"`;
+        feedback.textContent = msg;
+      }
 
       if (gameContainer) {
         gameContainer.classList.add('shake');
