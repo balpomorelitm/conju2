@@ -3004,7 +3004,8 @@ function checkAnswer() {
       game.score += 50;
       score = game.score; // keep legacy score in sync
       updateScore();
-      if (feedback) feedback.textContent = '✅ Correct! +50 puntos';
+      if (feedback)
+        feedback.textContent = `✅ Correct! "${currentChallenge.glitchedForm}" → "${currentChallenge.correctAnswer}" (+50 points)`;
 
       if (game.boss.verbsCompleted >= bosses[game.boss.id].verbsToComplete) {
         endBossBattle(true);
@@ -3015,7 +3016,8 @@ function checkAnswer() {
       game.score = Math.max(0, game.score - 20);
       score = game.score; // keep legacy score in sync
       updateScore();
-      if (feedback) feedback.textContent = '❌ Incorrecto. Intenta nuevamente';
+      if (feedback)
+        feedback.textContent = `❌ Incorrect. Try to repair: "${currentChallenge.glitchedForm}"`;
 
       if (gameContainer) {
         gameContainer.classList.add('shake');
