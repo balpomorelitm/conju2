@@ -2215,12 +2215,9 @@ button:active {
 .timer-item#time-change { min-width: 60px; }
 
 @keyframes shake {
-  0%   { transform: translateX(0); }
-  20%  { transform: translateX(-3px); }
-  40%  { transform: translateX(3px); }
-  60%  { transform: translateX(-2px); }
-  80%  { transform: translateX(2px); }
-  100% { transform: translateX(0); }
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 
 #time-change.vibrate {
@@ -3364,12 +3361,8 @@ body.is-loading .modal-backdrop:not(.specific-modal-backdrop) { /* :not para no 
 }
 
 .fade-out {
-    animation: fadeOutScreen 0.5s forwards;
-}
-
-@keyframes fadeOutScreen {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
 /* Fade in effect for first-time splash */
@@ -3476,8 +3469,29 @@ td.irregular-highlight {
 }
 
 .boss-battle-bg {
-  background-color: #000000;
+  background-color: #1a0000;
   transition: background-color 0.5s ease;
+}
+
+.boss-challenge {
+  color: #ff5555;
+  font-weight: bold;
+  text-align: center;
+  animation: glitch-text 1s steps(2, end) infinite;
+}
+
+.glitched-verb {
+  display: inline-block;
+  animation: glitch-text 1s steps(2, end) infinite;
+}
+
+@keyframes glitch-text {
+  0% { text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+  20% { text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
+  40% { text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+  60% { text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
+  80% { text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+  100% { text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
 }
 
 /* 2. The Speech Bubble's Main Body */
@@ -4130,10 +4144,9 @@ transform: translateY(var(--fire-rise-height, -5em)) scale(0);
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 
 .shake {
-  animation: shake 0.5s;
+  animation: shake 0.5s ease-in-out;
 }
