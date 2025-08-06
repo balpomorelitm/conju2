@@ -3196,7 +3196,8 @@ else                   timeBonus = 10;
     updateScore();
 
     game.verbsInPhaseCount++;
-    if (game.verbsInPhaseCount === 9) {
+    // TODO: Restore threshold to 9 for production
+    if (game.verbsInPhaseCount === 3) {
       game.gameState = 'BOSS_BATTLE';
       startBossBattle();
       return;
