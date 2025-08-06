@@ -2947,6 +2947,7 @@ function prepareNextQuestion() {
 }
 
 function startBossBattle() {
+  if (selectedGameMode === 'study') return;
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
@@ -3279,7 +3280,7 @@ else                   timeBonus = 10;
 
     game.verbsInPhaseCount++;
     // TODO: Restore threshold to 9 for production
-    if (game.verbsInPhaseCount === 3) {
+    if (game.verbsInPhaseCount === 3 && selectedGameMode !== 'study') {
       game.gameState = 'BOSS_BATTLE';
       startBossBattle();
       return;
