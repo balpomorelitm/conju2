@@ -2901,8 +2901,16 @@ function startBossBattle() {
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
+  const currentBoss = bosses.skynetGlitch; // Only boss for now
+  game.boss = {
+    id: 'skynetGlitch',
+    verbsCompleted: 0,
+    challengeVerbs: [],
+    totalVerbsNeeded: currentBoss.verbsToComplete
+  };
+
   if (progressContainer) {
-    progressContainer.textContent = 'LEVEL BOSS';
+    progressContainer.textContent = 'BOSS BATTLE - SKYNET GLITCH';
     progressContainer.style.color = '#FF0000';
   }
 
@@ -2914,8 +2922,7 @@ function startBossBattle() {
     }, 500);
   }
 
-  if (qPrompt) qPrompt.textContent = '';
-  const currentBoss = bosses.skynetGlitch; // Only boss for now
+  if (qPrompt) qPrompt.textContent = 'Initializing Boss Battle...';
   const tenseEl = document.getElementById('tense-label');
   if (tenseEl) tenseEl.textContent = currentBoss.description;
   if (ansES) {
