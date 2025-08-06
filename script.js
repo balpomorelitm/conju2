@@ -476,27 +476,62 @@ document.addEventListener('DOMContentLoaded', async () => {
       description: 'Una interferencia digital ha dañado los verbos.',
       verbsToComplete: 3,
       init: function() {
-        // Step 1: Filter the current verb list for this boss's specific needs.
-        const filteredVerbs = game.currentVerbs.filter(v => v.infinitive.length > 5 && v.is_regular);
+        // Step 1: Filter all verbs to those with long infinitives and at least one regular tense.
+        const filteredVerbs = allVerbData.filter(v => {
+          if (!v.infinitive_es || v.infinitive_es.length <= 5) return false;
+          return currentOptions.tenses.some(t => Array.isArray(v.types?.[t]) && v.types[t].includes('regular'));
+        });
 
-        // Step 2: Shuffle and select the challenge verbs from the filtered list.
-        const challengeVerbs = filteredVerbs.sort(() => 0.5 - Math.random()).slice(0, this.verbsToComplete);
+        // Step 2: Randomly select the verbs for this battle.
+        const shuffled = filteredVerbs.sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, this.verbsToComplete);
 
-        // Step 3: Handle the case where not enough specific verbs are found.
-        if (challengeVerbs.length < this.verbsToComplete) {
-          console.error("Not enough long/regular verbs to start Skynet Glitch boss.");
-          endBossBattle(false, "ERROR: No hay verbos compatibles."); // End battle gracefully
+        // Step 3: Handle the case where not enough verbs are available.
+        if (selected.length < this.verbsToComplete) {
+          console.error('Not enough compatible verbs to start Skynet Glitch boss.');
+          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
           return;
         }
 
-        // Step 4: Set up the boss state
+        // Step 4: Build the challenge verbs with random tense and pronoun.
+        const pronounList = window.pronouns || pronouns;
+        const challengeVerbs = [];
+
+        selected.forEach(verb => {
+          const possibleTenses = currentOptions.tenses.filter(t => Array.isArray(verb.types?.[t]) && verb.types[t].includes('regular'));
+          const tense = possibleTenses[Math.floor(Math.random() * possibleTenses.length)];
+          const pronoun = pronounList[Math.floor(Math.random() * pronounList.length)];
+          const correctAnswer = verb.conjugations?.[tense]?.[pronoun];
+          if (!correctAnswer) {
+            console.error(`Missing conjugation for ${verb.infinitive_es} in ${tense} (${pronoun}).`);
+            return;
+          }
+          const glitchedForm = glitchVerb(correctAnswer);
+          challengeVerbs.push({
+            infinitive: verb.infinitive_es,
+            tense,
+            pronoun,
+            conjugations: [correctAnswer],
+            glitchedForm
+          });
+        });
+
+        if (challengeVerbs.length < this.verbsToComplete) {
+          console.error('Not enough challenge verbs after processing for Skynet Glitch.');
+          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
+          return;
+        }
+
+        // Step 5: Set up the boss state
         game.boss = {
           id: 'skynetGlitch',
           verbsCompleted: 0,
-          challengeVerbs: challengeVerbs
+          challengeVerbs
         };
 
-        // Step 5: Display the first glitched verb
+        console.log('Skynet Glitch challenge verbs:', game.boss.challengeVerbs);
+
+        // Step 6: Display the first glitched verb
         displayNextBossVerb();
       }
     }
@@ -517,18 +552,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     return glitchedWord;
   }
 
-  function displayNextBossVerb() {
+function displayNextBossVerb() {
     if (!game.boss || !game.boss.challengeVerbs) {
       console.error("Boss battle state is missing.");
       return;
     }
-
     const currentChallenge = game.boss.challengeVerbs[game.boss.verbsCompleted];
     if (!currentChallenge) {
       console.error("No current boss challenge found.");
       return;
     }
-
     if (qPrompt)
       qPrompt.innerHTML = `<span class="boss-challenge">${currentChallenge.glitchedForm}</span>`;
     const tenseEl = document.getElementById('tense-label');
@@ -537,7 +570,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       ansES.value = '';
       ansES.focus();
     }
-  }
+}
 
   function endBossBattle(playerWon, message = "") {
     if (ansES) ansES.disabled = true;
@@ -2911,8 +2944,16 @@ function startBossBattle() {
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
+  const currentBoss = bosses.skynetGlitch; // Only boss for now
+  game.boss = {
+    id: 'skynetGlitch',
+    verbsCompleted: 0,
+    challengeVerbs: [],
+    totalVerbsNeeded: currentBoss.verbsToComplete
+  };
+
   if (progressContainer) {
-    progressContainer.textContent = 'LEVEL BOSS';
+    progressContainer.textContent = 'BOSS BATTLE - SKYNET GLITCH';
     progressContainer.style.color = '#FF0000';
   }
 
@@ -2924,8 +2965,7 @@ function startBossBattle() {
     }, 500);
   }
 
-  if (qPrompt) qPrompt.textContent = '';
-  const currentBoss = bosses.skynetGlitch; // Only boss for now
+  if (qPrompt) qPrompt.textContent = 'Initializing Boss Battle...';
   const tenseEl = document.getElementById('tense-label');
   if (tenseEl) tenseEl.textContent = currentBoss.description;
   if (ansES) {
@@ -2940,29 +2980,52 @@ function startBossBattle() {
 function checkAnswer() {
   // --- Boss Battle Logic ---
   if (game.gameState === 'BOSS_BATTLE') {
-    const userInput = ansES.value.trim().toLowerCase();
-    const verbIndex = game.boss.verbsCompleted;
-    const currentChallengeVerb = game.boss.challengeVerbs[verbIndex];
-    const correctAnswers = currentChallengeVerb.conjugations.map(c => c.toLowerCase());
+    // Ensure boss state and challenges exist
+    if (!game.boss || !Array.isArray(game.boss.challengeVerbs)) {
+      console.error('Boss state is missing.');
+      if (ansES) ansES.value = '';
+      return;
+    }
 
-    if (correctAnswers.includes(userInput)) {
+    const index = game.boss.verbsCompleted;
+    const currentChallenge = game.boss.challengeVerbs[index];
+
+    if (!currentChallenge || typeof currentChallenge.correctAnswer !== 'string') {
+      console.error('Invalid boss challenge at index', index);
+      if (ansES) ansES.value = '';
+      return;
+    }
+
+    const userInput = ansES.value.trim().toLowerCase();
+    const correctAnswer = currentChallenge.correctAnswer.trim().toLowerCase();
+
+    if (userInput === correctAnswer) {
       game.boss.verbsCompleted++;
+      game.score += 50;
+      score = game.score; // keep legacy score in sync
+      updateScore();
+      if (feedback) feedback.textContent = '✅ Correct! +50 puntos';
+
       if (game.boss.verbsCompleted >= bosses[game.boss.id].verbsToComplete) {
         endBossBattle(true);
       } else {
         displayNextBossVerb();
       }
     } else {
-      // Player guessed wrong
-      game.score = Math.max(0, game.score - 20); // Penalize score
+      game.score = Math.max(0, game.score - 20);
       score = game.score; // keep legacy score in sync
       updateScore();
+      if (feedback) feedback.textContent = '❌ Incorrecto. Intenta nuevamente';
 
-      // Provide visual feedback for wrong answer (e.g., shake the screen)
-      gameContainer.classList.add('shake');
-      // Remove the shake effect after it finishes
-      setTimeout(() => gameContainer.classList.remove('shake'), 500);
+      if (gameContainer) {
+        gameContainer.classList.add('shake');
+        setTimeout(() => gameContainer.classList.remove('shake'), 500);
+      }
+
+      // Replay the same challenge
+      displayNextBossVerb();
     }
+
     if (ansES) ansES.value = '';
     return;
   }
@@ -3206,7 +3269,8 @@ else                   timeBonus = 10;
     updateScore();
 
     game.verbsInPhaseCount++;
-    if (game.verbsInPhaseCount === 9) {
+    // TODO: Restore threshold to 9 for production
+    if (game.verbsInPhaseCount === 3) {
       game.gameState = 'BOSS_BATTLE';
       startBossBattle();
       return;
