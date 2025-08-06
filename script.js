@@ -476,27 +476,62 @@ document.addEventListener('DOMContentLoaded', async () => {
       description: 'Una interferencia digital ha dañado los verbos.',
       verbsToComplete: 3,
       init: function() {
-        // Step 1: Filter the current verb list for this boss's specific needs.
-        const filteredVerbs = game.currentVerbs.filter(v => v.infinitive.length > 5 && v.is_regular);
+        // Step 1: Filter all verbs to those with long infinitives and at least one regular tense.
+        const filteredVerbs = allVerbData.filter(v => {
+          if (!v.infinitive_es || v.infinitive_es.length <= 5) return false;
+          return currentOptions.tenses.some(t => Array.isArray(v.types?.[t]) && v.types[t].includes('regular'));
+        });
 
-        // Step 2: Shuffle and select the challenge verbs from the filtered list.
-        const challengeVerbs = filteredVerbs.sort(() => 0.5 - Math.random()).slice(0, this.verbsToComplete);
+        // Step 2: Randomly select the verbs for this battle.
+        const shuffled = filteredVerbs.sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, this.verbsToComplete);
 
-        // Step 3: Handle the case where not enough specific verbs are found.
-        if (challengeVerbs.length < this.verbsToComplete) {
-          console.error("Not enough long/regular verbs to start Skynet Glitch boss.");
-          endBossBattle(false, "ERROR: No hay verbos compatibles."); // End battle gracefully
+        // Step 3: Handle the case where not enough verbs are available.
+        if (selected.length < this.verbsToComplete) {
+          console.error('Not enough compatible verbs to start Skynet Glitch boss.');
+          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
           return;
         }
 
-        // Step 4: Set up the boss state
+        // Step 4: Build the challenge verbs with random tense and pronoun.
+        const pronounList = window.pronouns || pronouns;
+        const challengeVerbs = [];
+
+        selected.forEach(verb => {
+          const possibleTenses = currentOptions.tenses.filter(t => Array.isArray(verb.types?.[t]) && verb.types[t].includes('regular'));
+          const tense = possibleTenses[Math.floor(Math.random() * possibleTenses.length)];
+          const pronoun = pronounList[Math.floor(Math.random() * pronounList.length)];
+          const correctAnswer = verb.conjugations?.[tense]?.[pronoun];
+          if (!correctAnswer) {
+            console.error(`Missing conjugation for ${verb.infinitive_es} in ${tense} (${pronoun}).`);
+            return;
+          }
+          const glitchedForm = glitchVerb(correctAnswer);
+          challengeVerbs.push({
+            infinitive: verb.infinitive_es,
+            tense,
+            pronoun,
+            conjugations: [correctAnswer],
+            glitchedForm
+          });
+        });
+
+        if (challengeVerbs.length < this.verbsToComplete) {
+          console.error('Not enough challenge verbs after processing for Skynet Glitch.');
+          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
+          return;
+        }
+
+        // Step 5: Set up the boss state
         game.boss = {
           id: 'skynetGlitch',
           verbsCompleted: 0,
-          challengeVerbs: challengeVerbs
+          challengeVerbs
         };
 
-        // Step 5: Display the first glitched verb
+        console.log('Skynet Glitch challenge verbs:', game.boss.challengeVerbs);
+
+        // Step 6: Display the first glitched verb
         displayNextBossVerb();
       }
     }
@@ -520,10 +555,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   function displayNextBossVerb() {
     const verbIndex = game.boss.verbsCompleted;
     const verbData = game.boss.challengeVerbs[verbIndex];
+    if (!verbData) return;
 
-    const glitchedInfinitive = glitchVerb(verbData.infinitive);
-
-    if (qPrompt) qPrompt.textContent = glitchedInfinitive;
+    if (qPrompt) qPrompt.textContent = verbData.glitchedForm;
     const tenseEl = document.getElementById('tense-label');
     if (tenseEl) tenseEl.textContent = `${verbData.tense} - ${verbData.pronoun}`;
     if (ansES) ansES.value = '';
