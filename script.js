@@ -468,6 +468,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentVerbIndex: 0,
     isGameOver: false,
     boss: null, // Will hold the current boss battle state
+
     lastBossUsed: null // Track the previously selected boss
   };
 
@@ -3030,20 +3031,25 @@ function startBossBattle() {
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
-
-  const bossKeys = Object.keys(bosses);
-  let bossKey = bossKeys[Math.floor(Math.random() * bossKeys.length)];
-  if (bossKeys.length > 1 && bossKey === game.lastBossUsed) {
-    const remaining = bossKeys.filter(k => k !== game.lastBossUsed);
-    bossKey = remaining[Math.floor(Math.random() * remaining.length)];
+  let bossKeys = Object.keys(bosses);
+  if (bossKeys.length > 1 && game.lastBossUsed) {
+    bossKeys = bossKeys.filter(key => key !== game.lastBossUsed);
   }
-  game.lastBossUsed = bossKey;
-  const currentBoss = bosses[bossKey];
+  const selectedBossKey = bossKeys[Math.floor(Math.random() * bossKeys.length)];
+  const currentBoss = bosses[selectedBossKey];
+  game.lastBossUsed = selectedBossKey;
 
   if (bossImage) {
-    if (bossKey === 'skynetGlitch') bossImage.src = 'images/bosssg.webp';
-    else if (bossKey === 'verbRepairer') bossImage.src = 'images/bossrepairer.webp'; // Añade esta línea
+    bossImage.src = selectedBossKey === 'verbRepairer'
+      ? 'images/bossrepairer.webp'
+      : 'images/bosssg.webp';
   }
+  game.boss = {
+    id: selectedBossKey,
+    verbsCompleted: 0,
+    challengeVerbs: [],
+    totalVerbsNeeded: currentBoss.verbsToComplete
+  };
 
 
   if (progressContainer) {
