@@ -563,10 +563,22 @@ function displayNextBossVerb() {
       console.error("No current boss challenge found.");
       return;
     }
-    if (qPrompt)
-      qPrompt.innerHTML = `<span class="boss-challenge">${currentChallenge.glitchedForm}</span>`;
+    if (qPrompt) {
+      if (game.boss.id === 'skynetGlitch') {
+        qPrompt.innerHTML = `<span class="boss-challenge">${currentChallenge.infinitive} (${currentChallenge.pronoun})</span>`;
+      } else {
+        // Default to verbRepairer behavior
+        qPrompt.innerHTML = `<span class="boss-challenge">${currentChallenge.glitchedForm}</span>`;
+      }
+    }
     const tenseEl = document.getElementById('tense-label');
-    if (tenseEl) tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
+    if (tenseEl) {
+      if (game.boss.id === 'skynetGlitch') {
+        tenseEl.textContent = `Conjugate in ${currentChallenge.tense}`;
+      } else {
+        tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
+      }
+    }
     if (ansES) {
       ansES.value = '';
       ansES.focus();
