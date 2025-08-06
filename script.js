@@ -511,6 +511,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             infinitive: verb.infinitive_es,
             tense,
             pronoun,
+            correctAnswer,
             conjugations: [correctAnswer],
             glitchedForm
           });
