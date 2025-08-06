@@ -466,7 +466,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentVerbs: [],
     currentVerbIndex: 0,
     isGameOver: false,
-    boss: null // Will hold the current boss battle state
+    boss: null, // Will hold the current boss battle state
+    lastBossUsed: null
   };
 
   // Bosses definition
@@ -2951,17 +2952,28 @@ function startBossBattle() {
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
-  const currentBoss = bosses.skynetGlitch; // Only boss for now
-  if (bossImage) bossImage.src = 'images/bosssg.webp';
+  let bossKeys = Object.keys(bosses);
+  if (bossKeys.length > 1 && game.lastBossUsed) {
+    bossKeys = bossKeys.filter(key => key !== game.lastBossUsed);
+  }
+  const selectedBossKey = bossKeys[Math.floor(Math.random() * bossKeys.length)];
+  const currentBoss = bosses[selectedBossKey];
+  game.lastBossUsed = selectedBossKey;
+
+  if (bossImage) {
+    bossImage.src = selectedBossKey === 'verbRepairer'
+      ? 'images/bossrepairer.webp'
+      : 'images/bosssg.webp';
+  }
   game.boss = {
-    id: 'skynetGlitch',
+    id: selectedBossKey,
     verbsCompleted: 0,
     challengeVerbs: [],
     totalVerbsNeeded: currentBoss.verbsToComplete
   };
 
   if (progressContainer) {
-    progressContainer.textContent = 'BOSS BATTLE - SKYNET GLITCH';
+    progressContainer.textContent = `BOSS BATTLE - ${currentBoss.name.toUpperCase()}`;
     progressContainer.style.color = '#FF0000';
   }
 
