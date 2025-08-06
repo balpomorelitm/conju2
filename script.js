@@ -2930,29 +2930,52 @@ function startBossBattle() {
 function checkAnswer() {
   // --- Boss Battle Logic ---
   if (game.gameState === 'BOSS_BATTLE') {
-    const userInput = ansES.value.trim().toLowerCase();
-    const verbIndex = game.boss.verbsCompleted;
-    const currentChallengeVerb = game.boss.challengeVerbs[verbIndex];
-    const correctAnswers = currentChallengeVerb.conjugations.map(c => c.toLowerCase());
+    // Ensure boss state and challenges exist
+    if (!game.boss || !Array.isArray(game.boss.challengeVerbs)) {
+      console.error('Boss state is missing.');
+      if (ansES) ansES.value = '';
+      return;
+    }
 
-    if (correctAnswers.includes(userInput)) {
+    const index = game.boss.verbsCompleted;
+    const currentChallenge = game.boss.challengeVerbs[index];
+
+    if (!currentChallenge || typeof currentChallenge.correctAnswer !== 'string') {
+      console.error('Invalid boss challenge at index', index);
+      if (ansES) ansES.value = '';
+      return;
+    }
+
+    const userInput = ansES.value.trim().toLowerCase();
+    const correctAnswer = currentChallenge.correctAnswer.trim().toLowerCase();
+
+    if (userInput === correctAnswer) {
       game.boss.verbsCompleted++;
+      game.score += 50;
+      score = game.score; // keep legacy score in sync
+      updateScore();
+      if (feedback) feedback.textContent = '✅ Correct! +50 puntos';
+
       if (game.boss.verbsCompleted >= bosses[game.boss.id].verbsToComplete) {
         endBossBattle(true);
       } else {
         displayNextBossVerb();
       }
     } else {
-      // Player guessed wrong
-      game.score = Math.max(0, game.score - 20); // Penalize score
+      game.score = Math.max(0, game.score - 20);
       score = game.score; // keep legacy score in sync
       updateScore();
+      if (feedback) feedback.textContent = '❌ Incorrecto. Intenta nuevamente';
 
-      // Provide visual feedback for wrong answer (e.g., shake the screen)
-      gameContainer.classList.add('shake');
-      // Remove the shake effect after it finishes
-      setTimeout(() => gameContainer.classList.remove('shake'), 500);
+      if (gameContainer) {
+        gameContainer.classList.add('shake');
+        setTimeout(() => gameContainer.classList.remove('shake'), 500);
+      }
+
+      // Replay the same challenge
+      displayNextBossVerb();
     }
+
     if (ansES) ansES.value = '';
     return;
   }
