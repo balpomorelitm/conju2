@@ -905,6 +905,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (countdownDisplay) {
       countdownDisplay.classList.add('defused');
     }
+    if (progressContainer) {
+      progressContainer.textContent = `Level Boss #${currentBossNumber} - 3/3 (${game.boss.totalVerbsNeeded}/${game.boss.totalVerbsNeeded}) | Total Score: ${score}`;
+    }
 
     endNuclearBoss(true, 'BOMB DEFUSED!');
   }
