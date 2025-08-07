@@ -674,6 +674,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     return glitchedWord;
   }
 
+  /**
+   * Glitches an infinitive by hiding a random internal letter while
+   * preserving common verb endings.
+   */
+  function glitchInfinitive(infinitive) {
+    if (infinitive.length < 4) return infinitive;
+
+    let hideEnd = infinitive.length - 1; // avoid the last character by default
+
+    if (infinitive.endsWith('se')) {
+      const stem = infinitive.slice(0, -2);
+      hideEnd = stem.endsWith('ar') || stem.endsWith('er') || stem.endsWith('ir')
+        ? infinitive.length - 4
+        : infinitive.length - 2;
+    } else if (
+      infinitive.endsWith('ar') ||
+      infinitive.endsWith('er') ||
+      infinitive.endsWith('ir')
+    ) {
+      hideEnd = infinitive.length - 2;
+    }
+
+    const start = 1; // avoid the first character
+    if (hideEnd <= start) return infinitive;
+
+    const hideIndex = start + Math.floor(Math.random() * (hideEnd - start));
+    return (
+      infinitive.substring(0, hideIndex) + '_' + infinitive.substring(hideIndex + 1)
+    );
+  }
+
+  window.glitchInfinitive = glitchInfinitive;
+
 function displayNextBossVerb() {
     if (!game.boss || !game.boss.challengeVerbs) {
       console.error("Boss battle state is missing.");
