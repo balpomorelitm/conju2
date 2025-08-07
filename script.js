@@ -91,6 +91,8 @@ let currentBossNumber = 0;
 let correctAnswersTotal = 0;
 let currentLevel = 0;
 let lastBossUsed = null;
+let totalBossesEncountered = 0;
+let currentBossNumber = 0;
 
 // Temporary level goals for testing
 const LEVEL_GOAL_TIMER = 10;
@@ -4137,6 +4139,8 @@ if (reflexiveBonus > 0) {
   }
 }
 function startTimerMode() {
+  totalBossesEncountered = 0;
+  currentBossNumber = 0;
   document.getElementById('timer-container').style.display = 'flex';
   freeClues = 3;
   updateClueButtonUI();
@@ -4238,6 +4242,8 @@ function startTimerMode() {
 }
 
 function startLivesMode() {
+  totalBossesEncountered = 0;
+  currentBossNumber = 0;
   freeClues = 3;
   updateClueButtonUI();
   resetLevelState();
@@ -4596,6 +4602,8 @@ finalStartGameButton.addEventListener('click', async () => {
     } else if (window.selectedGameMode === 'lives') {
         startLivesMode();
     } else {
+        totalBossesEncountered = 0;
+        currentBossNumber = 0;
         freeClues = 0;
         updateClueButtonUI();
         safePlay(soundStart);
