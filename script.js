@@ -685,24 +685,46 @@ function displayNextBossVerb() {
       return;
     }
     const tenseEl = document.getElementById('tense-label');
-    if (qPrompt) {
-      if (tenseEl) tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
-
-      let displayText;
-      if (game.boss.id === 'verbRepairer') {
-        displayText = currentChallenge.glitchedForm;
-      } else {
-        displayText = `${currentChallenge.infinitive} - ${currentChallenge.pronoun}`;
-      }
-      qPrompt.innerHTML = `<span class="boss-challenge">${displayText}</span>`;
-    }
     if (tenseEl) {
-      if (game.boss.id === 'verbRepairer') {
-        tenseEl.textContent = `Repair the verb (${currentChallenge.tense})`;
-      } else {
-        tenseEl.textContent = `Conjugate (${currentChallenge.tense})`;
+      tenseEl.textContent =
+        game.boss.id === 'verbRepairer'
+          ? 'Repair the corrupted verb.'
+          : 'Conjugate correctly.';
+    }
+
+    if (qPrompt) {
+      const tKey = currentChallenge.tense;
+      const tenseObj = tenses.find(t => t.value === tKey) || {};
+      const tenseLabel = tenseObj.name || tKey;
+      const infoKey = tenseObj.infoKey || '';
+      const tenseBadge =
+        `<span class="tense-badge ${tKey}" data-info-key="${infoKey}">${tenseLabel}` +
+        `<span class="context-info-icon" data-info-key="${infoKey}"></span></span>`;
+
+      const displayText =
+        game.boss.id === 'verbRepairer'
+          ? currentChallenge.glitchedForm
+          : `${currentChallenge.infinitive} - ${currentChallenge.pronoun}`;
+
+      qPrompt.innerHTML = `${tenseBadge} <span class="boss-challenge">${displayText}</span>`;
+
+      const promptBadge = qPrompt.querySelector('.tense-badge');
+      const promptIcon = qPrompt.querySelector('.context-info-icon');
+      if (promptBadge && promptBadge.dataset.infoKey) {
+        promptBadge.addEventListener('click', () => {
+          if (typeof soundClick !== 'undefined') safePlay(soundClick);
+          openSpecificModal(promptBadge.dataset.infoKey);
+        });
+      }
+      if (promptIcon && promptIcon.dataset.infoKey) {
+        promptIcon.addEventListener('click', e => {
+          e.stopPropagation();
+          if (typeof soundClick !== 'undefined') safePlay(soundClick);
+          openSpecificModal(promptIcon.dataset.infoKey);
+        });
       }
     }
+
     if (ansES) {
       ansES.value = '';
       ansES.focus();
