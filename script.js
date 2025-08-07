@@ -3196,6 +3196,18 @@ function startBossBattle() {
   if (ansEN) ansEN.disabled = true;
 
   currentBoss.init();
+
+  if (checkAnswerButton) checkAnswerButton.disabled = false;
+  if (skipButton) skipButton.disabled = true;
+  if (clueButton) {
+    if (selectedBossKey === 'skynetGlitch') {
+      clueButton.disabled = false;
+      updateClueButtonUI();
+    } else {
+      clueButton.disabled = true;
+      clueButton.textContent = 'No Hints.';
+    }
+  }
 }
 
 function checkAnswer() {
