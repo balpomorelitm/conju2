@@ -628,18 +628,42 @@ document.addEventListener('DOMContentLoaded', async () => {
           return;
         }
 
-        const selected = verbPool.sort(() => Math.random() - 0.5).slice(0, this.verbsToComplete);
+        const selected = verbPool
+          .sort(() => Math.random() - 0.5)
+          .slice(0, this.verbsToComplete);
         const pronounList = window.pronouns || pronouns;
-        const challengeVerbs = selected.map(verb => {
-          const tense = currentOptions.tenses[Math.floor(Math.random() * currentOptions.tenses.length)];
-          const pronoun = pronounList[Math.floor(Math.random() * pronounList.length)];
-          return {
-            glitchedInfinitive: glitchInfinitive(verb.infinitive_es),
-            pronoun,
-            tense,
-            correctAnswer: verb.infinitive_es
-          };
-        });
+        const challengeVerbs = selected
+          .map(verb => {
+            const tense =
+              currentOptions.tenses[
+                Math.floor(Math.random() * currentOptions.tenses.length)
+              ];
+            const pronoun =
+              pronounList[Math.floor(Math.random() * pronounList.length)];
+            const correctAnswer = verb.conjugations?.[tense]?.[pronoun];
+            if (!correctAnswer) {
+              console.error(
+                `Missing conjugation for ${verb.infinitive_es} in ${tense} (${pronoun}).`
+              );
+              return null;
+            }
+            return {
+              infinitive: verb.infinitive_es,
+              tense,
+              pronoun,
+              correctAnswer,
+              glitchedConjugation: glitchVerb(correctAnswer)
+            };
+          })
+          .filter(Boolean);
+
+        if (challengeVerbs.length < this.verbsToComplete) {
+          console.error(
+            'Not enough challenge verbs after processing for Skynet Glitch.'
+          );
+          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
+          return;
+        }
 
         game.boss = {
           id: 'skynetGlitch',
@@ -924,8 +948,15 @@ function displayNextBossVerb() {
         `<span class="context-info-icon" data-info-key="${infoKey}"></span></span>`;
       promptHTML = `${tenseBadge} <span class="boss-challenge">${currentChallenge.glitchedForm}</span>`;
     } else if (game.boss.id === 'skynetGlitch') {
-      if (tenseEl) tenseEl.textContent = 'Complete the infinitive';
-      promptHTML = `<span class="boss-challenge">${currentChallenge.pronoun} - ${currentChallenge.glitchedInfinitive}</span>`;
+      if (tenseEl) tenseEl.textContent = 'Complete the corrupted conjugation';
+      const tKey = currentChallenge.tense;
+      const tenseObj = tenses.find(t => t.value === tKey) || {};
+      const tenseLabel = tenseObj.name || tKey;
+      const infoKey = tenseObj.infoKey || '';
+      const tenseBadge =
+        `<span class="tense-badge ${tKey}" data-info-key="${infoKey}">${tenseLabel}` +
+        `<span class="context-info-icon" data-info-key="${infoKey}"></span></span>`;
+      promptHTML = `${tenseBadge} <span class="pronoun" id="${currentChallenge.pronoun}">${currentChallenge.pronoun}</span> <span class="boss-challenge">${currentChallenge.glitchedConjugation}</span>`;
     } else if (game.boss.id === 'nuclearBomb') {
       if (tenseEl) tenseEl.textContent = `Defuse the bomb! (${game.boss.verbsCompleted + 1}/${game.boss.totalVerbsNeeded})`;
 
@@ -3522,9 +3553,12 @@ function checkAnswer() {
       correctAnswer = removeAccents(correctAnswer);
     }
 
-    const challengeDisplay = game.boss.id === 'verbRepairer'
-      ? currentChallenge.glitchedForm
-      : `${currentChallenge.infinitive} - ${currentChallenge.pronoun} (${currentChallenge.tense})`;
+    const challengeDisplay =
+      game.boss.id === 'verbRepairer'
+        ? currentChallenge.glitchedForm
+        : game.boss.id === 'skynetGlitch'
+          ? `${currentChallenge.pronoun} - ${currentChallenge.glitchedConjugation} (${currentChallenge.tense})`
+          : `${currentChallenge.infinitive} - ${currentChallenge.pronoun} (${currentChallenge.tense})`;
 
     if (userInput === correctAnswer) {
       game.boss.verbsCompleted++;
