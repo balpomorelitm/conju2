@@ -746,9 +746,9 @@ function displayNextBossVerb() {
     if (playerWon) {
       game.score += 500;
       score = game.score; // keep legacy score in sync
-      const prizeText = "+500 Puntos!";
       if (qPrompt) qPrompt.textContent = 'SYSTEM RESTORED';
-      if (tenseEl) tenseEl.textContent = prizeText;
+      if (tenseEl) tenseEl.textContent = 'Boss defeated!';
+      if (feedback) feedback.innerHTML = '<span class="feedback-points">Boss Bonus: +500 Points!</span>';
       updateScore();
     } else {
       if (qPrompt) qPrompt.textContent = message || 'SYSTEM FAILURE';
