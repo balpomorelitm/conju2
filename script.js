@@ -898,8 +898,49 @@ function displayNextBossVerb() {
   }
 
   function onClueButtonClick() {
-    if (game.gameState === 'BOSS_BATTLE') return;
     feedback.innerHTML = '';
+
+    if (game.gameState === 'BOSS_BATTLE') {
+      if (game.boss && game.boss.id === 'skynetGlitch') {
+        if (selectedGameMode !== 'timer' && selectedGameMode !== 'lives') {
+          timerTimeLeft = Math.max(0, timerTimeLeft - 3);
+          checkTickingSound();
+        } else if (freeClues > 0) {
+          freeClues--;
+        } else {
+          if (selectedGameMode === 'timer') {
+            const penalty = calculateTimePenalty(currentLevel);
+            timerTimeLeft = Math.max(0, timerTimeLeft - penalty);
+            checkTickingSound();
+            showTimeChange(-penalty);
+          } else {
+            const penalty = 1 + currentLevel;
+            remainingLives -= penalty;
+            updateGameTitle();
+          }
+          streak = 0;
+        }
+
+        const currentChallenge =
+          game.boss && game.boss.challengeVerbs
+            ? game.boss.challengeVerbs[game.boss.verbsCompleted]
+            : null;
+        if (currentChallenge) {
+          feedback.innerHTML = `💡 Infinitive is <strong>${currentChallenge.infinitive}</strong>.`;
+        }
+        playFromStart(soundElectricShock);
+        updateClueButtonUI();
+      } else {
+        feedback.textContent = 'No hints available';
+        playFromStart(soundElectricShock);
+      }
+      if (ansES) {
+        ansES.value = '';
+        setTimeout(() => ansES.focus(), 0);
+      }
+      return;
+    }
+
     if (selectedGameMode !== 'timer' && selectedGameMode !== 'lives') {
       timerTimeLeft = Math.max(0, timerTimeLeft - 3);
       checkTickingSound();
