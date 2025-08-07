@@ -762,10 +762,11 @@ function displayNextBossVerb() {
       if (chuacheImage) chuacheImage.classList.remove('hidden', 'fade-out');
       if (progressContainer) {
         progressContainer.style.color = '';
-        updateLevelText(`Level ${game.level + 1} (0/9) | Total Score: ${score}`);
+        const goal = selectedGameMode === 'lives' ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
+        const progress = correctAnswersTotal % goal;
+        updateLevelText(`Level ${currentLevel + 1} (${progress}/${goal}) | Total Score: ${score}`);
       }
 
-      game.level++;
       game.verbsInPhaseCount = 0;
       game.gameState = 'PLAYING';
       game.boss = null;
