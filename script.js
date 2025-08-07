@@ -86,6 +86,8 @@ function safePlay(audio) {
 }
 
 // Level progression state
+let totalBossesEncountered = 0;
+let currentBossNumber = 0;
 let correctAnswersTotal = 0;
 let currentLevel = 0;
 let lastBossUsed = null;
@@ -504,6 +506,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
   let freeClues = 0;
+  let totalBossesEncountered = 0;
+  let currentBossNumber = 0;
   const defaultBackgroundColor = getComputedStyle(document.documentElement)
     .getPropertyValue('--bg-color').trim();
 
@@ -598,6 +602,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       description: 'Skynet demands accurate conjugations.',
       verbsToComplete: 3,
       init: function() {
+        // Gather verbs based on current filters
         const selectedVerbEls = Array.from(
           document.querySelectorAll('#verb-buttons .verb-button.selected')
         );
@@ -620,26 +625,51 @@ document.addEventListener('DOMContentLoaded', async () => {
           );
         }
 
-        verbPool = verbPool.filter(v => v.infinitive_es && v.infinitive_es.length >= 6);
-
         if (verbPool.length < this.verbsToComplete) {
           console.error('Not enough compatible verbs for Skynet Glitch.');
           endBossBattle(false, 'ERROR: No hay verbos compatibles.');
           return;
         }
 
-        const selected = verbPool.sort(() => Math.random() - 0.5).slice(0, this.verbsToComplete);
+        const selected = verbPool
+          .sort(() => Math.random() - 0.5)
+          .slice(0, this.verbsToComplete);
         const pronounList = window.pronouns || pronouns;
-        const challengeVerbs = selected.map(verb => {
-          const tense = currentOptions.tenses[Math.floor(Math.random() * currentOptions.tenses.length)];
-          const pronoun = pronounList[Math.floor(Math.random() * pronounList.length)];
-          return {
-            glitchedInfinitive: glitchInfinitive(verb.infinitive_es),
-            pronoun,
-            tense,
-            correctAnswer: verb.infinitive_es
-          };
-        });
+        const challengeVerbs = selected
+          .map(verb => {
+            const tense =
+              currentOptions.tenses[
+                Math.floor(Math.random() * currentOptions.tenses.length)
+              ];
+            const pronoun =
+              pronounList[Math.floor(Math.random() * pronounList.length)];
+            const correctAnswer = verb.conjugations?.[tense]?.[pronoun];
+            if (!correctAnswer) {
+              console.error(
+                `Missing conjugation for ${verb.infinitive_es} in ${tense} (${pronoun}).`
+              );
+              return null;
+            }
+
+            return {
+              infinitive: verb.infinitive_es,
+              tense,
+              pronoun,
+              correctAnswer,
+              glitchedConjugation: glitchVerb(correctAnswer)
+
+            };
+          })
+          .filter(Boolean);
+
+        if (challengeVerbs.length < this.verbsToComplete) {
+          console.error(
+            'Not enough challenge verbs after processing for Skynet Glitch.'
+          );
+
+          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
+          return;
+        }
 
         game.boss = {
           id: 'skynetGlitch',
@@ -924,9 +954,17 @@ function displayNextBossVerb() {
         `<span class="context-info-icon" data-info-key="${infoKey}"></span></span>`;
       promptHTML = `${tenseBadge} <span class="boss-challenge">${currentChallenge.glitchedForm}</span>`;
     } else if (game.boss.id === 'skynetGlitch') {
-      if (tenseEl) tenseEl.textContent = 'Complete the infinitive';
-      promptHTML = `<span class="boss-challenge">${currentChallenge.pronoun} - ${currentChallenge.glitchedInfinitive}</span>`;
+      if (tenseEl) tenseEl.textContent = 'Complete the corrupted conjugation';
+      const tKey = currentChallenge.tense;
+      const tenseObj = tenses.find(t => t.value === tKey) || {};
+      const tenseLabel = tenseObj.name || tKey;
+      const infoKey = tenseObj.infoKey || '';
+      const tenseBadge =
+        `<span class="tense-badge ${tKey}" data-info-key="${infoKey}">${tenseLabel}` +
+        `<span class="context-info-icon" data-info-key="${infoKey}"></span></span>`;
+      promptHTML = `${tenseBadge} <span class="pronoun" id="${currentChallenge.pronoun}">${currentChallenge.pronoun}</span> <span class="boss-challenge">${currentChallenge.glitchedConjugation}</span>`;
     } else if (game.boss.id === 'nuclearBomb') {
+
       if (tenseEl) tenseEl.textContent = `Defuse the bomb! (${game.boss.verbsCompleted + 1}/${game.boss.totalVerbsNeeded})`;
 
       const tKey = currentChallenge.tense;
@@ -3420,6 +3458,8 @@ function prepareNextQuestion() {
 
 function startBossBattle() {
   if (selectedGameMode === 'study') return;
+  totalBossesEncountered++;
+  currentBossNumber++;
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
@@ -3451,12 +3491,12 @@ function startBossBattle() {
 
 
   if (progressContainer) {
-    let bossNumber;
-    if (selectedBossKey === 'verbRepairer') bossNumber = 1;
-    else if (selectedBossKey === 'skynetGlitch') bossNumber = 2;
-    else if (selectedBossKey === 'nuclearBomb') bossNumber = 3;
+    const bossTypeNumber =
+      selectedBossKey === 'verbRepairer' ? 1 :
+      selectedBossKey === 'skynetGlitch' ? 2 : 3;
 
-    progressContainer.textContent = `Level Boss ${bossNumber} (0/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
+    progressContainer.textContent =
+      `Level Boss #${currentBossNumber} - ${bossTypeNumber}/3 (0/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
     progressContainer.style.color = '#FF0000';
   }
 
@@ -3522,9 +3562,12 @@ function checkAnswer() {
       correctAnswer = removeAccents(correctAnswer);
     }
 
-    const challengeDisplay = game.boss.id === 'verbRepairer'
-      ? currentChallenge.glitchedForm
-      : `${currentChallenge.infinitive} - ${currentChallenge.pronoun} (${currentChallenge.tense})`;
+    const challengeDisplay =
+      game.boss.id === 'verbRepairer'
+        ? currentChallenge.glitchedForm
+        : game.boss.id === 'skynetGlitch'
+          ? `${currentChallenge.pronoun} - ${currentChallenge.glitchedConjugation} (${currentChallenge.tense})`
+          : `${currentChallenge.infinitive} - ${currentChallenge.pronoun} (${currentChallenge.tense})`;
 
     if (userInput === correctAnswer) {
       game.boss.verbsCompleted++;
@@ -3537,9 +3580,11 @@ function checkAnswer() {
         else if (game.boss.id === 'skynetGlitch') bossTypeNumber = 2;
         else if (game.boss.id === 'nuclearBomb') bossTypeNumber = 3;
 
+
         const currentBossNumber = currentLevel + 1;
         const currentBoss = bosses[game.boss.id];
         progressContainer.textContent = `Level Boss #${currentBossNumber} - ${bossTypeNumber}/3 (${game.boss.verbsCompleted}/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
+
       }
       if (feedback)
         feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${rawCorrectAnswer}" (+50 points)`;
@@ -3560,6 +3605,56 @@ function checkAnswer() {
       game.score = Math.max(0, game.score - 20);
       score = game.score; // keep legacy score in sync
       updateScore();
+      if (selectedGameMode === 'timer') {
+        const penalty = calculateTimePenalty(currentLevel);
+        timerTimeLeft = Math.max(0, timerTimeLeft - penalty);
+        checkTickingSound();
+        showTimeChange(-penalty);
+      } else if (selectedGameMode === 'lives') {
+        const penalty = 1 + currentLevel;
+        remainingLives -= penalty;
+        currentStreakForLife = 0;
+        isPrizeVerbActive = false;
+        updateTotalCorrectForLifeDisplay();
+        updateStreakForLifeDisplay();
+        updateGameTitle();
+        if (remainingLives <= 0) {
+          safePlay(soundGameOver);
+          chuacheSpeaks('gameover');
+          if (gameTitle) gameTitle.textContent = '💀 ¡Estás MUERTO!';
+          if (checkAnswerButton) checkAnswerButton.disabled = true;
+          if (clueButton) clueButton.disabled = true;
+          if (skipButton) skipButton.disabled = true;
+          if (ansEN) ansEN.disabled = true;
+          if (ansES) ansES.disabled = true;
+          endBossBattle(false);
+          if (name) {
+            const recordData = {
+              name: name,
+              score: score,
+              mode: selectedGameMode,
+              streak: bestStreak,
+              level: (selectedGameMode === 'timer' || selectedGameMode === 'lives') ? currentLevel + 1 : null
+            };
+            (async () => {
+              try {
+                const { error } = await supabase.from('records').insert([recordData]);
+                if (error) throw error;
+                renderSetupRecords();
+              } catch (error) {
+                console.error("Error saving record:", error.message);
+              } finally {
+                fadeOutToMenu(quitToSettings);
+              }
+            })();
+          }
+          if (ansES) ansES.value = '';
+          return;
+        }
+      }
+
+      streak = 0;
+      multiplier = 1.0;
       if (feedback) {
         const msg = game.boss.id === 'verbRepairer'
           ? `❌ Incorrect. Try to repair: "${challengeDisplay}"`
