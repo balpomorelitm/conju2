@@ -3253,6 +3253,12 @@ function checkAnswer() {
       game.score += 50;
       score = game.score; // keep legacy score in sync
       updateScore();
+      if (progressContainer) {
+        const bossNumber = game.boss.id === 'verbRepairer' ? 1 : 2;
+        const totalVerbs = bosses[game.boss.id].verbsToComplete;
+        progressContainer.textContent =
+          `BOSS ${bossNumber} - ${game.boss.verbsCompleted}/${totalVerbs} | Total Score: ${game.score}`;
+      }
       if (feedback)
         feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${rawCorrectAnswer}" (+50 points)`;
 
