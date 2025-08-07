@@ -3165,7 +3165,7 @@ function startBossBattle() {
 
   if (bossImage) {
     bossImage.src = selectedBossKey === 'verbRepairer'
-      ? 'images/bossrepairer.webp'
+      ? 'images/bosshack.webp'
       : 'images/bosssg.webp';
   }
 
