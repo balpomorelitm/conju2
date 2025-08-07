@@ -506,6 +506,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let timerTimeLeft = 0;
   let tickingSoundPlaying = false;
   let freeClues = 0;
+  let totalBossesEncountered = 0;
+  let currentBossNumber = 0;
   const defaultBackgroundColor = getComputedStyle(document.documentElement)
     .getPropertyValue('--bg-color').trim();
 
@@ -3456,6 +3458,8 @@ function prepareNextQuestion() {
 
 function startBossBattle() {
   if (selectedGameMode === 'study') return;
+  totalBossesEncountered++;
+  currentBossNumber++;
   document.body.classList.add('boss-battle-bg');
   if (gameContainer) gameContainer.classList.add('boss-battle-bg');
 
@@ -3487,12 +3491,12 @@ function startBossBattle() {
 
 
   if (progressContainer) {
-    let bossNumber;
-    if (selectedBossKey === 'verbRepairer') bossNumber = 1;
-    else if (selectedBossKey === 'skynetGlitch') bossNumber = 2;
-    else if (selectedBossKey === 'nuclearBomb') bossNumber = 3;
+    const bossTypeNumber =
+      selectedBossKey === 'verbRepairer' ? 1 :
+      selectedBossKey === 'skynetGlitch' ? 2 : 3;
 
-    progressContainer.textContent = `Level Boss ${bossNumber} (0/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
+    progressContainer.textContent =
+      `Level Boss #${currentBossNumber} - ${bossTypeNumber}/3 (0/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
     progressContainer.style.color = '#FF0000';
   }
 
@@ -3571,13 +3575,13 @@ function checkAnswer() {
       score = game.score; // keep legacy score in sync
       updateScore();
       if (progressContainer) {
-        let bossNumber;
-        if (game.boss.id === 'verbRepairer') bossNumber = 1;
-        else if (game.boss.id === 'skynetGlitch') bossNumber = 2;
-        else if (game.boss.id === 'nuclearBomb') bossNumber = 3;
+        const bossTypeNumber =
+          game.boss.id === 'verbRepairer' ? 1 :
+          game.boss.id === 'skynetGlitch' ? 2 : 3;
 
         const currentBoss = bosses[game.boss.id];
-        progressContainer.textContent = `Level Boss ${bossNumber} (${game.boss.verbsCompleted}/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
+        progressContainer.textContent =
+          `Level Boss #${currentBossNumber} - ${bossTypeNumber}/3 (${game.boss.verbsCompleted}/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
       }
       if (feedback)
         feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${rawCorrectAnswer}" (+50 points)`;
