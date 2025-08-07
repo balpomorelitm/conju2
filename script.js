@@ -3178,7 +3178,8 @@ function startBossBattle() {
 
 
   if (progressContainer) {
-    progressContainer.textContent = `BOSS BATTLE - ${currentBoss.name.toUpperCase()}`;
+    const bossNumber = game.lastBossUsed === 'verbRepairer' ? 1 : 2;
+    progressContainer.textContent = `Level Boss ${bossNumber} (0/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
     progressContainer.style.color = '#FF0000';
   }
 
