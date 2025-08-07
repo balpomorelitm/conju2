@@ -3559,6 +3559,56 @@ function checkAnswer() {
       game.score = Math.max(0, game.score - 20);
       score = game.score; // keep legacy score in sync
       updateScore();
+      if (selectedGameMode === 'timer') {
+        const penalty = calculateTimePenalty(currentLevel);
+        timerTimeLeft = Math.max(0, timerTimeLeft - penalty);
+        checkTickingSound();
+        showTimeChange(-penalty);
+      } else if (selectedGameMode === 'lives') {
+        const penalty = 1 + currentLevel;
+        remainingLives -= penalty;
+        currentStreakForLife = 0;
+        isPrizeVerbActive = false;
+        updateTotalCorrectForLifeDisplay();
+        updateStreakForLifeDisplay();
+        updateGameTitle();
+        if (remainingLives <= 0) {
+          safePlay(soundGameOver);
+          chuacheSpeaks('gameover');
+          if (gameTitle) gameTitle.textContent = '💀 ¡Estás MUERTO!';
+          if (checkAnswerButton) checkAnswerButton.disabled = true;
+          if (clueButton) clueButton.disabled = true;
+          if (skipButton) skipButton.disabled = true;
+          if (ansEN) ansEN.disabled = true;
+          if (ansES) ansES.disabled = true;
+          endBossBattle(false);
+          if (name) {
+            const recordData = {
+              name: name,
+              score: score,
+              mode: selectedGameMode,
+              streak: bestStreak,
+              level: (selectedGameMode === 'timer' || selectedGameMode === 'lives') ? currentLevel + 1 : null
+            };
+            (async () => {
+              try {
+                const { error } = await supabase.from('records').insert([recordData]);
+                if (error) throw error;
+                renderSetupRecords();
+              } catch (error) {
+                console.error("Error saving record:", error.message);
+              } finally {
+                fadeOutToMenu(quitToSettings);
+              }
+            })();
+          }
+          if (ansES) ansES.value = '';
+          return;
+        }
+      }
+
+      streak = 0;
+      multiplier = 1.0;
       if (feedback) {
         const msg = game.boss.id === 'verbRepairer'
           ? `❌ Incorrect. Try to repair: "${challengeDisplay}"`
