@@ -598,54 +598,51 @@ document.addEventListener('DOMContentLoaded', async () => {
       description: 'Skynet demands accurate conjugations.',
       verbsToComplete: 3,
       init: function() {
-        // Step 1: Filter all verbs to those with long infinitives and at least one regular tense.
-        const filteredVerbs = allVerbData.filter(v => {
-          if (!v.infinitive_es || v.infinitive_es.length <= 5) return false;
-          return currentOptions.tenses.some(t => Array.isArray(v.types?.[t]) && v.types[t].includes('regular'));
-        });
+        const selectedVerbEls = Array.from(
+          document.querySelectorAll('#verb-buttons .verb-button.selected')
+        );
+        let verbPool = [];
 
-        // Step 2: Randomly select the verbs for this battle.
-        const shuffled = filteredVerbs.sort(() => Math.random() - 0.5);
-        const selected = shuffled.slice(0, this.verbsToComplete);
+        if (selectedVerbEls.length > 0) {
+          const selectedInfinitives = selectedVerbEls.map(btn => btn.dataset.value);
+          verbPool = initialRawVerbData.filter(v =>
+            selectedInfinitives.includes(v.infinitive_es)
+          );
+        } else {
+          const selectedTypeEls = Array.from(
+            document.querySelectorAll('.verb-type-button.selected')
+          );
+          const selectedTypes = selectedTypeEls.map(btn => btn.dataset.value);
+          verbPool = initialRawVerbData.filter(v =>
+            currentOptions.tenses.some(t =>
+              (v.types?.[t] || []).some(type => selectedTypes.includes(type))
+            )
+          );
+        }
 
-        // Step 3: Handle the case where not enough verbs are available.
-        if (selected.length < this.verbsToComplete) {
-          console.error('Not enough compatible verbs to start Skynet Glitch boss.');
+        verbPool = verbPool.filter(v => v.infinitive_es && v.infinitive_es.length >= 6);
+
+        if (verbPool.length < this.verbsToComplete) {
+          console.error('Not enough compatible verbs for Skynet Glitch.');
           endBossBattle(false, 'ERROR: No hay verbos compatibles.');
           return;
         }
 
-        // Step 4: Build the challenge verbs with random tense and pronoun.
+        const selected = verbPool.sort(() => Math.random() - 0.5).slice(0, this.verbsToComplete);
         const pronounList = window.pronouns || pronouns;
-        const challengeVerbs = [];
-
-        selected.forEach(verb => {
-          const possibleTenses = currentOptions.tenses.filter(t => Array.isArray(verb.types?.[t]) && verb.types[t].includes('regular'));
-          const tense = possibleTenses[Math.floor(Math.random() * possibleTenses.length)];
+        const challengeVerbs = selected.map(verb => {
+          const tense = currentOptions.tenses[Math.floor(Math.random() * currentOptions.tenses.length)];
           const pronoun = pronounList[Math.floor(Math.random() * pronounList.length)];
-          const correctAnswer = verb.conjugations?.[tense]?.[pronoun];
-          if (!correctAnswer) {
-            console.error(`Missing conjugation for ${verb.infinitive_es} in ${tense} (${pronoun}).`);
-            return;
-          }
-          challengeVerbs.push({
-            infinitive: verb.infinitive_es,
-            tense,
+          return {
+            glitchedInfinitive: glitchInfinitive(verb.infinitive_es),
             pronoun,
-            correctAnswer,
-            conjugations: [correctAnswer]
-          });
+            tense,
+            correctAnswer: verb.infinitive_es
+          };
         });
 
-        if (challengeVerbs.length < this.verbsToComplete) {
-          console.error('Not enough challenge verbs after processing for Skynet Glitch.');
-          endBossBattle(false, 'ERROR: No hay verbos compatibles.');
-          return;
-        }
-
-        // Step 5: Set up the boss state
         game.boss = {
-          id: game.lastBossUsed,
+          id: 'skynetGlitch',
           verbsCompleted: 0,
           challengeVerbs,
           totalVerbsNeeded: this.verbsToComplete
@@ -653,11 +650,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         console.log(`${this.name} challenge verbs:`, game.boss.challengeVerbs);
 
-        // Step 6: Display the first verb
         displayNextBossVerb();
       }
     }
   };
+
+  /**
+   * Glitch an infinitive by hiding one letter (excluding the ending).
+   */
+  function glitchInfinitive(inf) {
+    if (inf.length < 6) return inf;
+    const hideIndex = Math.floor(Math.random() * (inf.length - 2));
+    return inf.slice(0, hideIndex) + '_' + inf.slice(hideIndex + 1);
+  }
 
   /**
    * Applies a simple "glitch" effect to a word by hiding one random letter.
@@ -704,7 +709,7 @@ function displayNextBossVerb() {
       const displayText =
         game.boss.id === 'verbRepairer'
           ? currentChallenge.glitchedForm
-          : `${currentChallenge.infinitive} - ${currentChallenge.pronoun}`;
+          : `${currentChallenge.glitchedInfinitive} - ${currentChallenge.pronoun}`;
 
       qPrompt.innerHTML = `${tenseBadge} <span class="boss-challenge">${displayText}</span>`;
 
