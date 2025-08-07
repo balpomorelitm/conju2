@@ -1036,14 +1036,13 @@ function displayNextBossVerb() {
       if (chuacheImage) chuacheImage.classList.remove('hidden', 'fade-out');
       if (progressContainer) {
         progressContainer.style.color = '';
-        const goal = selectedGameMode === 'lives' ? LEVEL_GOAL_LIVES : LEVEL_GOAL_TIMER;
-        const progress = correctAnswersTotal % goal;
-        updateLevelText(`Level ${currentLevel + 1} (${progress}/${goal}) | Total Score: ${score}`);
       }
 
       game.verbsInPhaseCount = 0;
       game.gameState = 'PLAYING';
       game.boss = null;
+
+      if (progressContainer) updateProgressUI();
 
       prepareNextQuestion();
     }, 3000);
