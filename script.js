@@ -3169,6 +3169,8 @@ function checkAnswer() {
       if (feedback)
         feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${currentChallenge.correctAnswer}" (+50 points)`;
 
+      safePlay(soundCorrect);
+
       if (game.boss.verbsCompleted >= bosses[game.boss.id].verbsToComplete) {
         endBossBattle(true);
       } else {
@@ -3184,6 +3186,8 @@ function checkAnswer() {
           : `❌ Incorrect. "${challengeDisplay}"`;
         feedback.textContent = msg;
       }
+
+      safePlay(soundWrong);
 
       if (gameContainer) {
         gameContainer.classList.add('shake');
