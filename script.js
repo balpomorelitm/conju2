@@ -3575,13 +3575,16 @@ function checkAnswer() {
       score = game.score; // keep legacy score in sync
       updateScore();
       if (progressContainer) {
-        const bossTypeNumber =
-          game.boss.id === 'verbRepairer' ? 1 :
-          game.boss.id === 'skynetGlitch' ? 2 : 3;
+        let bossTypeNumber;
+        if (game.boss.id === 'verbRepairer') bossTypeNumber = 1;
+        else if (game.boss.id === 'skynetGlitch') bossTypeNumber = 2;
+        else if (game.boss.id === 'nuclearBomb') bossTypeNumber = 3;
 
+
+        const currentBossNumber = currentLevel + 1;
         const currentBoss = bosses[game.boss.id];
-        progressContainer.textContent =
-          `Level Boss #${currentBossNumber} - ${bossTypeNumber}/3 (${game.boss.verbsCompleted}/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
+        progressContainer.textContent = `Level Boss #${currentBossNumber} - ${bossTypeNumber}/3 (${game.boss.verbsCompleted}/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
+
       }
       if (feedback)
         feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${rawCorrectAnswer}" (+50 points)`;
