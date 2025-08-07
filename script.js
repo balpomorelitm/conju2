@@ -722,15 +722,12 @@ function displayNextBossVerb() {
       console.error("No current boss challenge found.");
       return;
     }
-    const tenseEl = document.getElementById('tense-label');
-    if (tenseEl) {
-      tenseEl.textContent =
-        game.boss.id === 'verbRepairer'
-          ? 'Repair the corrupted verb.'
-          : 'Conjugate correctly.';
-    }
 
-    if (qPrompt) {
+    const tenseEl = document.getElementById('tense-label');
+    let promptHTML = '';
+
+    if (game.boss.id === 'verbRepairer') {
+      if (tenseEl) tenseEl.textContent = 'Repair the corrupted verb';
       const tKey = currentChallenge.tense;
       const tenseObj = tenses.find(t => t.value === tKey) || {};
       const tenseLabel = tenseObj.name || tKey;
@@ -738,13 +735,15 @@ function displayNextBossVerb() {
       const tenseBadge =
         `<span class="tense-badge ${tKey}" data-info-key="${infoKey}">${tenseLabel}` +
         `<span class="context-info-icon" data-info-key="${infoKey}"></span></span>`;
+      promptHTML = `${tenseBadge} <span class="boss-challenge">${currentChallenge.glitchedForm}</span>`;
+    } else if (game.boss.id === 'skynetGlitch') {
+      if (tenseEl) tenseEl.textContent = 'Complete the infinitive';
+      promptHTML = `<span class="boss-challenge">${currentChallenge.pronoun} - ${currentChallenge.glitchedInfinitive}</span>`;
+    }
 
-      const displayText =
-        game.boss.id === 'verbRepairer'
-          ? currentChallenge.glitchedForm
-          : `${currentChallenge.glitchedInfinitive} - ${currentChallenge.pronoun}`;
+    if (qPrompt) {
+      qPrompt.innerHTML = promptHTML;
 
-      qPrompt.innerHTML = `${tenseBadge} <span class="boss-challenge">${displayText}</span>`;
 
       const promptBadge = qPrompt.querySelector('.tense-badge');
       const promptIcon = qPrompt.querySelector('.context-info-icon');
