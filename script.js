@@ -734,6 +734,13 @@ function displayNextBossVerb() {
   function endBossBattle(playerWon, message = "") {
     if (ansES) ansES.disabled = false;
 
+    if (checkAnswerButton) checkAnswerButton.disabled = false;
+    if (skipButton) skipButton.disabled = false;
+    if (clueButton) {
+      clueButton.disabled = false;
+      updateClueButtonUI();
+    }
+
     const tenseEl = document.getElementById('tense-label');
 
     if (playerWon) {
@@ -763,9 +770,6 @@ function displayNextBossVerb() {
       game.gameState = 'PLAYING';
       game.boss = null;
 
-      if (checkAnswerButton) checkAnswerButton.disabled = false;
-      if (clueButton) clueButton.disabled = false;
-      if (skipButton) skipButton.disabled = false;
       prepareNextQuestion();
     }, 3000);
   }
