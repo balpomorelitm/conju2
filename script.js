@@ -3233,8 +3233,16 @@ function checkAnswer() {
       return;
     }
 
-    const userInput = ansES.value.trim().toLowerCase();
-    const correctAnswer = currentChallenge.correctAnswer.trim().toLowerCase();
+    const rawUserInput = ansES.value;
+    const rawCorrectAnswer = currentChallenge.correctAnswer;
+
+    let userInput = rawUserInput.trim().toLowerCase();
+    let correctAnswer = rawCorrectAnswer.trim().toLowerCase();
+
+    if (currentOptions.ignoreAccents) {
+      userInput = removeAccents(userInput);
+      correctAnswer = removeAccents(correctAnswer);
+    }
 
     const challengeDisplay = game.boss.id === 'verbRepairer'
       ? currentChallenge.glitchedForm
@@ -3246,7 +3254,7 @@ function checkAnswer() {
       score = game.score; // keep legacy score in sync
       updateScore();
       if (feedback)
-        feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${currentChallenge.correctAnswer}" (+50 points)`;
+        feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${rawCorrectAnswer}" (+50 points)`;
 
       safePlay(soundCorrect);
 
