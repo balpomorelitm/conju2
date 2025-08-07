@@ -652,6 +652,93 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         displayNextBossVerb();
       }
+    },
+    nuclearBomb: {
+      name: 'Nuclear Countdown',
+      description: 'Defuse the nuclear bomb before time runs out!',
+      verbsToComplete: 4,
+      timeLimit: 30, // 30 seconds
+      init: function() {
+        // Filter verbs from current game selection
+        const selectedVerbElements = Array.from(document.querySelectorAll('#verb-buttons .verb-button.selected'));
+        const selectedVerbInfinitives = selectedVerbElements.map(btn => btn.dataset.value);
+
+        let verbsToConsider = [];
+        if (selectedVerbInfinitives.length > 0) {
+          verbsToConsider = allVerbData.filter(v =>
+            selectedVerbInfinitives.includes(v.infinitive_es)
+          );
+        } else {
+          const selectedTypeBtns = Array.from(document.querySelectorAll('.verb-type-button.selected:not(:disabled)'));
+          const selectedTypes = selectedTypeBtns.map(b => b.dataset.value);
+
+          verbsToConsider = allVerbData.filter(v =>
+            currentOptions.tenses.some(tenseKey =>
+              (v.types[tenseKey] || []).some(typeInVerb =>
+                selectedTypes.includes(typeInVerb)
+              )
+            )
+          );
+        }
+
+        // Filter for available conjugations
+        const filteredVerbs = verbsToConsider.filter(v =>
+          currentOptions.tenses.some(tenseKey => v.conjugations[tenseKey] !== undefined)
+        );
+
+        const shuffled = filteredVerbs.sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, this.verbsToComplete);
+
+        if (selected.length < this.verbsToComplete) {
+          console.error('Not enough compatible verbs for Nuclear Bomb boss.');
+          endBossBattle(false, 'ERROR: Not enough compatible verbs.');
+          return;
+        }
+
+        const pronounList = window.pronouns || pronouns;
+        const challengeVerbs = [];
+
+        selected.forEach(verb => {
+          const possibleTenses = currentOptions.tenses.filter(t =>
+            verb.conjugations[t] !== undefined
+          );
+          const tense = possibleTenses[Math.floor(Math.random() * possibleTenses.length)];
+          const pronoun = pronounList[Math.floor(Math.random() * pronounList.length)];
+          const correctAnswer = verb.conjugations[tense][pronoun];
+
+          if (!correctAnswer) {
+            console.error(`Missing conjugation for ${verb.infinitive_es} in ${tense} (${pronoun}).`);
+            return;
+          }
+
+          challengeVerbs.push({
+            infinitive: verb.infinitive_es,
+            tense,
+            pronoun,
+            correctAnswer,
+            conjugations: [correctAnswer]
+          });
+        });
+
+        if (challengeVerbs.length < this.verbsToComplete) {
+          console.error('Not enough challenge verbs for Nuclear Bomb boss.');
+          endBossBattle(false, 'ERROR: Not enough compatible verbs.');
+          return;
+        }
+
+        game.boss = {
+          id: 'nuclearBomb',
+          verbsCompleted: 0,
+          challengeVerbs,
+          totalVerbsNeeded: this.verbsToComplete,
+          timeLeft: this.timeLimit,
+          countdownInterval: null
+        };
+
+        // Start the countdown
+        startNuclearCountdown();
+        displayNextBossVerb();
+      }
     }
   };
 
@@ -712,6 +799,106 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   window.glitchInfinitive = glitchInfinitive;
 
+  // ADD these functions for nuclear bomb boss:
+  function startNuclearCountdown() {
+    if (!game.boss || game.boss.id !== 'nuclearBomb') return;
+
+    const countdownDisplay = document.getElementById('nuclear-countdown');
+    const chuacheBox = document.getElementById('chuache-box');
+
+    // Hide Chuache and show countdown
+    if (chuacheBox) {
+      chuacheBox.classList.add('nuclear-mode');
+    }
+
+    if (countdownDisplay) {
+      countdownDisplay.style.display = 'block';
+      updateCountdownDisplay();
+    }
+
+    // Start the countdown interval
+    game.boss.countdownInterval = setInterval(() => {
+      game.boss.timeLeft--;
+      updateCountdownDisplay();
+
+      if (game.boss.timeLeft <= 0) {
+        clearInterval(game.boss.countdownInterval);
+        explodeNuclearBomb();
+      }
+    }, 1000);
+  }
+
+  function updateCountdownDisplay() {
+    const countdownDisplay = document.getElementById('nuclear-countdown');
+    const timeDisplay = document.getElementById('nuclear-time');
+
+    if (timeDisplay && game.boss) {
+      timeDisplay.textContent = game.boss.timeLeft;
+
+      // Add urgency classes
+      if (game.boss.timeLeft <= 10) {
+        countdownDisplay.classList.add('critical');
+      } else if (game.boss.timeLeft <= 20) {
+        countdownDisplay.classList.add('warning');
+      }
+    }
+  }
+
+  function explodeNuclearBomb() {
+    // Game over - nuclear explosion
+    safePlay(soundGameOver);
+    chuacheSpeaks('gameover');
+
+    const gameTitle = document.getElementById('game-title');
+    if (gameTitle) gameTitle.textContent = '\uD83D\uDCA5 NUCLEAR EXPLOSION! GAME OVER! \uD83D\uDCA5';
+
+    // Disable all inputs
+    if (ansES) ansES.disabled = true;
+    if (ansEN) ansEN.disabled = true;
+    if (checkAnswerButton) checkAnswerButton.disabled = true;
+    if (clueButton) clueButton.disabled = true;
+    if (skipButton) skipButton.disabled = true;
+
+    // End the game after showing explosion effect
+    setTimeout(() => {
+      endNuclearBoss(false, 'Nuclear explosion! Mission failed.');
+    }, 3000);
+  }
+
+  function defuseNuclearBomb() {
+    // Success - bomb defused
+    clearInterval(game.boss.countdownInterval);
+
+    const countdownDisplay = document.getElementById('nuclear-countdown');
+    if (countdownDisplay) {
+      countdownDisplay.classList.add('defused');
+    }
+
+    endNuclearBoss(true, 'BOMB DEFUSED!');
+  }
+
+  function endNuclearBoss(success, message) {
+    // Clean up nuclear bomb UI
+    const countdownDisplay = document.getElementById('nuclear-countdown');
+    const chuacheBox = document.getElementById('chuache-box');
+
+    if (countdownDisplay) {
+      countdownDisplay.style.display = 'none';
+      countdownDisplay.classList.remove('critical', 'warning', 'defused');
+    }
+
+    if (chuacheBox) {
+      chuacheBox.classList.remove('nuclear-mode');
+    }
+
+    if (game.boss && game.boss.countdownInterval) {
+      clearInterval(game.boss.countdownInterval);
+    }
+
+    // Call the standard end boss battle
+    endBossBattle(success, message);
+  }
+
 function displayNextBossVerb() {
     if (!game.boss || !game.boss.challengeVerbs) {
       console.error("Boss battle state is missing.");
@@ -739,6 +926,18 @@ function displayNextBossVerb() {
     } else if (game.boss.id === 'skynetGlitch') {
       if (tenseEl) tenseEl.textContent = 'Complete the infinitive';
       promptHTML = `<span class="boss-challenge">${currentChallenge.pronoun} - ${currentChallenge.glitchedInfinitive}</span>`;
+    } else if (game.boss.id === 'nuclearBomb') {
+      if (tenseEl) tenseEl.textContent = `Defuse the bomb! (${game.boss.verbsCompleted + 1}/${game.boss.totalVerbsNeeded})`;
+
+      const tKey = currentChallenge.tense;
+      const tenseObj = tenses.find(t => t.value === tKey) || {};
+      const tenseLabel = tenseObj.name || tKey;
+      const infoKey = tenseObj.infoKey || '';
+      const tenseBadge =
+        `<span class="tense-badge ${tKey}" data-info-key="${infoKey}">${tenseLabel}` +
+        `<span class="context-info-icon" data-info-key="${infoKey}"></span></span>`;
+
+      promptHTML = `${tenseBadge}: "${currentChallenge.infinitive}" – <span class="pronoun" id="${currentChallenge.pronoun}">${currentChallenge.pronoun}</span>`;
     }
 
     if (qPrompt) {
@@ -994,13 +1193,45 @@ function displayNextBossVerb() {
         }
         playFromStart(soundElectricShock);
         updateClueButtonUI();
+      } else if (game.boss && game.boss.id === 'nuclearBomb') {
+        // Allow hints for nuclear bomb (time pressure makes it fair)
+        feedback.innerHTML = '';
+
+        if (freeClues > 0) {
+          freeClues--;
+          updateClueButtonUI();
+        } else {
+          if (selectedGameMode === 'timer') {
+            const penalty = calculateTimePenalty(currentLevel);
+            timerTimeLeft = Math.max(0, timerTimeLeft - penalty);
+            checkTickingSound();
+            showTimeChange(-penalty);
+          } else if (selectedGameMode === 'lives') {
+            const penalty = 1 + currentLevel;
+            remainingLives -= penalty;
+            updateGameTitle();
+          }
+          updateClueButtonUI();
+        }
+
+        // Display hint for nuclear bomb
+        const currentChallenge = game.boss.challengeVerbs[game.boss.verbsCompleted];
+        if (currentChallenge) {
+          feedback.innerHTML = `💡 The infinitive is <strong>${currentChallenge.infinitive}</strong>`;
+          playFromStart(soundElectricShock);
+        }
+
+        if (ansES) {
+          ansES.value = '';
+          setTimeout(() => ansES.focus(), 0);
+        }
       } else {
         feedback.textContent = 'No hints available';
         playFromStart(soundElectricShock);
-      }
-      if (ansES) {
-        ansES.value = '';
-        setTimeout(() => ansES.focus(), 0);
+        if (ansES) {
+          ansES.value = '';
+          setTimeout(() => ansES.focus(), 0);
+        }
       }
       return;
     }
@@ -3202,9 +3433,13 @@ function startBossBattle() {
   game.lastBossUsed = selectedBossKey;
 
   if (bossImage) {
-    bossImage.src = selectedBossKey === 'verbRepairer'
-      ? 'images/bosshack.webp'
-      : 'images/bosssg.webp';
+    if (selectedBossKey === 'verbRepairer') {
+      bossImage.src = 'images/bossrepairer.webp';
+    } else if (selectedBossKey === 'nuclearBomb') {
+      bossImage.src = 'images/bossnuclear.webp';
+    } else {
+      bossImage.src = 'images/bosssg.webp';
+    }
   }
 
   game.boss = {
@@ -3216,7 +3451,11 @@ function startBossBattle() {
 
 
   if (progressContainer) {
-    const bossNumber = game.lastBossUsed === 'verbRepairer' ? 1 : 2;
+    let bossNumber;
+    if (selectedBossKey === 'verbRepairer') bossNumber = 1;
+    else if (selectedBossKey === 'skynetGlitch') bossNumber = 2;
+    else if (selectedBossKey === 'nuclearBomb') bossNumber = 3;
+
     progressContainer.textContent = `Level Boss ${bossNumber} (0/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
     progressContainer.style.color = '#FF0000';
   }
@@ -3243,7 +3482,7 @@ function startBossBattle() {
   if (checkAnswerButton) checkAnswerButton.disabled = false;
   if (skipButton) skipButton.disabled = true;
   if (clueButton) {
-    if (selectedBossKey === 'skynetGlitch') {
+    if (selectedBossKey === 'skynetGlitch' || selectedBossKey === 'nuclearBomb') {
       clueButton.disabled = false;
       updateClueButtonUI();
     } else {
@@ -3293,10 +3532,13 @@ function checkAnswer() {
       score = game.score; // keep legacy score in sync
       updateScore();
       if (progressContainer) {
-        const bossNumber = game.boss.id === 'verbRepairer' ? 1 : 2;
-        const totalVerbs = bosses[game.boss.id].verbsToComplete;
-        progressContainer.textContent =
-          `BOSS ${bossNumber} - ${game.boss.verbsCompleted}/${totalVerbs} | Total Score: ${game.score}`;
+        let bossNumber;
+        if (game.boss.id === 'verbRepairer') bossNumber = 1;
+        else if (game.boss.id === 'skynetGlitch') bossNumber = 2;
+        else if (game.boss.id === 'nuclearBomb') bossNumber = 3;
+
+        const currentBoss = bosses[game.boss.id];
+        progressContainer.textContent = `Level Boss ${bossNumber} (${game.boss.verbsCompleted}/${currentBoss.verbsToComplete}) | Total Score: ${score}`;
       }
       if (feedback)
         feedback.textContent = `✅ Correct! "${challengeDisplay}" → "${rawCorrectAnswer}" (+50 points)`;
@@ -3304,7 +3546,12 @@ function checkAnswer() {
       safePlay(soundCorrect);
 
       if (game.boss.verbsCompleted >= bosses[game.boss.id].verbsToComplete) {
-        endBossBattle(true);
+        // SPECIAL handling for nuclear bomb:
+        if (game.boss.id === 'nuclearBomb') {
+          defuseNuclearBomb();
+        } else {
+          endBossBattle(true);
+        }
       } else {
         displayNextBossVerb();
       }
