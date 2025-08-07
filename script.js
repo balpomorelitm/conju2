@@ -86,6 +86,8 @@ function safePlay(audio) {
 }
 
 // Level progression state
+let totalBossesEncountered = 0;
+let currentBossNumber = 0;
 let correctAnswersTotal = 0;
 let currentLevel = 0;
 let lastBossUsed = null;
